@@ -25,8 +25,8 @@
     created() {
         
         this.styleObject = { ... this.styleObj,
-            marginTop: this.spaceBefore || '10px',
-            marginBottom: this.spaceAfter || '10px'
+            marginTop: this.spaceBefore+'px' || '10px',
+            marginBottom: this.spaceAfter+'px' || '10px'
         }
     }
   }

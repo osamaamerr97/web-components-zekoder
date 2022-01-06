@@ -11,7 +11,7 @@
   
   export default {
     name: 'TextBlock',
-    props: ['text', 'spaceBefore', 'spaceAfter', 'headingLevel', 'html', 'lineBreaks', 'styleObj'],
+    props: ['text', 'spaceBefore', 'spaceAfter', 'lineBreaks', 'styleObj'],
     data() {
         return {
             styleObject : {

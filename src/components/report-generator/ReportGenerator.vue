@@ -12,8 +12,17 @@
   import {saveAs} from 'file-saver';
   import { Document, Packer, Paragraph, ImageRun, TextRun, Table, SectionType, HeadingLevel } from "docx";
 
+  import { ApolloClient, InMemoryCache, gql} from "@apollo/client";
+
   const headingLevels = [HeadingLevel.TITLE, HeadingLevel.HEADING_1, HeadingLevel.HEADING_2, HeadingLevel.HEADING_3, HeadingLevel.HEADING_4, HeadingLevel.HEADING_5, HeadingLevel.HEADING_6 ]
 
+  const cache = new InMemoryCache();
+
+  const client = new ApolloClient({
+    // Provide required constructor fields
+    cache: cache,
+    uri: 'https://48p1r2roz4.sse.codesandbox.io'
+  });
 
   export default {
     name: 'ReportGenerator',
@@ -171,18 +180,18 @@
         }
     },
     created() {
-        // let fs = new FileReader();
-        // fs.onload = (e) => {
-        //     let bstr = e.target.result;
-        //     console.log(bstr);
-            
-        // }
-        // fs.readAsText(this.yml, 'utf8')
-
-        // fetch("/assets/test.yml")
-        // .then( response => {
-        //     console.log(response);
-        // })
+        client.query({
+            query: gql`
+            query {
+                myrates: rates(currency: "USD") {
+                    currency
+                    rate
+                    name
+                }
+            }
+            `
+        })
+        .then(result => console.log(result.data.rates.slice(0,10)));
     }
   }
 </script>

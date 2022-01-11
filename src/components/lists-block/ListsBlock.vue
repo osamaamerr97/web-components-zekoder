@@ -1,12 +1,12 @@
 <template>
 
-<ol v-if="type == 'ordered'">
-    <li v-for="(item,i) in listItems" :key="i" v-bind:style="styleObj">
+<ol v-if="type == 'ordered'" :style="styleObj">
+    <li v-for="(item,i) in listItems" :key="i">
         {{item}}
     </li>
 </ol>
-<ul v-if="type == 'unordered'">
-    <li v-for="(item,i) in listItems" :key="i" v-bind:style="styleObj">
+<ul v-if="type == 'unordered'" :style="styleObj">
+    <li v-for="(item,i) in listItems" :key="i">
         {{item}}
     </li>
 </ul>

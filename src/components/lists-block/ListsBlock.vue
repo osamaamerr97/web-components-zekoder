@@ -18,17 +18,6 @@
   export default {
     name: 'ListsBlock',
     props: ['listItems', 'type', 'styleObj'],
-    data() {
-        return {
-            styleObject : {
-            }
-        }
-    },
-    methods: {
-
-    },
-    created() {
-    }
   }
 </script>
 

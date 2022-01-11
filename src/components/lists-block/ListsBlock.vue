@@ -5,7 +5,7 @@
         {{item}}
     </li>
 </ol>
-<ul v-if="type == 'unordered'" :style="styleObj">
+<ul v-else :style="styleObj">
     <li v-for="(item,i) in listItems" :key="i">
         {{item}}
     </li>

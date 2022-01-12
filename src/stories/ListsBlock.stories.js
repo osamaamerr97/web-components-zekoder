@@ -13,6 +13,10 @@ export default {
             control: { type: 'select' },
             options: ['ordered', 'unordered'],
         },
+        childrenType: {
+            control: { type: 'select' },
+            options: ['ordered', 'unordered'],
+        },
         styleObj: {
             control: {
                 type: 'object',
@@ -31,8 +35,10 @@ const Template = (args) => ({
 
 export const Primary = Template.bind({});
 Primary.args = {
-    listItems: ["item 1", "item 2", "item 3"],
+    listItems: [{ label: "item 1", children: ["item"] }, "item 2", "item 3"],
+    // listItems: ["item 2", "item 3" , ["item 1", "item 2"]],
     type: 'unordered',
+    childrenType: 'unordered',
     styleObj: {
         "color": "#000000",
         "fontSize": "24px",

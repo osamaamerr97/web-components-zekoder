@@ -3,6 +3,22 @@ import ListsBlock  from '../components/lists-block/ListsBlock.vue';
 export default {
     title: 'Zekoder/Lists Block',
     component: ListsBlock,
+    argTypes: {
+        listItems: {
+            control: {
+                type: 'object',
+            }
+        },
+        type: {
+            control: { type: 'select' },
+            options: ['ordered', 'unordered'],
+        },
+        styleObj: {
+            control: {
+                type: 'object',
+            }
+        }
+    },
 };
 
 const Template = (args) => ({

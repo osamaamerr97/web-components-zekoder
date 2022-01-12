@@ -17,7 +17,12 @@
 
   export default {
     name: 'ListsBlock',
-    props: ['listItems', 'type', 'styleObj'],
+    props: {
+      'listItems' : Array,
+      'type': {validator: function (value) {
+        return ['ordered', 'unordered'].includes(value);}
+      },
+      'styleObj': Object},
   }
 </script>
 

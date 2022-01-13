@@ -35,8 +35,16 @@ const Template = (args) => ({
 
 export const Primary = Template.bind({});
 Primary.args = {
-    listItems: [{ label: "item 1", children: ["item"] }, "item 2", "item 3"],
-    // listItems: ["item 2", "item 3" , ["item 1", "item 2"]],
+    listItems: [
+        "item 0",
+        {
+            label: "item 1", children: [
+                { label: "item", children: ["sub-item"] }
+            ]
+        },
+        "item 2",
+        "item 3"
+    ],
     type: 'unordered',
     childrenType: 'unordered',
     styleObj: {

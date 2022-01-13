@@ -4,8 +4,6 @@
     <li v-for="(item,i) in listItems" :key="i">
         {{ hasChildren(item) ? item.label : item}}
         <ListsBlock v-if="hasChildren(item)" :listItems="item.children" :type="childrenType" :style="styleObj" />
-        <!-- <ListsBlock v-if="Array.isArray(item)" :listItems="item" :type="type" :style="styleObj" /> -->
-        <!-- <span v-else>{{ item }}</span> -->
     </li>
 </ol>
 <ul v-else :style="styleObj">

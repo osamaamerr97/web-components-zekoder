@@ -6,6 +6,24 @@ export default {
     component: HeadingBlock,
     // More on argTypes: https://storybook.js.org/docs/vue/api/argtypes
     argTypes: {
+        headingLevel: {
+            control: 'select',
+            options: [1, 2, 3, 4, 5, 6]
+        },
+        spaceBefore: {
+            control: {
+                type: 'number',
+                min: 0,
+                step: 5
+            }
+        },
+        spaceAfter: {
+            control: {
+                type: 'number',
+                min: 0,
+                step: 5
+            }
+        }
     },
   };
 

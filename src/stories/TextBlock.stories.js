@@ -6,6 +6,27 @@ export default {
     component: TextBlock,
     // More on argTypes: https://storybook.js.org/docs/vue/api/argtypes
     argTypes: {
+        spaceBefore: {
+            control: {
+                type: 'number',
+                min: 0,
+                step: 5
+            }
+        },
+        spaceAfter: {
+            control: {
+                type: 'number',
+                min: 0,
+                step: 5
+            }
+        },
+        lineBreaks: {
+            control: {
+                type: 'number',
+                min: 0,
+                step: 1
+            }
+        }
     },
   };
 

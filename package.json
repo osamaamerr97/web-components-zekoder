@@ -30,7 +30,8 @@
     "graphql-tag": "^2.12.6",
     "js-yaml": "^4.1.0",
     "sanitize-html": "^2.6.1",
-    "vue": "^3.0.0"
+    "vue": "^3.0.0",
+    "vue-router": "^3.5.3"
   },
   "devDependencies": {
     "@babel/core": "^7.16.5",

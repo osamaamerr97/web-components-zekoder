@@ -13,10 +13,6 @@ export default {
             control: { type: 'select' },
             options: ['ordered', 'unordered'],
         },
-        childrenType: {
-            control: { type: 'select' },
-            options: ['ordered', 'unordered'],
-        },
         styleObj: {
             control: {
                 type: 'object',
@@ -38,15 +34,20 @@ Primary.args = {
     listItems: [
         "item 0",
         {
-            label: "item 1", children: [
-                { label: "item", children: ["sub-item"] }
+            label: "item 1",
+            listType: "ordered",
+            children: [
+                {
+                    label: "item",
+                    listType: "unordered",
+                    children: ["sub-item"]
+                }
             ]
         },
         "item 2",
         "item 3"
     ],
     type: 'unordered',
-    childrenType: 'unordered',
     styleObj: {
         "color": "#000000",
         "fontSize": "24px",

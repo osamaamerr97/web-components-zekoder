@@ -10,7 +10,7 @@
       <span v-if="label && iconTrailing" :class="{'mdc-button__label': theme=='material'}" :style="{marginRight: icon&&theme!='material'?'8px':''}">{{label}}</span>
 
       <i v-if="icon && theme=='material'" class="material-icons mdc-button__icon" :style="{marginRight: !label?'0px':''}" aria-hidden="true">{{icon}}</i>
-      <i v-else-if="icon" class="fa" :class="['fa-'+icon, label?'icon':'']"></i>
+      <i v-else-if="icon" class="fa" :class="['fa-'+icon, label&&!iconTrailing?'icon':'']"></i>
 
       <span v-if="label && !iconTrailing" :class="{'mdc-button__label': theme=='material'}">{{label}}</span>
 

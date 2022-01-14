@@ -5,12 +5,14 @@
 </template>
 
 <script>
-//   import {VueSanitize} from 'vue-sanitize';
   import sanitizeHtml from 'sanitize-html'
 
   export default {
     name: 'HtmlBlock',
-    props: ['content', 'styleObj'],
+    props: {
+        content: String,
+        styleObj: Object
+    },
     data() {
         return {
             cleanHtml : ''

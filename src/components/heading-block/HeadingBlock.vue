@@ -13,7 +13,13 @@
   
   export default {
     name: 'HeadingBlock',
-    props: ['text', 'spaceBefore', 'spaceAfter', 'headingLevel', 'styleObj'],
+    props: {
+        text: String,
+        spaceBefore: Number,
+        spaceAfter: Number,
+        headingLevel: Number,
+        styleObj: Object
+    },
     data() {
         return {
             styleObject : {}

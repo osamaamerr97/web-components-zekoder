@@ -7,10 +7,12 @@
       :style="styleObj">
       <span v-if="theme=='material'" class="mdc-button__ripple"></span>
 
-      <i v-if="icon && theme=='material'" class="material-icons mdc-button__icon"  aria-hidden="true">{{icon}}</i>
-      <i v-else-if="icon" class="fa icon" :class="'fa-'+icon"></i>
+      <span v-if="label && iconTrailing" :class="{'mdc-button__label': theme=='material'}" :style="{marginRight: icon&&theme!='material'?'8px':''}">{{label}}</span>
 
-      <span :class="{'mdc-button__label': theme=='material'}">{{label}}</span>
+      <i v-if="icon && theme=='material'" class="material-icons mdc-button__icon" :style="{marginRight: !label?'0px':''}" aria-hidden="true">{{icon}}</i>
+      <i v-else-if="icon" class="fa" :class="['fa-'+icon, label?'icon':'']"></i>
+
+      <span v-if="label && !iconTrailing" :class="{'mdc-button__label': theme=='material'}">{{label}}</span>
 
       <span v-if="loading" class="loading-spinner" :class="{'mdc-button__label': theme=='material'}"></span>
 
@@ -33,7 +35,8 @@
         size: String,
         active: Boolean,
         outlineButton: Boolean,
-        icon: String
+        icon: String,
+        iconTrailing: Boolean
     },
     data() {
         return {
@@ -56,10 +59,11 @@
             const classList = ['button'];
             if(this.theme == 'bootstrap') {
                 classList.push('btn');
-                if(this.type) {
-                    let outline = this.outlineButton? 'outline-':'';
-                    classList.push('btn-' + outline + this.type.toLowerCase());
-                }
+                
+                let outline = this.outlineButton? 'outline-':'';
+                let type = this.type? this.type.toLowerCase() : 'primary';
+                classList.push('btn-' + outline + type);
+                
                 if (this.disabled) {
                     classList.push('disabled');
                 }

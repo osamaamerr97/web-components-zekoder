@@ -49,18 +49,18 @@ export default {
   export const Primary = Template.bind({});
 // More on args: https://storybook.js.org/docs/vue/writing-stories/args
 Primary.args = {
-  theme: 'bootstrap', 
-  label: 'my button',
-  icon: 'bookmark',
+  theme: '', 
+  label: '',
+  icon: '',
   url: '',
-  size: 'large',
-  type: 'danger',
+  size: '',
+  type: '',
   disabled: false,
   loading: false,
   active: false,
   outlineButton: false,
+  iconTrailing: false,
   styleObj: {
-    "fontSize": "24px",
     "textTransform": "capitalize",
     "textAlign": "center"
   }

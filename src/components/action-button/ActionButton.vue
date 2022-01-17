@@ -79,7 +79,7 @@
                 if(this.outlineButton) {
                     classList.push('mdc-button--outlined');
                 }
-                if(this.type == 'raised') {
+                else if(this.type == 'raised') {
                     classList.push('mdc-button--raised')
                 }
                 else if (this.type == 'link') {

@@ -14,7 +14,9 @@
   ],
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --target lib --name zekoder-web-components src/main.js",
+    "build": "npm run buildBasic && npm run buildMain",
+    "buildMain": "vue-cli-service build --target lib --dest dist/main --name zekoder-web-components src/main.js",
+    "buildBasic": "vue-cli-service build --target lib --dest dist/basic --name basic-components src/basic-components/main.js",
     "prepublishOnly": "$npm_execpath build",
     "lint": "vue-cli-service lint",
     "storybook": "start-storybook -p 6006",
@@ -31,7 +33,8 @@
     "js-yaml": "^4.1.0",
     "sanitize-html": "^2.6.1",
     "vue": "^3.0.0",
-    "vue-router": "^3.5.3"
+    "vue-router": "^3.5.3",
+    "vue-slick-carousel": "^1.0.6"
   },
   "devDependencies": {
     "@babel/core": "^7.16.5",

@@ -2,7 +2,6 @@
 
     <p :style="styleObject"> 
         <span v-if="text"> {{text}} </span>
-        <template v-else-if="html" v-html="html"></template>
     </p>
 
 </template>

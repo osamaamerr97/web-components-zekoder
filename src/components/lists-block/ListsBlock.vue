@@ -23,7 +23,7 @@ export default {
     ListsBlock
   },
   props: {
-    listItems: Object,
+    listItems: Array,
     type: {
       validator: function (value) {
         return ["ordered", "unordered"].includes(value);

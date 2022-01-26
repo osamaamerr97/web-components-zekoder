@@ -1,0 +1,84 @@
+import ZekImage from "../components/image/Image.vue";
+
+// More on default export: https://storybook.js.org/docs/vue/writing-stories/introduction#default-export
+
+export default {
+    title: "Zekoder/Image",
+    component: ZekImage,
+    // More on argTypes: https://storybook.js.org/docs/vue/api/argtypes
+    argTypes: {
+        url: {
+            control: "text",
+        },
+        altText: {
+            control: "text",
+        },
+        hoverText: {
+            control: "text",
+        },
+        width: {
+            control: "text",
+        },
+        height: {
+            control: "text",
+        },
+        targetUrl: {
+            control: "text",
+        },
+        targetWindow: {
+            control: { type: "select" },
+            options: [ 'self', 'blank' ],
+        },
+        imageColor: {
+            control: { type: "select" },
+            options: [ 'normal', 'grayscale' ],
+        }
+    },
+};
+
+const Template = (args) => ({
+    // Components used in your story `template` are defined in the `components` object
+    components: { ZekImage },
+    // The story's `args` need to be mapped into the template through the `setup()` method
+    setup() {
+        return { args };
+    },
+    // And then the `args` are bound to your component with `v-bind="args"`
+    template: '<ZekImage v-bind="args"></ZekImage> <br> End of story.',
+});
+
+export const Primary = Template.bind({});
+// More on args: https://storybook.js.org/docs/vue/writing-stories/args
+Primary.args = {
+    url: "https://remoto.world/_nuxt/img/companies.694de85.svg",
+    altText: "sample image",
+    hoverText: "",
+    width: "200px",
+    height: "200px",
+    targetUrl: null,
+    targetWindow: '_self',
+    imageColor: 'normal',
+    hover: {
+        action: 'picture', // grayscale, normal, text, picture
+        alternatePicture: 'https://media.istockphoto.com/photos/pakistan-monument-islamabad-picture-id535695503?k=20&m=535695503&s=612x612&w=0&h=S16wHXc-b3AkL7YMrcFkR2pDGFJA1bRsPmAfQlfrwkc=',
+        textOverlay: {
+            heading: '',
+            description: '',
+            bullets: ''
+        }
+    },
+    crop: {
+        type: 'round', // round, rectangle,
+        position: 'left', // 'left', 'right', 'bottom', 'top', 'center', or a pair of these e.g. 'left top', 'right bottom'
+        top: '', // pixel
+        left: '', // pixel
+        bottom: '', // pixel
+        right: '', // pixel
+    },
+    styleObj: {
+        color: "red",
+        fontSize: "24px",
+        textTransform: "capitalize",
+        textDecoration: "underline",
+    },
+};

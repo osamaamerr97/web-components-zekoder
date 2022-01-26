@@ -1,9 +1,12 @@
 <template>
 
 <div class="slider-content" :style="styleObj">
-    <VueSlickCarousel :arrows="showArrows" :infinite="isInfinite" :fade="fadeEffect" :autoplay="autoPlay" :autoplaySpeed="speed" :dots="showDots">
+    <VueSlickCarousel :arrows="showArrows" :infinite="isInfinite" :fade="fadeEffect" :autoplay="autoPlay" :autoplaySpeed="speed" :dots="showDots" :speed="300">
         <div v-for="(slide,i) in slides" :key="i">
             <div class="slide-content" :style="getSlideStyle(slide)" >
+                <iframe v-if="slide.video&&slide.video.url" width="100%" height="100%" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen
+                    :src="slide.video.url">
+                </iframe>
                 <div class="text-section" :style="getTextStyle(slide)">
                     <h1 v-if="slide.heading">{{slide.heading}}</h1>
                     <h3 v-if="slide.subHeading">{{slide.subHeading}}</h3>

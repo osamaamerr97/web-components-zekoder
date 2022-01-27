@@ -8,7 +8,6 @@
             <img 
                 :src="imageUrl"
                 :alt="altText"
-                :title="hoverText"
                 :style="styleObject"
                 @mouseenter="onHover()"
                 @mouseout="onHoverOut()"
@@ -18,7 +17,6 @@
             v-else
             :src="imageUrl"
             :alt="altText"
-            :title="hoverText"
             :style="styleObject"
             @mouseenter="onHover()"
             @mouseout="onHoverOut()"

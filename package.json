@@ -1,15 +1,15 @@
 {
-  "name": "zekoder-web-components",
-  "version": "0.1.0",
+  "name": "@zekoder/zekoder-web-components",
+  "version": "0.0.1",
   "private": false,
-  "main": "dist/zekoder-web-components.umd.min.js",
-  "unpkg": "dist/zekoder-web-components.umd.min.js",
-  "jsdelivr": "dist/zekoder-web-components.umd.min.js",
-  "author": "Your name",
+  "main": "dist/main/zekoder-web-components.umd.min.js",
+  "unpkg": "dist/main/zekoder-web-components.umd.min.js",
+  "jsdelivr": "dist/main/zekoder-web-components.umd.min.js",
+  "author": "Awais Ashraf",
   "license": "Proprietary",
-  "description": "",
+  "description": "Zekoder basic web components",
   "files": [
-    "dist/*",
+    "dist/main/*",
     "src/*"
   ],
   "scripts": {

@@ -1,9 +1,9 @@
-import ActionButton from "../components/action-button/ActionButton.vue";
+import ZekButton from "../components/action-button/ActionButton.vue";
 
 // More on default export: https://storybook.js.org/docs/vue/writing-stories/introduction#default-export
 export default {
     title: 'Zekoder/Action Button',
-    component: ActionButton,
+    component: ZekButton,
     // More on argTypes: https://storybook.js.org/docs/vue/api/argtypes
     argTypes: {
         size: {
@@ -37,13 +37,13 @@ export default {
 
   const Template = (args) => ({
     // Components used in your story `template` are defined in the `components` object
-    components: { ActionButton },
+    components: { ZekButton },
     // The story's `args` need to be mapped into the template through the `setup()` method
     setup() {
       return { args };
     },
     // And then the `args` are bound to your component with `v-bind="args"`
-    template: '<ActionButton v-bind="args"></ActionButton>',
+    template: '<zek-button v-bind="args"></zek-button>',
   });
 
   export const Primary = Template.bind({});

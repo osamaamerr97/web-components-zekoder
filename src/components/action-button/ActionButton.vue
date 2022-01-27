@@ -23,7 +23,7 @@
 <script>
 
   export default {
-    name: 'ActionButton',
+    name: 'ZekButton',
     props: {
         theme: String, 
         styleObj: Object,

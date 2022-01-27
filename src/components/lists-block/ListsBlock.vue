@@ -3,24 +3,24 @@
 <ol v-if="type == 'ordered'" :style="styleObj">
     <li v-for="(item,i) in listItems" :key="i">
         {{ hasChildren(item) ? item.label : item}}
-        <ListsBlock v-if="hasChildren(item)" :listItems="item.children" :type="item.listType" :style="styleObj" />
+        <zek-list v-if="hasChildren(item)" :listItems="item.children" :type="item.listType" :style="styleObj" />
     </li>
 </ol>
 <ul v-else :style="styleObj">
     <li v-for="(item,i) in listItems" :key="i">
         {{ hasChildren(item) ? item.label : item}}
-        <ListsBlock v-if="hasChildren(item)" :listItems="item.children" :type="item.listType" :style="styleObj" />
+        <zek-list v-if="hasChildren(item)" :listItems="item.children" :type="item.listType" :style="styleObj" />
     </li>
 </ul>
 
 </template>
 
 <script>
-import ListsBlock from './ListsBlock.vue'
+import ZekList from './ListsBlock.vue'
 export default {
-  name: "ListsBlock",
+  name: "ZekList",
   components: {
-    ListsBlock
+    ZekList
   },
   props: {
     listItems: Array,

@@ -1,9 +1,9 @@
-import Slider from "../components/slider/Slider.vue";
+import ZekSlider from "../components/slider/Slider.vue";
 
 // More on default export: https://storybook.js.org/docs/vue/writing-stories/introduction#default-export
 export default {
     title: 'Zekoder/Slider',
-    component: Slider,
+    component: ZekSlider,
     // More on argTypes: https://storybook.js.org/docs/vue/api/argtypes
     argTypes: {
         showArrows: {
@@ -37,13 +37,13 @@ export default {
 
   const Template = (args) => ({
     // Components used in your story `template` are defined in the `components` object
-    components: { Slider },
+    components: { ZekSlider },
     // The story's `args` need to be mapped into the template through the `setup()` method
     setup() {
       return { args };
     },
     // And then the `args` are bound to your component with `v-bind="args"`
-    template: '<Slider v-bind="args"></Slider>',
+    template: '<zek-slider v-bind="args"></zek-slider>',
   });
 
   export const Primary = Template.bind({});

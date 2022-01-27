@@ -1,9 +1,9 @@
-import TextBlock from "../components/text-block/TextBlock.vue";
+import ZekText from "../components/text-block/TextBlock.vue";
 
 // More on default export: https://storybook.js.org/docs/vue/writing-stories/introduction#default-export
 export default {
     title: 'Zekoder/Text Block',
-    component: TextBlock,
+    component: ZekText,
     // More on argTypes: https://storybook.js.org/docs/vue/api/argtypes
     argTypes: {
         spaceBefore: {
@@ -33,13 +33,13 @@ export default {
 
   const Template = (args) => ({
     // Components used in your story `template` are defined in the `components` object
-    components: { TextBlock },
+    components: { ZekText },
     // The story's `args` need to be mapped into the template through the `setup()` method
     setup() {
       return { args };
     },
     // And then the `args` are bound to your component with `v-bind="args"`
-    template: '<TextBlock v-bind="args"></TextBlock> <br> End of story.',
+    template: '<zek-text v-bind="args"></zek-text> <br> End of story.',
   });
 
   export const Primary = Template.bind({});

@@ -8,7 +8,7 @@
   import sanitizeHtml from 'sanitize-html'
 
   export default {
-    name: 'HtmlBlock',
+    name: 'ZekHtml',
     props: {
         content: String,
         styleObj: Object

@@ -1,9 +1,9 @@
-import HeadingBlock from "../components/heading-block/HeadingBlock.vue";
+import ZekHeading from "../components/heading-block/HeadingBlock.vue";
 
 // More on default export: https://storybook.js.org/docs/vue/writing-stories/introduction#default-export
 export default {
     title: 'Zekoder/Heading Block',
-    component: HeadingBlock,
+    component: ZekHeading,
     // More on argTypes: https://storybook.js.org/docs/vue/api/argtypes
     argTypes: {
         headingLevel: {
@@ -30,13 +30,13 @@ export default {
 
   const Template = (args) => ({
     // Components used in your story `template` are defined in the `components` object
-    components: { HeadingBlock },
+    components: { ZekHeading },
     // The story's `args` need to be mapped into the template through the `setup()` method
     setup() {
       return { args };
     },
     // And then the `args` are bound to your component with `v-bind="args"`
-    template: '<HeadingBlock v-bind="args"></HeadingBlock> <br> End of story.',
+    template: '<zek-heading v-bind="args"></zek-heading> <br> End of story.',
   });
 
   export const Primary = Template.bind({});

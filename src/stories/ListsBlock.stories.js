@@ -1,8 +1,8 @@
-import ListsBlock  from '../components/lists-block/ListsBlock.vue';
+import ZekList  from '../components/lists-block/ListsBlock.vue';
 
 export default {
     title: 'Zekoder/Lists Block',
-    component: ListsBlock,
+    component: ZekList,
     argTypes: {
         listItems: {
             control: {
@@ -22,11 +22,11 @@ export default {
 };
 
 const Template = (args) => ({
-    components: { ListsBlock },
+    components: { ZekList },
     setup() {
         return { args };
     },
-    template: '<ListsBlock v-bind="args"></ListsBlock>',
+    template: '<zek-list v-bind="args"></zek-list>',
 });
 
 export const Primary = Template.bind({});

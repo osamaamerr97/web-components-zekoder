@@ -22,17 +22,17 @@
             @mouseout="onHoverOut()"
         >
         <div v-if="isHoverText" class="text-container">
-            <text-block class="hover-text" :text="hover.textOverlay.text" :styleObj="hover.textOverlay.styleObj"></text-block>
+            <zek-text class="hover-text" :text="hover.textOverlay.text" :styleObj="hover.textOverlay.styleObj"></zek-text>
         </div>
     </div>
 </template>
 
 <script>
-  import TextBlock from '../text-block/TextBlock.vue'
+  import ZekText from '../text-block/TextBlock.vue'
   
   export default {
     name: 'ZekImage',
-    components: {TextBlock},
+    components: {ZekText},
     props: {
         url: String,
         imageColor: String,

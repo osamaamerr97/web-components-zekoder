@@ -12,7 +12,7 @@
 <script>
   
   export default {
-    name: 'HeadingBlock',
+    name: 'ZekHeading',
     props: {
         text: String,
         spaceBefore: Number,

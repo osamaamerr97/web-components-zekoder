@@ -1,9 +1,9 @@
-import ActionButton from './components/action-button/ActionButton.vue';
-import HeadingBlock from './components/heading-block/HeadingBlock.vue';
-import HtmlBlock from './components/html-block/HtmlBlock.vue';
-import ListsBlock from './components/lists-block/ListsBlock.vue';
-import Slider from './components/slider/Slider.vue';
-import TextBlock from './components/text-block/TextBlock.vue';
+import ZekButton from './components/action-button/ActionButton.vue';
+import ZekHeading from './components/heading-block/HeadingBlock.vue';
+import ZekHtml from './components/html-block/HtmlBlock.vue';
 import ZekImage from './components/image/Image.vue'
+import ZekList from './components/lists-block/ListsBlock.vue';
+import ZekSlider from './components/slider/Slider.vue';
+import ZekText from './components/text-block/TextBlock.vue';
 
-export {ActionButton,HeadingBlock,HtmlBlock,ListsBlock,Slider,TextBlock,ZekImage}
+export {ZekButton,ZekHeading,ZekHtml,ZekImage,ZekList,ZekSlider,ZekText}

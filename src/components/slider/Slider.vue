@@ -11,9 +11,9 @@
                     <h1 v-if="slide.heading">{{slide.heading}}</h1>
                     <h3 v-if="slide.subHeading">{{slide.subHeading}}</h3>
                     <p v-if="slide.description && !slide.bulletsBefore">{{slide.description}}</p>
-                    <ListsBlock v-if="slide.bullets" :listItems="slide.bullets" ></ListsBlock>
+                    <zek-list v-if="slide.bullets" :listItems="slide.bullets" ></zek-list>
                     <p v-if="slide.description && slide.bulletsBefore">{{slide.description}}</p>
-                    <ActionButton v-if="slide.button" :theme="'bootstrap'" :url="slide.button.url" :type="slide.button.showLink ? 'link' : ''" :label="slide.button.text" :style="{float: slide.button.position=='right'? 'right':''}"></ActionButton>
+                    <zek-button v-if="slide.button" :theme="'bootstrap'" :url="slide.button.url" :type="slide.button.showLink ? 'link' : ''" :label="slide.button.text" :style="{float: slide.button.position=='right'? 'right':''}"></zek-button>
                 </div>
             </div>
         </div>
@@ -27,12 +27,12 @@
     import VueSlickCarousel from 'vue-slick-carousel'
     import 'vue-slick-carousel/dist/vue-slick-carousel.css'
     import 'vue-slick-carousel/dist/vue-slick-carousel-theme.css'
-    import ActionButton from '../action-button/ActionButton.vue'
-    import ListsBlock from '../lists-block/ListsBlock.vue'
+    import ZekButton from '../action-button/ActionButton.vue'
+    import ZekList from '../lists-block/ListsBlock.vue'
   
     export default {
-        name: 'Slider',
-        components: {VueSlickCarousel, ActionButton, ListsBlock},
+        name: 'ZekSlider',
+        components: {VueSlickCarousel, ZekButton, ZekList},
         props: {
             showArrows: {
                 type: Boolean,

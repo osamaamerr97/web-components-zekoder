@@ -9,7 +9,7 @@
 <script>
   
   export default {
-    name: 'TextBlock',
+    name: 'ZekText',
     props: {
         text: String,
         spaceBefore: Number,

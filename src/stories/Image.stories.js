@@ -13,9 +13,6 @@ export default {
         altText: {
             control: "text",
         },
-        hoverText: {
-            control: "text",
-        },
         width: {
             control: "text",
         },
@@ -52,19 +49,19 @@ export const Primary = Template.bind({});
 Primary.args = {
     url: "https://remoto.world/_nuxt/img/companies.694de85.svg",
     altText: "sample image",
-    hoverText: "",
     width: "200px",
     height: "200px",
     targetUrl: null,
     targetWindow: '_self',
     imageColor: 'normal',
     hover: {
-        action: 'picture', // grayscale, normal, text, picture
+        action: 'text', // grayscale, normal, text, picture
         alternatePicture: 'https://media.istockphoto.com/photos/pakistan-monument-islamabad-picture-id535695503?k=20&m=535695503&s=612x612&w=0&h=S16wHXc-b3AkL7YMrcFkR2pDGFJA1bRsPmAfQlfrwkc=',
         textOverlay: {
-            heading: '',
-            description: '',
-            bullets: ''
+            text: "Overlay text on image",
+            styleObj: {
+                color: "red"
+            }
         }
     },
     crop: {

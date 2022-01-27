@@ -1,0 +1,45 @@
+fonts:
+  Sofia: "https://fonts.googleapis.com/css?family=Sofia"
+  Arimo: "https://fonts.googleapis.com/css?family=Arimo"
+
+sources:
+  mygraphql: https://example.com/gql
+  
+sections:
+  first_section:
+    columns:
+      first_column:
+        rows:
+          first_row:
+            blocks:
+              heading:
+                text: Hello World
+                font: Sofia
+                style: 
+                  text-align: center
+                  align-items: center
+  second_section:
+    columns:
+      first_column:
+        rows:
+          title_row: 
+            blocks:
+              heading: 
+                text: "New coverage"
+                style: ...
+          content_row:
+              columns:
+                rows:
+                  single_row:
+                    columns:
+                      left_column:
+                        single_row:
+                          blocks:
+                            - table: 
+                              _ref: table.yaml
+
+                        rt_column:
+                          rows: #when it is only one row we can use blocks direclty 
+                              blocks: 
+                                chart:
+                                  _ref: chart.yaml

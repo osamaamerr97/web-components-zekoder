@@ -1,0 +1,74 @@
+{
+  "name": "@zekoder/zekoder-web-components",
+  "version": "0.0.1",
+  "private": false,
+  "main": "dist/main/zekoder-web-components.umd.min.js",
+  "unpkg": "dist/main/zekoder-web-components.umd.min.js",
+  "jsdelivr": "dist/main/zekoder-web-components.umd.min.js",
+  "author": "Awais Ashraf",
+  "license": "Proprietary",
+  "description": "Zekoder basic web components",
+  "files": [
+    "dist/main/*",
+    "src/*"
+  ],
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "npm run buildBasic && npm run buildMain",
+    "buildMain": "vue-cli-service build --target lib --dest dist/main --name zekoder-web-components src/main.js",
+    "buildBasic": "vue-cli-service build --target lib --dest dist/basic --name basic-components src/basic-components/main.js",
+    "prepublishOnly": "$npm_execpath build",
+    "lint": "vue-cli-service lint",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.5.6",
+    "core-js": "^3.6.5",
+    "docx": "^7.3.0",
+    "file-saver": "^2.0.5",
+    "fs": "0.0.1-security",
+    "graphql": "^16.2.0",
+    "graphql-tag": "^2.12.6",
+    "js-yaml": "^4.1.0",
+    "sanitize-html": "^2.6.1",
+    "vue": "^3.0.0",
+    "vue-router": "^3.5.3",
+    "vue-slick-carousel": "^1.0.6"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.16.5",
+    "@storybook/addon-actions": "^6.4.9",
+    "@storybook/addon-essentials": "^6.4.9",
+    "@storybook/addon-links": "^6.4.9",
+    "@storybook/vue3": "^6.4.9",
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "@vue/compiler-sfc": "^3.0.0",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.2.3",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^7.0.0",
+    "vue-loader": "^16.8.3"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/vue3-essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {}
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

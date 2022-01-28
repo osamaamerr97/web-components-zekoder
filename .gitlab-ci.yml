@@ -7,6 +7,9 @@
 publish:
   image: node:latest
   stage: deploy
+  only:
+     refs:
+        - main
   
   script:
     # If no .npmrc is included in the repo, generate a temporary one that is configured to publish to GitLab's NPM registry

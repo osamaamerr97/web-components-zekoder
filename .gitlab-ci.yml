@@ -6,7 +6,7 @@
 
 publish:
   image: node:latest
-  stage: test
+  stage: deploy
   
   script:
     # If no .npmrc is included in the repo, generate a temporary one that is configured to publish to GitLab's NPM registry
@@ -41,7 +41,7 @@ publish:
     # If the package.json version has not yet been published, run `npm publish`.
     - |
       if [[ $(npm view "${NPM_PACKAGE_NAME}" versions) != *"'${NPM_PACKAGE_VERSION}'"* ]]; then
-        npm install -g @vue/cli @vue/cli-service @vue/cli-plugin-babel @vue/cli-plugin-eslint @vue/compiler-sfc
+        npm install -g @vue/cli @vue/cli-service @vue/cli-plugin-babel @vue/cli-plugin-eslint @vue/compiler-sfc @vue/cli-plugin-babel/preset
         npm publish
         echo "Successfully published version ${NPM_PACKAGE_VERSION} of ${NPM_PACKAGE_NAME} to GitLab's NPM registry: ${CI_PROJECT_URL}/-/packages"
       else

@@ -19,7 +19,7 @@ publish:
         } >> .npmrc
       fi
     - echo "Created the following .npmrc:"; cat .npmrc
-    - npm config set registry https://gitlab.com/api/v4/projects/$CI_PROJECT_ID/packages/npm/
+    - npm config set registry https://gitlab.com/api/v4/projects/32338563/packages/npm/
 
     # Extract a few values from package.json
     - NPM_PACKAGE_NAME=$(node -p "require('./package.json').name")

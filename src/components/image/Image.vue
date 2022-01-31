@@ -11,6 +11,7 @@
                 :style="styleObject"
                 @mouseenter="onHover()"
                 @mouseout="onHoverOut()"
+                @load="onLoad()"
             >
         </a>
         <img 
@@ -20,7 +21,9 @@
             :style="styleObject"
             @mouseenter="onHover()"
             @mouseout="onHoverOut()"
+            @load="onLoad()"
         >
+        <div v-if="loading" class="loading-spinner"></div>
         <div v-if="isHoverText" class="text-container">
             <zek-text class="hover-text" :text="hover.textOverlay.text" :styleObj="hover.textOverlay.styleObj"></zek-text>
         </div>
@@ -50,7 +53,8 @@
         return {
             styleObject : {},
             imageUrl: null,
-            isHoverText: false
+            isHoverText: false,
+            loading: true
         }
     },
     created() {
@@ -117,6 +121,9 @@
                     this.imageUrl = this.url;
                 } 
             }
+        },
+        onLoad() {
+            this.loading = false;
         }
     }
   }
@@ -153,6 +160,40 @@
 }
 .image-container:hover .hover-text {
     opacity: 1;
+}
+.loading-spinner {
+  border-radius: 100%;
+  border-top: 2px solid #1E282C;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 20px;
+  width: 20px;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -webkit-animation: spin 1s linear infinite;
+  animation: spin 1s linear infinite;
+}
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
 
 </style>

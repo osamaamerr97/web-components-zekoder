@@ -31,6 +31,11 @@ export default {
     },
     styleObj: Object,
   },
+  data() {
+      return {}
+  },
+  created() {
+  },
   methods: {
     hasChildren(item) {
       const { children } = item;

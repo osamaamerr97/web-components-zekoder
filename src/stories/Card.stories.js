@@ -6,6 +6,16 @@ export default {
     component: ZekCard,
     // More on argTypes: https://storybook.js.org/docs/vue/api/argtypes
     argTypes: {
+        flipOn: {
+            control: { type: "select" },
+            options: [ 'click', 'hover' ]
+        },
+        backgroundColor: {
+            control: 'color'
+        },
+        hoverBackgroundColor: {
+            control: 'color'
+        }
     },
 };
 
@@ -24,18 +34,7 @@ const Template = (args) => ({
 export const Primary = Template.bind({});
 // More on args: https://storybook.js.org/docs/vue/writing-stories/args
 Primary.args = {
-    heading: {
-        text: 'My Heading',
-        headingLevel: 6,
-        spaceBefore: 0,
-        spaceAfter: 0,
-        styleObj: {
-            color: '#ffffff',
-            backgroundColor: '#1abc9c',
-            padding: '10px'
-        }
-    },
-    backgroundColor: '#fffff',
+    backgroundColor: '#ffffe',
     hoverBackgroundColor: '',
     content: { //Content must have rows, rows must have columns, columns can have more rows. Component can only be inside a column 
         rows: [
@@ -91,7 +90,7 @@ Primary.args = {
                                             component: 'text',
                                             data: {
                                                 lineBreak: 2,
-                                                text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis rhoncus lacus eget ligula feugiat, finibus convallis felis imperdiet. Fusce diam dolor, dapibus at nulla ut, ultricies tincidunt est. Maecenas sed malesuada eros, quis hendrerit arcu. Donec vehicula sem leo, semper malesuada arcu viverra tempor. Curabitur commodo est et nisl scelerisque volutpat. Mauris in sapien sollicitudin, tincidunt ante vel, rhoncus leo. Pellentesque eget ipsum in augue feugiat porta. Nam eleifend ultricies mauris ac eleifend. Donec tempor hendrerit semper. Nunc congue tristique orci, id tincidunt urna placerat ac. Nullam pellentesque nisi in molestie sodales.'
+                                                text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis rhoncus lacus eget ligula feugiat, finibus convallis felis imperdiet.'
                                             }
                                         }
                                     }
@@ -119,6 +118,80 @@ Primary.args = {
             }
         ]
     },
+    flipContent: { //Content must have rows, rows must have columns, columns can have more rows. Component can only be inside a column 
+        rows: [
+            {
+                columns: [
+                    {
+                        columnWidth: 6, // 1-12
+                        content: {
+                            component: 'image',
+                            data: {
+                                url: "https://remoto.world/_nuxt/img/companies.694de85.svg",
+                                width: "200px",
+                                height: "200px",
+                            }
+                        } 
+                    },
+                    {
+                        columnWidth: 6,
+                        rows: [
+                            {
+                                columns: [
+                                    {
+                                        columnWidth: 12,
+                                        content: {
+                                            component: 'heading',
+                                            data: {
+                                                headingLevel: 2,
+                                                text: 'My FLIP heading'
+                                            }
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                columns: [
+                                    {
+                                        columnWidth: 12,
+                                        content: {
+                                            component: 'text',
+                                            data: {
+                                                lineBreak: 2,
+                                                text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis rhoncus lacus eget ligula feugiat, finibus convallis felis imperdiet. Fusce diam dolor, dapibus at nulla ut, ultricies tincidunt est. Maecenas sed malesuada eros, quis hendrerit arcu. Donec vehicula sem leo'
+                                            }
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                columns: [
+                                    {
+                                        columnWidth: 12,
+                                        content: {
+                                            component: 'button',
+                                            data: {
+                                                label: 'Call to action',
+                                                theme: 'bootstrap'
+                                            },
+                                            events: {
+                                                onClick() {
+                                                    console.log('I have been clicked')
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+
+                ],
+
+            }
+        ]
+    },
+    flipOn: 'click',
     styleObj: {
         border: 'solid 1px #1abc9c'
     }

@@ -19,6 +19,7 @@
         styleObj: Object
     },
     data() {
+        return {}
     },
     created() {
     }

@@ -1,133 +1,88 @@
 <template>
-    <div class="zek-card" 
+    <div class="zek-card"
         :style="styleObject"
+        :id="'card'+id"
         @click="cardClicked($event)"
-        @mouseover="cardHovered($event)"
+        @mouseenter="cardHovered($event)"
+        @mouseleave="onHoverOut()"
     >
-        <div class="zek-card-heading">
-            <zek-heading
-                :text="heading.text"
-                :headingLevel="heading.headingLevel"
-                :styleObj="heading.styleObj"
-            ></zek-heading>
+        <div v-for="row in cardContent.rows" :key="row" class="row">
+            <div v-for="col in row.columns" :key="col" :class="col.columnWidth ? 'col-'+col.columnWidth : 'col'">
+                <zek-column-content v-if="col" :column="col"></zek-column-content>
+            </div>
         </div>
-        <div class="zek-card-content">
-            <zek-text :text="'Content'"></zek-text>
-        </div>
+
     </div>
 </template>
 
 <script>
-import ZekHeading from "../heading-block/HeadingBlock.vue";
-import ZekText from "../text-block/TextBlock.vue";
-
+import ZekColumnContent from "../column-content/ColumnContent.vue"
 export default {
-    components: { ZekHeading, ZekText },
+    components: { ZekColumnContent},
     name: "ZekCard",
     props: {
-        heading: Object,
-        headerBackgroundColor: String,
-        hoverHeaderBackgroundColor: String,
         backgroundColor: String,
         hoverBackgroundColor: String,
-        content: Object,
+        content: {
+            type: Object,
+            required: true
+        },
         flipContent: Object,
+        flipOn: String, //hover, click
+        id: {
+            type: Number,
+            default: 0
+        },
         styleObj: Object,
     },
     data() {
         return {
-            html: ''
+            cardContent: {},
+            cardFlipped: false
         };
     },
     created() {
         this.styleObject = {
         ...this.styleObj,
         };
-        if(this.content && this.content.rows && this.content.rows.length) {
-            this.content.rows.forEach((row) => {
-                this.createContent(row,null);
-            })
-        }
+        this.cardContent = this.content;
     },
     computed: {
         styleObject() {
         return {
             ...this.styleObj,
-            "--background-color": this.backgroundColor || 'transparent',
-            "--hover-background-color": this.hoverBackgroundColor || this.backgroundColor,
+            "--background-color": this.backgroundColor || '',
+            "--hover-background-color": this.hoverBackgroundColor || this.backgroundColor || '',
         };
         },
     },
     methods: {
         cardClicked(event) {
-            this.$emit('onClick', event);
+            if(!this.cardFlipped && this.flipOn == 'click' && this.flipContent && this.flipContent.rows && this.flipContent.rows.length){ 
+                this.cardContent = this.flipContent;
+                this.cardFlipped = true;
+
+            } else if(this.cardFlipped && this.flipOn == 'click' && this.flipContent) {
+                this.cardContent = this.content;
+                this.cardFlipped = false;
+            } else {
+                this.$emit('onClick', event);
+            }
+            
         },
         cardHovered(event) {
-            this.$emit('onHover', event);
-        },
-        createContent(row, col) {
-                if(col) {
-                    if(col == 'rows') {
-                        Object.keys(parent[col]).forEach((row) => {
-                            looper(parent[col],null,row);
-                        });
-                    }
-                    else {
-                        sectionObj.children.push(new Paragraph({ 
-                            text: col,
-                            heading: HeadingLevel.HEADING_2
-                        }));
-                        if(parent[col].rows && Object.keys(parent[col].rows).length) {
-                            Object.keys(parent[col].rows).forEach((row)=> {
-                                looper(parent[col].rows,null,row);
-                            });
-                        }
-                        else if(Object.keys(parent[col]).length && Object.keys(parent[col]).length==1) {
-                            looper(parent[col],null,Object.keys(parent[col])[0])
-                        }
-                    }
-                }
-                else if(row) {
-
-                    if(row == 'columns') {
-                        Object.keys(parent[row]).forEach((col)=> {
-                            looper(parent[row],col,null);
-                        });
-                    }
-                    else if(row == 'blocks') {
-                        if(Array.isArray(parent[row])) {
-                            parent[row].forEach((block) => {
-                                this.addBlockContent(block, sectionObj.children);
-                            });
-                        }
-                        else {
-                            this.addBlockContent(parent[row], sectionObj.children);
-                        }
-                    }
-                    else {
-                        sectionObj.children.push(new Paragraph({ 
-                            text: row,
-                            heading: HeadingLevel.HEADING_3
-                        }));
-                        if(parent[row].columns && Object.keys(parent[row].columns).length) {
-                            Object.keys(parent[row].columns).forEach((col)=> {
-                                looper(parent[row].columns,col,null);
-                            });
-                        }
-                        else if(parent[row].blocks){
-                            if(Array.isArray(parent[row].blocks)) {
-                                parent[row].blocks.forEach((block) => {
-                                    this.addBlockContent(block, sectionObj.children);
-                                });
-                            }
-                            else {
-                                this.addBlockContent(parent[row].blocks, sectionObj.children);
-                            }
-                        }
-                    }
-                }
+            if(this.flipOn == 'hover' && this.flipContent && this.flipContent.rows && this.flipContent.rows.length){ 
+                this.cardContent = this.flipContent;
+            } else {
+                this.$emit('onHover', event);
             }
-    },
+        },
+        onHoverOut() {
+            if(this.flipOn == 'hover' && this.flipContent){ 
+                this.cardContent = this.content;
+            }
+        }
+    }
 };
 </script>
 

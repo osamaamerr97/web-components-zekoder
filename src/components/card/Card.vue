@@ -86,7 +86,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .zek-card {
   width: 100%;
   background-color: var(--background-color);

@@ -13,6 +13,7 @@
     <zek-image v-else-if="column && column.content && column.content.component == 'image'" v-bind="column.content.data" v-on="column.content.events" > </zek-image>
     <zek-list v-else-if="column && column.content && column.content.component == 'list'" v-bind="column.content.data" v-on="column.content.events" > </zek-list>
     <zek-text v-else-if="column && column.content && column.content.component == 'text'" v-bind="column.content.data" v-on="column.content.events" > </zek-text>
+    <client-only v-else-if="column && column.content && column.content.component == 'video'"><zek-video v-bind="column.content.data" v-on="column.content.events" > </zek-video></client-only>
 
     
 </template>
@@ -24,10 +25,11 @@ import ZekHtml from "../html-block/HtmlBlock.vue";
 import ZekImage from "../image/Image.vue";
 import ZekList from "../lists-block/ListsBlock.vue";
 import ZekText from "../text-block/TextBlock.vue";
+import ZekVideo from "../video/Video.vue"
 import ZekColumnContent from "./ColumnContent.vue"
 
 export default {
-    components: {ZekButton, ZekHeading, ZekHtml, ZekImage, ZekList, ZekText, ZekColumnContent},
+    components: {ZekButton, ZekHeading, ZekHtml, ZekImage, ZekList, ZekText, ZekColumnContent, ZekVideo},
     name: "ZekColumnContent",
     props: {
         column: Object //column can have rows or a component. Each row must have columns, columns can have more rows. Component can only be inside a column

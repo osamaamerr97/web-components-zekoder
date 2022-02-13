@@ -35,15 +35,12 @@ export default {
   };
 
 
-  const Template = (args) => ({
+  const Template = (args, { argTypes }) => ({
     // Components used in your story `template` are defined in the `components` object
     components: { ZekButton },
-    // The story's `args` need to be mapped into the template through the `setup()` method
-    setup() {
-      return { args };
-    },
+    props: Object.keys(argTypes),
     // And then the `args` are bound to your component with `v-bind="args"`
-    template: '<zek-button v-bind="args"></zek-button>',
+    template: '<zek-button v-bind="$props"></zek-button>',
   });
 
   export const Primary = Template.bind({});

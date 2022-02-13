@@ -1,12 +1,12 @@
 <template>
 
-    <template v-if="column && column.rows && column.rows.length">
-        <div v-for="row in column.rows" :key="row" class="row">
-            <div v-for="col in row.columns" :key="col" :class="col.columnWidth ? 'col-'+col.columnWidth : 'col'">
+    <div v-if="column && column.rows && column.rows.length" class="row">
+        <div v-for="(row,i) in column.rows" :key="'row'+i" class="row">
+            <div v-for="(col,i) in row.columns" :key="'col'+i" :class="col.columnWidth ? 'col-'+col.columnWidth : 'col'">
                 <zek-column-content :column="col"></zek-column-content>
             </div>
         </div>
-    </template>
+    </div>
     <zek-button @click="stopPropagation($event)" v-else-if="column && column.content && column.content.component == 'button'" v-bind="column.content.data" v-on="column.content.events" > </zek-button>
     <zek-heading v-else-if="column && column.content && column.content.component == 'heading'" v-bind="column.content.data" v-on="column.content.events" > </zek-heading>
     <zek-html v-else-if="column && column.content && column.content.component == 'html'" v-bind="column.content.data" v-on="column.content.events" > </zek-html>

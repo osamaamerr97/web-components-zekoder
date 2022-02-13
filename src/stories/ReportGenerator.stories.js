@@ -16,15 +16,11 @@ export default {
   };
 
 
-  const Template = (args) => ({
+  const Template = (args, {argTypes}) => ({
     // Components used in your story `template` are defined in the `components` object
     components: { ReportGenerator },
-    // The story's `args` need to be mapped into the template through the `setup()` method
-    setup() {
-      return { args };
-    },
-    // And then the `args` are bound to your component with `v-bind="args"`
-    template: '<ReportGenerator v-bind="args"> STORYBOOK  </ReportGenerator>',
+    props: Object.keys(argTypes),
+    template: '<ReportGenerator v-bind="$props"> STORYBOOK  </ReportGenerator>',
   });
 
   export const Primary = Template.bind({});

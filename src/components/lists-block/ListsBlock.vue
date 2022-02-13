@@ -25,6 +25,7 @@ export default {
   props: {
     listItems: Array,
     type: {
+      type: String,
       validator: function (value) {
         return ["ordered", "unordered"].includes(value);
       },

@@ -25,11 +25,17 @@ export default {
   props: {
     listItems: Array,
     type: {
+      type: String,
       validator: function (value) {
         return ["ordered", "unordered"].includes(value);
       },
     },
     styleObj: Object,
+  },
+  data() {
+      return {}
+  },
+  created() {
   },
   methods: {
     hasChildren(item) {

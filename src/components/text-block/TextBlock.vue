@@ -1,6 +1,6 @@
 <template>
 
-    <p :style="styleObject"> 
+    <p :style="styleObj"> 
         <span v-if="text"> {{text}} </span>
     </p>
 
@@ -12,23 +12,13 @@
     name: 'ZekText',
     props: {
         text: String,
-        spaceBefore: Number,
-        spaceAfter: Number,
         lineBreaks: Number,
         styleObj: Object
     },
     data() {
-        return {
-            styleObject : {}
-        }
+        return{}
     },
     created() {
-        let marginB = this.spaceAfter || 10;
-        marginB += this.lineBreaks? this.lineBreaks*10 : 0;
-        this.styleObject = { ... this.styleObj,
-            marginTop: this.spaceBefore+'px' || '10px',
-            marginBottom: marginB + 'px'
-        }
     }
   }
 </script>

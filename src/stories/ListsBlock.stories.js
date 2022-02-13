@@ -5,28 +5,24 @@ export default {
     component: ZekList,
     argTypes: {
         listItems: {
-            control: {
-                type: 'object',
-            }
+            control: { type: 'object'}
         },
         type: {
             control: { type: 'select' },
-            options: ['ordered', 'unordered'],
+            options: ['ordered', 'unordered']
         },
         styleObj: {
             control: {
-                type: 'object',
+                type: 'object'
             }
         }
     },
 };
 
-const Template = (args) => ({
+const Template = (args, { argTypes }) => ({
     components: { ZekList },
-    setup() {
-        return { args };
-    },
-    template: '<zek-list v-bind="args"></zek-list>',
+    props: Object.keys(argTypes),
+    template: '<zek-list v-bind="$props"></zek-list>',
 });
 
 export const Primary = Template.bind({});

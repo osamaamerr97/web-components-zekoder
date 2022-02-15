@@ -33,15 +33,11 @@ export default {
     },
 };
 
-const Template = (args) => ({
+const Template = (args,{argTypes}) => ({
     // Components used in your story `template` are defined in the `components` object
     components: { ZekImage },
-    // The story's `args` need to be mapped into the template through the `setup()` method
-    setup() {
-        return { args };
-    },
-    // And then the `args` are bound to your component with `v-bind="args"`
-    template: '<ZekImage v-bind="args"></ZekImage> <br> End of story.',
+    props: Object.keys(argTypes),
+    template: '<ZekImage v-bind="$props"></ZekImage>',
 });
 
 export const Primary = Template.bind({});
@@ -51,7 +47,7 @@ Primary.args = {
     altText: "sample image",
     width: "200px",
     height: "200px",
-    targetUrl: null,
+    targetUrl: "",
     targetWindow: '_self',
     imageColor: 'normal',
     hover: {

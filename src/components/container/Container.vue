@@ -42,8 +42,8 @@ export default {
         ...this.styleObj,
         display: "flex",
         overflow: "auto",
-        "flex-direction": this.direction || "",
-        "background-color": this.backgroundColor || "",
+        flexDirection: this.direction || "",
+        backgroundColor: this.backgroundColor || "",
         padding: this.padding || "",
         width:
           this.size == "absolute"

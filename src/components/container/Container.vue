@@ -40,16 +40,22 @@ export default {
     styleObject() {
       return {
         ...this.styleObj,
-        display: "flex",
-        overflow: "auto",
-        flexDirection: this.direction || "",
-        backgroundColor: this.backgroundColor || "",
-        padding: this.padding || "",
+        display: this.styleObj.display || "flex",
+        overflow: this.styleObj.overflow || "auto",
+        flexDirection: this.direction || this.styleObj.flexDirection || "",
+        backgroundColor:
+          this.backgroundColor || this.styleObj.backgroundColor || "",
+        padding: this.padding || this.styleObj.padding || "",
         width:
-          this.size == "absolute"
+          (this.size == "absolute"
             ? `${(this.width / 12) * 100}%`
-            : "fit-content" || "",
-        height: this.size == "absolute" ? this.height : "fit-content" || "",
+            : "fit-content") ||
+          this.styleObj.width ||
+          "",
+        height:
+          (this.size == "absolute" ? this.height : "fit-content") ||
+          this.styleObj.height ||
+          "",
       };
     },
   },

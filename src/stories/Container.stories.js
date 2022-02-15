@@ -32,12 +32,10 @@ export default {
     }
 };
 
-const Template = (args) => ({
-    components: { 'zek-container': ZekContainer },
-    setup() {
-        return { args };
-    },
-    template: '<zek-container v-bind="args"> <span>one</span> <span>two</span> </zek-container>',
+const Template = (args, { argTypes }) => ({
+    components: { ZekContainer },
+    props: Object.keys(argTypes),
+    template: '<zek-container v-bind="$props"> <span>one</span> <span>two</span> </zek-container>',
 });
 
 export const Primary = Template.bind({});
@@ -52,6 +50,3 @@ Primary.args = {
         border: '1px solid #000',
     },
 };
-
-export const Secondary = Template.bind({});
-Secondary.args = {};

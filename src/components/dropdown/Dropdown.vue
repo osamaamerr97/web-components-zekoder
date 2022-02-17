@@ -1,20 +1,28 @@
 <template>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item" href="#">Action</a>
-    <a class="dropdown-item" href="#">Another action</a>
-    <a class="dropdown-item" href="#">Something else here</a>
+<div :style="styleObj">
+  <button :style="buttonStyle" @click="onToggle($event)">{{label}}</button>
+  <i v-if="showIcon" />
+  <div v-if="toggle">
+    <div :style="selected.includes(item) ? selectedItemStyle : itemStyle" v-for="(item, i) in items" :key="i" href="#" @click="onSelect($event,item)">
+      {{ item }}
+    </div>
   </div>
+</div>
 </template>
 
 <script>
 export default {
   name: "ZekDropdown",
   props: {
+    label: {
+      type: String,
+      required: true,
+    },
     items: {
       type: Array,
-      required: true
+      required: true,
     },
-    type: {
+    selectType: {
       type: String,
     },
     theme: {
@@ -22,15 +30,26 @@ export default {
     },
     showIcon: {
       type: Boolean,
-      default: false
+      default: false,
     },
-    toggle: {
-      type: String,
-      default: 'click'
+    styleObj: {
+      type: Object,
     },
-    selected: {
-      type: Array
+    buttonStyle:{
+      type: Object,
     },
+    itemStyle: {
+      type: Object,
+    },
+    selectedItemStyle: {
+      type: Object,
+    },
+  },
+  data() {
+    return {
+      toggle: false,
+      selected: [],
+    };
   },
   created() {
     this.styleObject = {
@@ -42,6 +61,24 @@ export default {
       return {
         ...this.styleObj,
       };
+    },
+  },
+  methods: {
+    onSelect(event,item) {
+      if (this.selectType == "Single") {
+        this.selected = [item];
+      } else {
+        if (this.selected.includes(item)) {
+          this.selected.splice(this.selected.indexOf(item), 1);
+        } else {
+          this.selected.push(item);
+        }
+      }
+      this.$emit("onSelect", event);
+    },
+    onToggle(event) {
+      this.toggle = !this.toggle;
+      this.$emit("onToggle", event);
     },
   },
 };

@@ -1,9 +1,11 @@
 <template>
-    <div>
+    <div class="row" :style="styleObj">
+        <zek-image class="col-6" v-bind="image"></zek-image>
         <zek-form
+            class="col-6"
             :theme="theme"
             :inputs="inputs"
-            :submitButton="{label:'Sign In'}"
+            :submitButton="submitButton"
             :cancelButton="{show:false}"
             :errorMessage="error"
             :successMessage="success"
@@ -15,13 +17,18 @@
 
 <script>
   import ZekForm from "../form/Form.vue";
+  import ZekImage from "../image/Image.vue"
   import auth0 from 'auth0-js';
 
   export default {
     name: 'ZekLogin',
-    components: {ZekForm},
+    components: {ZekForm, ZekImage},
     props: {
         theme: String,
+        showForgotLink: Boolean,
+        showRememberMe: Boolean,
+        loginButton: [String, Boolean],
+        image: Object,
         styleObj: Object
     },
     data() {
@@ -54,8 +61,29 @@
             domain: 'jsc-chatbot-dev.eu.auth0.com',
             clientID: 'odh7OBOl5u5UJJK3B30lQJU2PTpa0NWA',
             responseType: 'token',
-            redirectUri: 'http://localhost:6006/login'
+            redirectUri: 'http://localhost:6006/'
         });
+    },
+    computed:{
+        submitButton() {
+            let props= {
+                theme: this.theme,
+                buttonType: 'submit',
+                label: 'Sign In',
+                show: true
+            };
+            if(typeof(this.loginButton)=='string'){
+                props = { ...props,
+                    label: this.loginButton,
+                    show: this.loginButton
+                }
+            } else {
+                props = { ...props,
+                    ...this.loginButton
+                }
+            }
+            return props
+        }
     },
     methods:{
         login(data) {
@@ -67,8 +95,11 @@
                 console.log(err);
                 if(err){
                     this.error = err.description || err.error_description || 'There was an error. Please try again';
+                    this.success = '';
                 }
-                console.log(dat);
+                else if(dat){
+                    this.error = '';
+                }
             }); 
         },
         cancel() {

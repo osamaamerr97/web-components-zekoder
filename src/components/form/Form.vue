@@ -12,6 +12,7 @@
                     :placeholder="field.placeholder" 
                     :id="field.name+i"
                     :required="field.required"
+                    :style="field.styleObj"
                     v-model="formData[field.name]"
                     >
                 <textarea v-else-if="field.type=='long-text'" 
@@ -31,6 +32,7 @@
                     v-model="formData[field.name]"
                     >
             </div>
+
             <zek-text v-if="successMessage" :text="successMessage" class="text-success"></zek-text>
             <zek-text v-if="errorMessage" :text="errorMessage" class="text-danger"></zek-text>
             <zek-button v-if="cancelProps.show" v-bind="cancelProps" @onClick="cancelForm()"></zek-button>            
@@ -60,6 +62,8 @@ export default {
         theme: String,
         successMessage: String,
         errorMessage: String,
+        forgotPassword: Boolean,
+        rememberMe: Boolean,
         styleObj: Object,
     },
     data() {

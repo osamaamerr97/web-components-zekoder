@@ -1,6 +1,6 @@
 <template>
     <button
-      type="button"
+      :type="buttonType"
       @click="clicked($event)"
       :class="getClasses()" 
       :disabled="disabled"
@@ -36,7 +36,8 @@
         active: Boolean,
         outlineButton: Boolean,
         icon: String,
-        iconTrailing: Boolean
+        iconTrailing: Boolean,
+        buttonType: String //button, submit etc
     },
     data() {
         return {

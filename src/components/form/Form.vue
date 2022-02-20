@@ -5,19 +5,22 @@
         <zek-text v-if="description" v-bind="descProps"></zek-text>
         <form v-on:submit.prevent="submitForm" action="/" method="">
             <div class="form-group" v-for="(field,i) in inputs" :key="'field'+i">
-                <label v-if="field.label" :for="field.name+i">{{field.label}} <span v-if="field.required">*</span></label>
+                <label :class="field.name+'-label field-label'" v-if="field.label" :for="field.name+i">{{field.label}} <span class="required-asterik" v-if="field.required">*</span></label>
                 <input v-if="field.type=='short-text'"
                     :type="field.inputType"
                     :name="field.name" 
+                    :class="field.customClass"
                     :placeholder="field.placeholder" 
                     :id="field.name+i"
                     :required="field.required"
                     :style="field.styleObj"
                     v-model="formData[field.name]"
                     >
+                <a v-if="field.showPasswordButton" class="show-hide-password" href='javascript:' @click="togglePasswordShowHide(field)">{{field.inputType=='password' ? 'show' : 'hide'}}</a>
                 <textarea v-else-if="field.type=='long-text'" 
                     :name="field.name"
                     :placeholder="field.placeholder"
+                    :class="field.customClass"
                     :id="field.name+i" 
                     :required="field.required"
                     v-model="formData[field.name]"
@@ -26,6 +29,7 @@
                 <input v-else-if="field.type=='number'"
                     type="number"
                     :placeholder="field.placeholder"
+                    :class="field.customClass"
                     :name="field.name"
                     :id="field.name+i"
                     :required="field.required"
@@ -129,6 +133,7 @@ export default {
     },
     methods: {
         submitForm() {
+            console.log(this.formData);
             this.$emit('submit', this.formData);
 
         },
@@ -138,6 +143,9 @@ export default {
         },
         resetForm() {
             this.formData = {...{}, ...this.defaultData};
+        },
+        togglePasswordShowHide(field) {
+            field.inputType = field.inputType=='password' ? 'text' : 'password';
         }
     }
 };
@@ -154,5 +162,15 @@ export default {
 }
 .zek-card > .zek-card-content {
   padding: 10px;
+}
+.show-hide-password {
+    text-transform: uppercase;
+    position: absolute;
+    right: 15px;
+    font-size: 12px;
+    line-height: 50px;
+}
+.required-asterik {
+    color: red;
 }
 </style>

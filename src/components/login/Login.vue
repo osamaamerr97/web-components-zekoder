@@ -1,8 +1,8 @@
 <template>
     <div class="row" :style="styleObj">
-        <zek-image class="col-6" v-bind="image"></zek-image>
         <zek-form
-            class="col-6"
+            class="col-12"
+            :class="customClass"
             :theme="theme"
             :inputs="inputs"
             :submitButton="submitButton"
@@ -22,9 +22,12 @@
 
   export default {
     name: 'ZekLogin',
-    components: {ZekForm, ZekImage},
+    components: { ZekForm },
     props: {
         theme: String,
+        customClass: String,
+        email: Object,
+        password: Object,
         showForgotLink: Boolean,
         showRememberMe: Boolean,
         loginButton: [String, Boolean],
@@ -32,7 +35,7 @@
         styleObj: Object
     },
     data() {
-        return {
+        const data = {
             error: '',
             success: '',
             inputs:[
@@ -40,21 +43,30 @@
                     name: 'email',
                     type: 'short-text',
                     inputType: 'email',
+                    customClass: 'email-username',
                     placeholder: 'Please enter your e-mail',
                     label: 'e-mail address',
-                    required: true,
+                    required: false,
                 },
                 {
                     name: 'password',
                     type: 'short-text',
                     inputType: 'password',
+                    customClass: 'password',
                     placeholder: 'Please enter your password',
                     label: 'password',
-                    required: true,
+                    required: false,
                 }
             ],
             webAuth: {}
         }
+        if ( this.email ) {
+            data.inputs[0] = this.email;
+        }
+        if ( this.password ) {
+            data.inputs[1] = this.password;
+        }
+        return data;
     },
     created() {
         this.webAuth = new auth0.WebAuth({
@@ -66,19 +78,21 @@
     },
     computed:{
         submitButton() {
-            let props= {
+            let props = {
                 theme: this.theme,
                 buttonType: 'submit',
                 label: 'Sign In',
                 show: true
             };
             if(typeof(this.loginButton)=='string'){
-                props = { ...props,
+                props = { 
+                    ...props,
                     label: this.loginButton,
                     show: this.loginButton
                 }
             } else {
-                props = { ...props,
+                props = { 
+                    ...props,
                     ...this.loginButton
                 }
             }

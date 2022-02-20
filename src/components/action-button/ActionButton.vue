@@ -32,6 +32,7 @@
         type: String,
         disabled: Boolean,
         loading: Boolean,
+        customClass: String,
         size: String,
         active: Boolean,
         outlineButton: Boolean,
@@ -57,6 +58,7 @@
         },
         getClasses() {
             const classList = ['button'];
+            if ( this.customClass ) { classList.push(this.customClass) };
             if(this.theme == 'bootstrap') {
                 classList.push('btn');
                 

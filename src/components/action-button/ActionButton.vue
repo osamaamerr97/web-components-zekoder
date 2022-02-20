@@ -1,6 +1,6 @@
 <template>
     <button
-      type="button"
+      :type="buttonType"
       @click="clicked($event)"
       :class="getClasses()" 
       :disabled="disabled"
@@ -32,11 +32,13 @@
         type: String,
         disabled: Boolean,
         loading: Boolean,
+        customClass: String,
         size: String,
         active: Boolean,
         outlineButton: Boolean,
         icon: String,
-        iconTrailing: Boolean
+        iconTrailing: Boolean,
+        buttonType: String //button, submit etc
     },
     data() {
         return {
@@ -56,6 +58,7 @@
         },
         getClasses() {
             const classList = ['button'];
+            if ( this.customClass ) { classList.push(this.customClass) };
             if(this.theme == 'bootstrap') {
                 classList.push('btn');
                 

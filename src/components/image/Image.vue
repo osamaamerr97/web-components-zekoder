@@ -40,7 +40,6 @@
         url: String,
         imageColor: String,
         altText: String,
-        hoverText: String,
         targetUrl: String,
         targetWindow: String,
         width: String,

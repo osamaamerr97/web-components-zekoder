@@ -1,35 +1,66 @@
 <template>
   <!-- Bootstrap -->
-<div v-if="theme == 'Bootstrap'" class="dropdown">
-  <button class="btn btn-secondary" :class="showIcon ? 'dropdown-toggle' : ''" @click="onToggle($event)">{{label}}</button>
-  <ul v-if="toggle" class="dropdown-menu show">
-    <li class="dropdown-item" v-for="(item, i) in items" :key="i" :class="selected.includes(item) ? 'active' : ''" @click="onSelect($event,item)">
-      {{ item }}
-    </li>
-  </ul>
-</div>
-  <!-- Material -->
-  <div v-else-if="theme == 'Material'" class="mdc-menu-surface--anchor">
-    <button class="dropdown-trigger btn" @click="onToggle($event)">{{label}}</button>
-    <div class="mdc-menu mdc-menu-surface" :style="toggle ? {display: 'block', opacity: '100'} : {display: 'none', opacity: '100'}">
-      <ul class="mdc-list" id="my-list" role="listbox">
-        <li v-for="(item, i) in items" :key="i" @click="onSelect($event,item)" class="mdc-list-item" :class="selected.includes(item) ? 'mdc-list-item--activated' : ''" role="option" aria-selected="true">
-          <span class="mdc-list-item__text">{{ item }}</span>
-        </li>
-      </ul>
-    </div>
+  <div v-if="theme == 'Bootstrap'" class="dropdown">
+    <button
+      class="btn btn-secondary"
+      :class="showIcon ? 'dropdown-toggle' : ''"
+      @click="onToggle($event)"
+    >
+      {{ label }}
+    </button>
+    <ul v-if="toggle" class="dropdown-menu show">
+      <li
+        class="dropdown-item"
+        v-for="(item, i) in items"
+        :key="i"
+        :class="selected.includes(item) ? 'active' : ''"
+        @click="onSelect($event, item)"
+      >
+        {{ item }}
+      </li>
+    </ul>
   </div>
+  <!-- Material -->
+  <div v-else-if="theme == 'Material'">
+    <v-menu :style="styleObj">
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn v-bind="attrs" v-on="on">
+          {{ label }}
+        </v-btn>
+      </template>
+      <v-list>
+        <v-list-item
+          v-for="(item, i) in items"
+          :key="i"
+          @click="onSelect($event, item)"
+        >
+          <v-list-item-title>{{ item }}</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+  </div>
+
   <!-- Custom -->
   <div v-else>
-  <div :style="styleObj">
-    <button :style="buttonStyle" @click="onToggle($event)">{{label}}</button>
-    <div v-if="toggle">
-      <div :style="selected.includes(item) ? selectedItemStyle : itemStyle" v-for="(item, i) in items" :key="i" href="#" @click="onSelect($event,item)">
-        {{ item }}
+    <div :style="styleObj">
+      <button :style="buttonStyle" @click="onToggle($event)">
+        <span style="display: flex; align-items: center">
+          {{ label }} <i v-if="showIcon" class="fa fa-angle-down"></i>
+        </span>
+      </button>
+      <div v-if="toggle">
+        <div
+          :style="selected.includes(item) ? selectedItemStyle : itemStyle"
+          v-for="(item, i) in items"
+          :key="i"
+          href="#"
+          @click="onSelect($event, item)"
+        >
+          {{ item }}
+        </div>
       </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -57,7 +88,7 @@ export default {
     styleObj: {
       type: Object,
     },
-    buttonStyle:{
+    buttonStyle: {
       type: Object,
     },
     itemStyle: {
@@ -71,6 +102,11 @@ export default {
     return {
       toggle: false,
       selected: ["2"],
+      iconStyle: {
+        position: "absolute",
+        right: "10px",
+        top: "10px",
+      },
     };
   },
   created() {
@@ -86,7 +122,7 @@ export default {
     },
   },
   methods: {
-    onSelect(event,item) {
+    onSelect(event, item) {
       if (this.selectType == "Single") {
         this.selected = [item];
       } else {

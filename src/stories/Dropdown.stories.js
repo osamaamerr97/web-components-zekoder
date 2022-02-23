@@ -61,10 +61,10 @@ Primary.args = {
         width: '100%',
     },
     itemStyle: {
-        backgroundColor: 'grey',
+        backgroundColor: '#ffff',
     },
     selectedItemStyle: {
-        backgroundColor: 'green',
+        backgroundColor: '#f5f5f5',
     },
 
 };

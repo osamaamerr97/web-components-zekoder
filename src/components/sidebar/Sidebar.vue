@@ -1,32 +1,44 @@
 <template>
-  <div :style="styleObject">
-    <li class="link-container">
-      <a
-        :title="collapsed ? 'Collapse' : 'Expand'"
-        class="link"
-        @click="onCollapse"
-      >
-        <i class="icon fa fa-bars" :style="{ width: collapsedWidth }"></i>
-      </a>
-    </li>
-    <li v-for="(link, i) in links" :key="i" class="link-container">
-      <a
-        :href="link.url"
-        :title="link.tooltip"
-        class="link"
-        :style="link.isActive ? { color: activeColor } : ''"
-      >
-        <i
-          v-if="link.icon"
-          class="icon"
-          :class="['fa', 'fa-' + link.icon]"
-          :style="{ width: collapsedWidth }"
-        ></i>
-        <span v-if="link.label && !collapsed">{{ link.label }}</span>
-      </a>
-    </li>
-    <i />
-  </div>
+    <div :style="styleObject" class="zek-sidebar d-flex align-items-center">
+        <li v-if="allowExpandCollapse" class="link-container">
+            <a
+                :title="collapsed ? 'Collapse' : 'Expand'"
+                class="link"
+                @click="onCollapse"
+            >
+                <i class="icon fa fa-bars" :style="{ width: collapsedWidth }"></i>
+            </a>
+        </li>
+        <div class="zek-sidebar-links">
+            <li 
+                v-for="(link, i) in links" 
+                :key="i" 
+                class="link-container"
+                @mouseover="link.isHovering = true" 
+                @mouseout="link.isHovering = false" 
+                :class="link.isActive && activeClass || link.isHovering ? [activeClass] : ''"
+            >
+                <a
+                    :href="link.url"
+                    :title="link.tooltip"
+                    class="link"
+                    :style="link.isActive && activeColor ? { color: activeColor } : ''"
+                >
+                    <i
+                        v-if="link.icon && link.iconType !== 'custom'"
+                        class="icon"
+                        :class="link.icon"
+                    ></i>
+                    <img
+                        v-else-if="link.icon && link.iconType === 'custom'"
+                        class="icon"
+                        :src="link.icon"
+                    />
+                    <span v-if="link.label && !collapsed">{{ link.label }}</span>
+                </a>
+            </li>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -39,11 +51,20 @@ export default {
     width: {
       type: String,
     },
+    allowExpandCollapse: {
+        type: Boolean
+    },
+    collapsed: {
+        type: Boolean,
+    },
     collapsedWidth: {
       type: String,
     },
     links: {
       type: Array,
+    },
+    activeClass: {
+        type: String
     },
     activeColor: {
       type: String,
@@ -52,15 +73,15 @@ export default {
       type: Object,
     },
   },
-  data() {
-    return {
-      collapsed: false,
-    };
-  },
   created() {
     this.styleObject = {
       ...this.styleObj,
     };
+  },
+  data() {
+      return {
+          isHovering: false
+      }
   },
   computed: {
     styleObject() {
@@ -77,42 +98,47 @@ export default {
   methods: {
     onCollapse(event) {
       this.collapsed = !this.collapsed;
-      this.$emit("onCollapse", event);
+      this.$emit("onExpandCollapse", this.collapsed);
     },
   },
 };
 </script>
 
 <style scoped>
+.zek-sidebar {
+    height: 100%;
+    overflow-y: auto;
+}
+.zek-sidebar-links {
+    padding: 0 10px;
+    width: 100%;
+    text-align: center;
+}
 .link-container {
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  flex-direction: column;
-  cursor: pointer;
-  list-style: none;
+    cursor: pointer;
+    list-style: none;
+    margin-bottom: 15px;
+    padding: 7px 0;
+    border-radius: 15px;
 }
 .link {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  cursor: pointer;
-  color: #fff;
-  font-size: 1.2rem;
-  font-weight: bold;
-  text-decoration: none;
-  transition: all 0.2s ease-in-out;
-  width: 100%;
-  height: 100%;
+    cursor: pointer;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+    width: 100%;
+    height: 100%;
+}
+.link > img.icon {
+    width: 40px;
 }
 .link span {
-  margin-left: 0.5rem;
-}
-.link:hover {
-  color: var(--active-color);
+    margin-left: 0.5rem;
 }
 .link .icon {
-  padding: 0.5rem;
-  text-align: center;
+    padding: 0.5rem;
+    text-align: center;
 }
 </style>

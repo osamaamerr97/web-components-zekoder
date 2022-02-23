@@ -9,15 +9,23 @@
   </ul>
 </div>
   <!-- Material -->
-  <div v-else-if="theme == 'Material'" class="mdc-menu-surface--anchor">
-    <button class="dropdown-trigger btn" @click="onToggle($event)">{{label}}</button>
-    <div class="mdc-menu mdc-menu-surface" :style="toggle ? {display: 'block', opacity: '100'} : {display: 'none', opacity: '100'}">
-      <ul class="mdc-list" id="my-list" role="listbox">
-        <li v-for="(item, i) in items" :key="i" @click="onSelect($event,item)" class="mdc-list-item" :class="selected.includes(item) ? 'mdc-list-item--activated' : ''" role="option" aria-selected="true">
-          <span class="mdc-list-item__text">{{ item }}</span>
-        </li>
-      </ul>
-    </div>
+  <div v-else-if="theme == 'Material'">
+    <v-menu offset-y :style="styleObj">
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn v-bind="attrs" v-on="on">
+          {{ label }}
+        </v-btn>
+      </template>
+      <v-list>
+        <v-list-item
+          v-for="(item, i) in items"
+          :key="i"
+          @click="onSelect($event, item)"
+        >
+          <v-list-item-title>{{ item }}</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
   </div>
   <!-- Custom -->
   <div v-else>

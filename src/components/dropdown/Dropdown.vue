@@ -1,13 +1,25 @@
 <template>
   <!-- Bootstrap -->
-<div v-if="theme == 'Bootstrap'" class="dropdown">
-  <button class="btn btn-secondary" :class="showIcon ? 'dropdown-toggle' : ''" @click="onToggle($event)">{{label}}</button>
-  <ul v-if="toggle" class="dropdown-menu show">
-    <li class="dropdown-item" v-for="(item, i) in items" :key="i" :class="selected.includes(item) ? 'active' : ''" @click="onSelect($event,item)">
-      {{ item }}
-    </li>
-  </ul>
-</div>
+  <div v-if="theme == 'Bootstrap'" class="dropdown">
+    <button
+      class="btn btn-secondary"
+      :class="showIcon ? 'dropdown-toggle' : ''"
+      @click="onToggle($event)"
+    >
+      {{ label }}
+    </button>
+    <ul v-if="toggle" class="dropdown-menu show">
+      <li
+        class="dropdown-item"
+        v-for="(item, i) in items"
+        :key="i"
+        :class="selected.includes(item) ? 'active' : ''"
+        @click="onSelect($event, item)"
+      >
+        {{ item }}
+      </li>
+    </ul>
+  </div>
   <!-- Material -->
   <div v-else-if="theme == 'Material'">
     <v-menu offset-y :style="styleObj">
@@ -29,15 +41,25 @@
   </div>
   <!-- Custom -->
   <div v-else>
-  <div :style="styleObj">
-    <button :style="buttonStyle" @click="onToggle($event)">{{label}}</button>
-    <div v-if="toggle">
-      <div :style="selected.includes(item) ? selectedItemStyle : itemStyle" v-for="(item, i) in items" :key="i" href="#" @click="onSelect($event,item)">
-        {{ item }}
+    <div :style="styleObj">
+      <button :style="buttonStyle" @click="onToggle($event)">
+        <span style="display: flex; align-items: center; position: relative;">
+          {{ label }} <i v-if="showIcon" class="fa fa-angle-down" :style="iconStyle"></i>
+        </span>
+      </button>
+      <div v-if="toggle">
+        <div
+          :style="selected.includes(item) ? selectedItemStyle : itemStyle"
+          v-for="(item, i) in items"
+          :key="i"
+          href="#"
+          @click="onSelect($event, item)"
+        >
+          <input v-if="selectType == 'Multi'" type="checkbox" :id="i" name="selected" v-model="selected" :value="item"> {{ item }}
+        </div>
       </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -65,7 +87,7 @@ export default {
     styleObj: {
       type: Object,
     },
-    buttonStyle:{
+    buttonStyle: {
       type: Object,
     },
     itemStyle: {
@@ -79,6 +101,11 @@ export default {
     return {
       toggle: false,
       selected: ["2"],
+      iconStyle: {
+        position: "absolute",
+        right: "10px",
+      },
+
     };
   },
   created() {
@@ -94,9 +121,10 @@ export default {
     },
   },
   methods: {
-    onSelect(event,item) {
+    onSelect(event, item) {
       if (this.selectType == "Single") {
         this.selected = [item];
+        this.toggle = false;
       } else {
         if (this.selected.includes(item)) {
           this.selected.splice(this.selected.indexOf(item), 1);

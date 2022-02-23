@@ -1,14 +1,14 @@
 <template>
-  <div class="container" :style="styleObject">
-    <div v-if="showName && namePosition != 'right'" class="user">
-      <span class="username">{{ firstName }} {{ lastName }}</span>
-      <span v-if="status" class="status"> {{ status }} </span>
+  <div class="user-info-container" :style="styleObject">
+    <div v-if="showName && namePosition != 'right'" class="user-info-details">
+      <span class="user-info-username">{{ firstName }} {{ lastName }}</span>
+      <span v-if="status" class="user-info-status"> {{ status }} </span>
     </div>
     <a :title="`${firstName} ${lastName}`">
-      <img v-if="avatar" class="avatar" :src="avatar" alt="avater" />
+      <img v-if="avatar" class="user-info-avatar" :src="avatar" alt="avater" />
       <div
         v-else
-        class="avatar"
+        class="user-info-avatar"
         alt="avater"
         :style="{
           backgroundColor: getRandomColor(),
@@ -17,9 +17,9 @@
         <span>{{ firstName[0] }}. {{ lastName[0] }}.</span>
       </div>
     </a>
-    <div v-if="showName && namePosition == 'right'" class="user">
-      <span class="username">{{ firstName }} {{ lastName }}</span>
-      <span v-if="status" class="status"> {{ status }} </span>
+    <div v-if="showName && namePosition == 'right'" class="user-info-details">
+      <span class="user-info-username">{{ firstName }} {{ lastName }}</span>
+      <span v-if="status" class="user-info-status"> {{ status }} </span>
     </div>
     <i
       v-if="dropdownLinks.length > 0"
@@ -27,7 +27,7 @@
       :class="toggle ? 'fa fa-angle-up' : 'fa fa-angle-down'"
       style="cursor: pointer"
     />
-    <div v-if="toggle" class="dropdown" :style="dropdownStyleObj">
+    <div v-if="toggle" class="user-info-dropdown" :style="dropdownStyleObj">
       <a v-for="(link, i) in dropdownLinks" :key="i" :href="link.url">{{
         link.label
       }}</a>
@@ -95,7 +95,7 @@ export default {
 </script>
 
 <style scoped>
-.container {
+.user-info-container {
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -103,7 +103,7 @@ export default {
   height: 40px;
   position: relative;
 }
-.container a .avatar {
+.user-info-container a .user-info-avatar {
   user-select: none;
   width: 37px;
   height: 34px;
@@ -115,23 +115,23 @@ export default {
   font-size: 14px;
   line-height: 34px;
 }
-.container .user {
+.user-info-container .user-info-details {
   display: flex;
   flex-direction: column;
   margin: 0 5px;
 }
-.container .user .username {
+.user-info-container .user-info-details .user-info-username {
   font-size: 14px;
   line-height: 17px;
   color: #333;
 }
-.container .user .status {
+.user-info-container .user-info-details .user-info-status {
   font-size: 11px;
   line-height: 13px;
   color: #999;
   text-align: right;
 }
-.container .dropdown {
+.user-info-container .user-info-dropdown {
   position: absolute;
   top: 45px;
   background-color: #fff;
@@ -141,7 +141,7 @@ export default {
   width: 150px;
   font-size: 16px;
 }
-.container .dropdown a {
+.user-info-container .user-info-dropdown a {
   display: block;
   padding: 2px 5px;
   color: #333;
@@ -149,7 +149,7 @@ export default {
   width: 100%;
   border-bottom: 1px solid #ccc;
 }
-.container .dropdown a:hover {
+.user-info-container .user-info-dropdown a:hover {
   background-color: #f5f5f5;
 }
 </style>

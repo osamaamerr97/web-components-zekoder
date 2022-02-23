@@ -133,7 +133,6 @@ export default {
     },
     methods: {
         submitForm() {
-            console.log(this.formData);
             this.$emit('submit', this.formData);
 
         },

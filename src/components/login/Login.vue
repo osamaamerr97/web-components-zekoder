@@ -32,6 +32,7 @@
         showRememberMe: Boolean,
         loginButton: [String, Boolean],
         image: Object,
+        webAuthConfig: Object,
         styleObj: Object
     },
     data() {
@@ -69,12 +70,7 @@
         return data;
     },
     created() {
-        this.webAuth = new auth0.WebAuth({
-            domain: 'jsc-chatbot-dev.eu.auth0.com',
-            clientID: 'odh7OBOl5u5UJJK3B30lQJU2PTpa0NWA',
-            responseType: 'token',
-            redirectUri: 'http://localhost:6006/'
-        });
+        this.webAuth = new auth0.WebAuth(this.webAuthConfig);
     },
     computed:{
         submitButton() {
@@ -101,17 +97,18 @@
     },
     methods:{
         login(data) {
+            this.$emit('beforeLogin');
             this.webAuth.login({
                 realm: 'Username-Password-Authentication',
                 username: data['email'],
                 password: data['password'],
             }, (err,dat) =>  {
-                console.log(err);
-                if(err){
+                if ( err ) {
+                    this.$emit('onLoginError', err);
                     this.error = err.description || err.error_description || 'There was an error. Please try again';
                     this.success = '';
-                }
-                else if(dat){
+                } else if ( dat ) { 
+                    this.$emit('onLoginSuccess', dat);
                     this.error = '';
                 }
             }); 

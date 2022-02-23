@@ -6,8 +6,18 @@
         @mouseenter="cardHovered($event)"
         @mouseleave="onHoverOut()"
     >
-        <div v-for="(row,i) in cardContent.rows" :key="'row'+ i" class="row">
-            <div v-for="(col,i) in row.columns" :key="'col'+i" :class="col.columnWidth ? 'col-'+col.columnWidth : 'col'">
+        <div 
+            v-for="(row,i) in cardContent.rows" 
+            :key="'row'+ i" 
+            class="row no-gutters" 
+            :style="row.styleObj"
+        >
+            <div 
+                v-for="(col,i) in row.columns" 
+                :key="'col'+i" 
+                :class="col.columnWidth ? 'col-'+col.columnWidth : 'col'"
+                :style="col.styleObj"
+            >
                 <zek-column-content v-if="col" :column="col"></zek-column-content>
             </div>
         </div>

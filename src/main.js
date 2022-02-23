@@ -11,4 +11,22 @@ import ZekText from './components/text-block/TextBlock.vue';
 import ZekVideo from './components/video/Video.vue';
 import ZekLogin from './components/login/Login.vue';
 import ZekForm from './components/form/Form.vue';
-export {ZekButton,ZekCard,ZekCardsList,ZekColumnContent,ZekHeading,ZekHtml,ZekImage,ZekList,ZekSlider,ZekText,ZekVideo,ZekLogin,ZekForm}
+import ZekSidebar from './components/sidebar/Sidebar.vue';
+import ZekInitials from './components/initials/Initials.vue';
+export {
+    ZekButton,
+    ZekCard,
+    ZekCardsList,
+    ZekColumnContent,
+    ZekHeading,
+    ZekHtml,
+    ZekImage,
+    ZekList,
+    ZekSlider,
+    ZekText,
+    ZekVideo,
+    ZekLogin,
+    ZekForm,
+    ZekSidebar,
+    ZekInitials
+}

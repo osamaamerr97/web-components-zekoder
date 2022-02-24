@@ -34,7 +34,11 @@
   </div>
   <!-- Material -->
   <div v-else-if="theme == 'Material'">
-    <v-menu offset-y :style="styleObj">
+    <v-menu
+      offset-y
+      :style="styleObj"
+      :close-on-content-click="selectType == 'Single'"
+    >
       <template v-slot:activator="{ on, attrs }">
         <v-btn v-bind="attrs" v-on="on">
           {{ label }}
@@ -46,7 +50,13 @@
           :key="i"
           @click="onSelect($event, item)"
         >
-          <v-list-item-title>{{ item }}</v-list-item-title>
+          <v-simple-checkbox
+            v-if="selectType == 'Multi'"
+            :value="selected.includes(item)"
+            @click="onSelect($event, item)"
+          />
+          {{ item }}
+          <v-list-item-title> </v-list-item-title>
         </v-list-item>
       </v-list>
     </v-menu>
@@ -151,6 +161,7 @@ export default {
           this.selected.push(item);
         }
       }
+      console.log(this.selected);
       this.$emit("onSelect", event);
     },
     onToggle(event) {

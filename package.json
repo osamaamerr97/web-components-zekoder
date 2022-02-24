@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.5.6",
+    "@socheatsok78/storybook-addon-vuetify": "^0.1.9",
     "@vimeo/player": "^2.16.3",
     "core-js": "^2.6.5",
     "docx": "^7.3.0",
@@ -54,6 +55,7 @@
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-vue": "^5.0.0",
     "prettier": "^1.18.2",
+    "vue-cli-plugin-vuetify": "~2.4.6",
     "vue-loader": "^15.9.8",
     "vue-template-compiler": "^2.6.10"
   }

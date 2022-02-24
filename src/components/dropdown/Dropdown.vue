@@ -8,15 +8,27 @@
     >
       {{ label }}
     </button>
-    <ul v-if="toggle" class="dropdown-menu show">
+    <ul v-if="toggle" class="dropdown-menu show" style="padding: 0">
       <li
         class="dropdown-item"
         v-for="(item, i) in items"
         :key="i"
-        :class="selected.includes(item) ? 'active' : ''"
+        :class="
+          selected.includes(item) && selectType != 'Multi' ? 'active' : ''
+        "
         @click="onSelect($event, item)"
       >
-        {{ item }}
+        <input
+          v-if="selectType == 'Multi'"
+          class="form-check-input"
+          type="checkbox"
+          v-model="selected"
+          :value="item"
+          id="flexCheckDefault"
+        />
+        <label class="form-check-label" for="flexCheckDefault">
+          {{ item }}
+        </label>
       </li>
     </ul>
   </div>
@@ -43,8 +55,9 @@
   <div v-else>
     <div :style="styleObj">
       <button :style="buttonStyle" @click="onToggle($event)">
-        <span style="display: flex; align-items: center; position: relative;">
-          {{ label }} <i v-if="showIcon" class="fa fa-angle-down" :style="iconStyle"></i>
+        <span style="display: flex; align-items: center; position: relative">
+          {{ label }}
+          <i v-if="showIcon" class="fa fa-angle-down" :style="iconStyle"></i>
         </span>
       </button>
       <div v-if="toggle">
@@ -55,7 +68,14 @@
           href="#"
           @click="onSelect($event, item)"
         >
-          <input v-if="selectType == 'Multi'" type="checkbox" :id="i" name="selected" v-model="selected" :value="item"> {{ item }}
+          <input
+            v-if="selectType == 'Multi'"
+            type="checkbox"
+            :id="i"
+            v-model="selected"
+            :value="item"
+          />
+          {{ item }}
         </div>
       </div>
     </div>
@@ -105,7 +125,6 @@ export default {
         position: "absolute",
         right: "10px",
       },
-
     };
   },
   created() {

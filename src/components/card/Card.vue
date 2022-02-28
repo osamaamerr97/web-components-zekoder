@@ -53,18 +53,11 @@ export default {
     },
     created() {
         this.styleObject = {
-        ...this.styleObj,
-        };
-        this.cardContent = this.content;
-    },
-    computed: {
-        styleObject() {
-        return {
             ...this.styleObj,
             "--background-color": this.backgroundColor || '',
             "--hover-background-color": this.hoverBackgroundColor || this.backgroundColor || '',
         };
-        },
+        this.cardContent = this.content;
     },
     methods: {
         cardClicked(event) {

@@ -13,6 +13,8 @@ import ZekLogin from './components/login/Login.vue';
 import ZekForm from './components/form/Form.vue';
 import ZekSidebar from './components/sidebar/Sidebar.vue';
 import ZekInitials from './components/initials/Initials.vue';
+import ZekCollapsibleContainer from './components/collapsible-container/CollapsibleContainer.vue';
+import ZekRadioButton from './components/radio-button/RadioButton.vue';
 export {
     ZekButton,
     ZekCard,
@@ -28,5 +30,7 @@ export {
     ZekLogin,
     ZekForm,
     ZekSidebar,
-    ZekInitials
+    ZekInitials,
+    ZekCollapsibleContainer,
+    ZekRadioButton
 }

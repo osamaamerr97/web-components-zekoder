@@ -6,23 +6,34 @@
                 class="link"
                 @click="onCollapse"
             >
-                <i class="icon fa fa-bars" :style="{ width: collapsedWidth }"></i>
+                <i
+                    class="icon fa fa-bars"
+                    :style="{ width: collapsedWidth }"
+                ></i>
             </a>
         </li>
         <div class="zek-sidebar-links">
-            <li 
-                v-for="(link, i) in links" 
-                :key="i" 
+            <li
+                v-for="(link, i) in links"
+                :key="i"
                 class="link-container"
-                @mouseover="link.isHovering = true" 
-                @mouseout="link.isHovering = false" 
-                :class="link.isActive && activeClass || link.isHovering ? [activeClass] : ''"
+                @mouseover="link.isHovering = true"
+                @mouseout="link.isHovering = false"
+                :class="
+                    (link.isActive && activeClass) || link.isHovering
+                        ? [activeClass]
+                        : ''
+                "
             >
                 <a
                     :href="link.url"
                     :title="link.tooltip"
                     class="link"
-                    :style="link.isActive && activeColor ? { color: activeColor } : ''"
+                    :style="
+                        link.isActive && activeColor
+                            ? { color: activeColor }
+                            : ''
+                    "
                 >
                     <i
                         v-if="link.icon && link.iconType !== 'custom'"
@@ -34,7 +45,9 @@
                         class="icon"
                         :src="link.icon"
                     />
-                    <span v-if="link.label && !collapsed">{{ link.label }}</span>
+                    <span v-if="link.label && !collapsed">{{
+                        link.label
+                    }}</span>
                 </a>
             </li>
         </div>
@@ -43,64 +56,57 @@
 
 <script>
 export default {
-  name: "ZekSidebar",
-  props: {
-    backgroundColor: {
-      type: String,
+    name: "ZekSidebar",
+    props: {
+        backgroundColor: {
+            type: String,
+        },
+        width: {
+            type: String,
+        },
+        allowExpandCollapse: {
+            type: Boolean,
+        },
+        collapsed: {
+            type: Boolean,
+        },
+        collapsedWidth: {
+            type: String,
+        },
+        links: {
+            type: Array,
+        },
+        activeClass: {
+            type: String,
+        },
+        activeColor: {
+            type: String,
+        },
+        styleObj: {
+            type: Object,
+        },
     },
-    width: {
-      type: String,
+    created() {
+        this.styleObject = {
+            ...this.styleObj,
+        };
     },
-    allowExpandCollapse: {
-        type: Boolean
+    created() {
+        this.styleObject = {
+            ...this.styleObj,
+            width: this.collapsed
+                ? this.collapsedWidth
+                : this.width || this.styleObj.width || "",
+            backgroundColor:
+                this.backgroundColor || this.styleObj.backgroundColor || "",
+        };
     },
-    collapsed: {
-        type: Boolean,
+    methods: {
+        onCollapse(event) {
+            this.collapsed = !this.collapsed;
+            this.$emit("onExpandCollapse", this.collapsed);
+        },
     },
-    collapsedWidth: {
-      type: String,
-    },
-    links: {
-      type: Array,
-    },
-    activeClass: {
-        type: String
-    },
-    activeColor: {
-      type: String,
-    },
-    styleObj: {
-      type: Object,
-    },
-  },
-  created() {
-    this.styleObject = {
-      ...this.styleObj,
-    };
-  },
-  data() {
-      return {
-          isHovering: false
-      }
-  },
-  computed: {
-    styleObject() {
-      return {
-        ...this.styleObj,
-        width: this.collapsed
-          ? this.collapsedWidth
-          : this.width || this.styleObj.width || "",
-        backgroundColor:
-          this.backgroundColor || this.styleObj.backgroundColor || "",
-      };
-    },
-  },
-  methods: {
-    onCollapse(event) {
-      this.collapsed = !this.collapsed;
-      this.$emit("onExpandCollapse", this.collapsed);
-    },
-  },
 };
 </script>
 

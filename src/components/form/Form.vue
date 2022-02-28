@@ -151,17 +151,6 @@ export default {
 </script>
 
 <style scoped>
-.zek-card {
-  width: 100%;
-  background-color: var(--background-color);
-  box-sizing: border-box;
-}
-.zek-card:hover {
-  background-color: var(--hover-background-color);
-}
-.zek-card > .zek-card-content {
-  padding: 10px;
-}
 .show-hide-password {
     text-transform: uppercase;
     position: absolute;

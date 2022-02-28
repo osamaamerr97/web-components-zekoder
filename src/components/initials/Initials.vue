@@ -14,6 +14,7 @@
     name: 'ZekInitials',
     props: {
         name: String,
+        charactersToShow: Number,
         customClass: String,
         styleObj: Object
     },
@@ -23,16 +24,14 @@
         }
     },
     created() {
-        console.log(this.name);
         this.initials = this.getInitials(this.name);
-        console.log(this.initials);
     },
     methods: {
         getInitials(name) {
             const wordsInName = name.split(' ');
-            if ( wordsInName.length === 1 ) {
+            if ( wordsInName.length && this.charactersToShow === 1 ) {
                 return this.name.charAt(0);
-            } else if ( wordsInName.length > 1 ) {
+            } else if ( wordsInName.length > 1 && this.charactersToShow > 1 ) {
                 return wordsInName[0].charAt(0)+wordsInName[1].charAt(0);
             }
         }

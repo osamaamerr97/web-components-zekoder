@@ -50,6 +50,11 @@ export default {
                 type: 'object'
             }
         },
+        dropdownItemStyleObj: {
+            control: {
+                type: 'object'
+            }
+        },
     }
 };
 

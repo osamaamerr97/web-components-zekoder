@@ -28,9 +28,8 @@
       style="cursor: pointer"
     />
     <div v-if="toggle" class="user-info-dropdown" :style="dropdownStyleObj">
-      <a v-for="(link, i) in dropdownLinks" :key="i" :href="link.url">{{
-        link.label
-      }}</a>
+      <a v-for="(link, i) in dropdownLinks" :key="i" :href="link.url" :style="dropdownLinkStyle">
+        {{link.label}} </a>
     </div>
   </div>
 </template>
@@ -61,6 +60,9 @@ export default {
     },
     dropdownLinks: {
       type: Array,
+    },
+    dropdownLinkStyle: {
+      type: Object,
     },
     styleObj: {
       type: Object,

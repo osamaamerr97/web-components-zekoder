@@ -25,6 +25,9 @@ export default {
         styleObj: {
             control: { type: 'object' },
         },
+        listStyle: {
+            control: { type: 'object' },
+        },
         itemStyle: {
             control: { type: 'object' },
         },

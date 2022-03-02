@@ -15,6 +15,9 @@ import ZekSidebar from './components/sidebar/Sidebar.vue';
 import ZekInitials from './components/initials/Initials.vue';
 import ZekCollapsibleContainer from './components/collapsible-container/CollapsibleContainer.vue';
 import ZekRadioButton from './components/radio-button/RadioButton.vue';
+import ZekUserInfo from './components/user-info-component/UserInfo.vue';
+import ZekDropdown from './components/dropdown/Dropdown.vue';
+
 export {
     ZekButton,
     ZekCard,
@@ -32,5 +35,7 @@ export {
     ZekSidebar,
     ZekInitials,
     ZekCollapsibleContainer,
-    ZekRadioButton
+    ZekRadioButton,
+    ZekUserInfo,
+    ZekDropdown
 }

@@ -62,15 +62,14 @@
     </v-menu>
   </div>
   <!-- Custom -->
-  <div v-else>
-    <div :style="styleObj">
+  <div :style="styleObj" v-else>
       <button :style="buttonStyle" @click="onToggle($event)">
         <span style="display: flex; align-items: center; position: relative">
           {{ label }}
           <i v-if="showIcon" class="fa fa-angle-down" :style="iconStyle"></i>
         </span>
       </button>
-      <div v-if="toggle">
+      <div :style="listStyle" v-if="toggle">
         <div
           :style="selected.includes(item) ? selectedItemStyle : itemStyle"
           v-for="(item, i) in items"
@@ -89,7 +88,6 @@
         </div>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -118,6 +116,9 @@ export default {
       type: Object,
     },
     buttonStyle: {
+      type: Object,
+    },
+    listStyle: {
       type: Object,
     },
     itemStyle: {

@@ -1,14 +1,15 @@
 <template>
   <!-- Bootstrap -->
-  <div v-if="theme == 'Bootstrap'" class="dropdown">
+  <div v-if="theme == 'Bootstrap'" class="dropdown" :style="styleObj">
     <button
       class="btn btn-secondary"
       :class="showIcon ? 'dropdown-toggle' : ''"
       @click="onToggle($event)"
+      :style="buttonStyle"
     >
       {{ label }}
     </button>
-    <ul v-if="toggle" class="dropdown-menu show" style="padding: 0">
+    <ul v-if="toggle" class="dropdown-menu show" style="padding: 0" :style="listStyle">
       <li
         class="dropdown-item"
         v-for="(item, i) in items"
@@ -16,6 +17,7 @@
         :class="
           selected.includes(item) && selectType != 'Multi' ? 'active' : ''
         "
+        :style="itemStyle"
         @click="onSelect($event, item)"
       >
         <input

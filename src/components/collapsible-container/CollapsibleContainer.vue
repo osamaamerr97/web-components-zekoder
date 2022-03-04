@@ -49,14 +49,7 @@ export default {
         return {
             collapsed: false
         }
-    },
-    methods:{
-        updateContent(event,item){
-            this.content = item;
-            console.log(event,item);
-            this.$emit('updateContent', event);
-        }
-    },
+    }
 };
 </script>
 

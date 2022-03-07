@@ -29,7 +29,9 @@
     />
     <div v-if="toggle" class="user-info-dropdown" :style="dropdownStyleObj">
       <a v-for="(link, i) in dropdownLinks" :key="i" :href="link.url" :style="dropdownLinkStyle">
-        {{link.label}} </a>
+        <i v-if="link.icon" :class="link.icon" style="color: inherit"/>
+        {{link.label}}
+        </a>
     </div>
   </div>
 </template>
@@ -150,6 +152,9 @@ export default {
   text-decoration: none;
   width: 100%;
   border-bottom: 1px solid #ccc;
+}
+.user-info-container .user-info-dropdown a i {
+  margin: 0 5px;
 }
 .user-info-container .user-info-dropdown a:hover {
   background-color: #f5f5f5;

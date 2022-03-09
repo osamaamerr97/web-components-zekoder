@@ -65,8 +65,8 @@
   </div>
   <!-- Custom -->
   <div :style="styleObj" v-else>
-      <button :style="buttonStyle" @click="onToggle($event)">
-        <span style="display: flex; align-items: center; position: relative">
+      <button style="display: flex; align-items: center; position: relative" :style="buttonStyle" @click="onToggle($event)">
+        <span>
           {{ label }}
           <i v-if="showIcon" class="fa fa-angle-down" :style="iconStyle"></i>
         </span>
@@ -129,15 +129,14 @@ export default {
     selectedItemStyle: {
       type: Object,
     },
+    iconStyle: {
+      type: Object,
+    },
   },
   data() {
     return {
       toggle: false,
       selected: ["2"],
-      iconStyle: {
-        position: "absolute",
-        right: "10px",
-      },
     };
   },
   created() {

@@ -13,6 +13,9 @@ export default {
         socialLinks: {
             control: { type: 'object' },
         },
+        socialLinksPosition: {
+            control: { type: 'text' },
+        },
         image: {
             control: { type: 'text' },
         },
@@ -21,7 +24,7 @@ export default {
             options: ['left', 'right', 'center'],
         },
         textStyle: {
-            control: { type: 'text' },
+            control: { type: 'object' },
         },
         styleObj: {
             control: { type: 'object' },
@@ -112,6 +115,7 @@ Primary.args = {
             href: '#'
         }
     ],
+    socialLinksPosition: 'right',
     image: 'https://images.pexels.com/photos/1149137/pexels-photo-1149137.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
     styleObj: {
         "backgroundColor": "#f5f5f5",
@@ -128,6 +132,15 @@ Primary.args = {
         "textTransform": "uppercase",
         "letterSpacing": "0.1rem",
         "borderTop": "1px solid #ccc",
+    },
+    textStyle: {
+        "fontSize": "1.2rem",
+        "fontWeight": "bold",
+        "fontFamily": "Roboto, sans-serif",
+        "textTransform": "uppercase",
+        "letterSpacing": "0.1rem",
+        "textDecoration": "none",
+        "color": "#fff",
     }
 
  };

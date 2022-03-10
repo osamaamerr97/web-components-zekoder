@@ -8,7 +8,6 @@
             :submitButton="submitButton"
             :cancelButton="{show:false}"
             :errorMessage="error"
-            :successMessage="success"
             @submit="login($event)"
             @cancel="cancel()"
         ></zek-form>
@@ -17,8 +16,9 @@
 
 <script>
   import ZekForm from "../form/Form.vue";
-  import ZekImage from "../image/Image.vue"
   import auth0 from 'auth0-js';
+  import { initializeApp } from 'firebase/app';
+  import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
   export default {
     name: 'ZekLogin',
@@ -33,12 +33,12 @@
         loginButton: [String, Boolean],
         image: Object,
         webAuthConfig: Object,
+        firebaseConfig: Object,
         styleObj: Object
     },
     data() {
         const data = {
             error: '',
-            success: '',
             inputs:[
                 {
                     name: 'email',
@@ -59,7 +59,8 @@
                     required: false,
                 }
             ],
-            webAuth: {}
+            webAuth: null,
+            fireBase: null
         }
         if ( this.email ) {
             data.inputs[0] = this.email;
@@ -70,7 +71,11 @@
         return data;
     },
     created() {
-        this.webAuth = new auth0.WebAuth(this.webAuthConfig);
+        if(this.webAuthConfig) {
+            this.webAuth = new auth0.WebAuth(this.webAuthConfig);
+        } else if (this.firebaseConfig) {
+            this.fireBase = initializeApp(this.firebaseConfig);
+        }
     },
     computed:{
         submitButton() {
@@ -98,6 +103,28 @@
     methods:{
         login(data) {
             this.$emit('beforeLogin');
+            if(this.webAuth) {
+                this.auth0Login(data);
+            } else if (this.fireBase) {
+                this.firebaseLogin(data);
+            }
+        },
+        firebaseLogin(data) {
+            const auth = getAuth();
+            signInWithEmailAndPassword(auth, data['email'], data['password'])
+            .then((userCredential) => {
+                this.$emit('onLoginSuccess', userCredential);
+                localStorage.setItem('userInfo', JSON.stringify(userCredential.user));
+                this.error = '';
+            })
+            .catch((error) => {
+                this.$emit('onLoginError', error);
+                const errorCode = error.code;
+                // const errorMessage = error.message;
+                this.error = errorCode;
+            });
+        },
+        auth0Login(data){
             this.webAuth.login({
                 realm: 'Username-Password-Authentication',
                 username: data['email'],
@@ -106,7 +133,6 @@
                 if ( err ) {
                     this.$emit('onLoginError', err);
                     this.error = err.description || err.error_description || 'There was an error. Please try again';
-                    this.success = '';
                 } else if ( dat ) { 
                     this.$emit('onLoginSuccess', dat);
                     this.error = '';
@@ -115,7 +141,6 @@
         },
         cancel() {
             this.error = '';
-            this.success = '';
         }
     }
   }

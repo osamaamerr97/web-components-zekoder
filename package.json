@@ -27,6 +27,7 @@
     "@apollo/client": "^3.5.6",
     "@socheatsok78/storybook-addon-vuetify": "^0.1.9",
     "@vimeo/player": "^2.16.3",
+    "apexcharts": "^3.33.2",
     "auth0-js": "^9.19.0",
     "core-js": "^2.6.5",
     "docx": "^7.3.0",
@@ -38,6 +39,7 @@
     "js-yaml": "^4.1.0",
     "sanitize-html": "^2.6.1",
     "vue": "^2.6.10",
+    "vue-apexcharts": "^1.6.2",
     "vue-router": "^3.5.3",
     "vue-slick-carousel": "^1.0.6"
   },

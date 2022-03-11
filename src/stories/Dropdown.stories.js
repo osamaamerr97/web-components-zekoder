@@ -34,7 +34,9 @@ export default {
         selectedItemStyle: {
             control: { type: 'object' },
         },
-        onToggle: { action: 'onToggle' },
+        iconStyle: {
+            control: { type: 'object' },
+        },
     },
 };
 
@@ -69,6 +71,8 @@ Primary.args = {
     selectedItemStyle: {
         backgroundColor: '#f5f5f5',
     },
+    iconStyle: {
+    }
 
 };
 

@@ -1,16 +1,16 @@
 <template>
-    <div 
+    <div
         class="collapsible-container w-100"
         :class="customClass"
         :style="styleObj"
     >
         <p>
-            <button 
-                class="btn btn-primary w-100 toggle-button" 
-                type="button" 
-                data-bs-toggle="collapse" 
-                data-bs-target="#collapseContent" 
-                aria-expanded="false" 
+            <button
+                class="btn btn-primary w-100 toggle-button"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseContent"
+                aria-expanded="false"
                 aria-controls="collapseContent"
                 :style="headerStyles"
                 @click="collapsed = !collapsed;"
@@ -21,13 +21,12 @@
             </button>
         </p>
         <div class="collapse" :class="{'show': !collapsed}" id="collapseContent">
-            something to show
-            <ZekCard 
+            <ZekCard
                 v-if="content"
-                v-bind="content"
+                :content="content"
             />
         </div>
-    </div>    
+    </div>
 </template>
 
 <script>
@@ -44,11 +43,11 @@ export default {
         headerIcon: String,
         customClass: String,
         headerStyles: Object,
-        styleObj: Object
+        styleObj: Object,
     },
     data() {
         return {
-            collapsed: true
+            collapsed: false
         }
     }
 };

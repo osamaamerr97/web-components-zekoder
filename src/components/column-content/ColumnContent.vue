@@ -7,52 +7,64 @@
             </div>
         </div>
     </div>
-    <zek-button 
-        @click="stopPropagation($event)" 
-        v-else-if="column && column.content && column.content.component == 'button'" 
-        v-bind="column.content.data" 
-        v-on="column.content.events" 
+    <zek-button
+        @click="stopPropagation($event)"
+        v-else-if="column && column.content && column.content.component == 'button'"
+        v-bind="column.content.data"
+        v-on="column.content.events"
     ></zek-button>
-    <zek-heading 
-        v-else-if="column && column.content && column.content.component == 'heading'" 
-        v-bind="column.content.data" 
-        v-on="column.content.events" 
+    <zek-heading
+        v-else-if="column && column.content && column.content.component == 'heading'"
+        v-bind="column.content.data"
+        v-on="column.content.events"
     ></zek-heading>
-    <zek-html 
-        v-else-if="column && column.content && column.content.component == 'html'" 
-        v-bind="column.content.data" 
-        v-on="column.content.events" 
+    <zek-html
+        v-else-if="column && column.content && column.content.component == 'html'"
+        v-bind="column.content.data"
+        v-on="column.content.events"
     ></zek-html>
-    <zek-image 
-        v-else-if="column && column.content && column.content.component == 'image'" 
-        v-bind="column.content.data" 
+    <zek-image
+        v-else-if="column && column.content && column.content.component == 'image'"
+        v-bind="column.content.data"
         v-on="column.content.events"
     ></zek-image>
-    <i 
-        v-else-if="column && column.content && column.content.component == 'icon'" 
-        class="card-icon" 
+    <i
+        v-else-if="column && column.content && column.content.component == 'icon'"
+        class="card-icon"
         :class="column.content.icon"
     ></i>
-    <zek-list 
-        v-else-if="column && column.content && column.content.component == 'list'" 
-        v-bind="column.content.data" v-on="column.content.events" 
+    <zek-list
+        v-else-if="column && column.content && column.content.component == 'list'"
+        v-bind="column.content.data" v-on="column.content.events"
     ></zek-list>
-    <zek-text 
-        v-else-if="column && column.content && column.content.component == 'text'" 
-        class="card-text" 
-        v-bind="column.content.data" 
-        v-on="column.content.events" 
+    <zek-text
+        v-else-if="column && column.content && column.content.component == 'text'"
+        class="card-text"
+        v-bind="column.content.data"
+        v-on="column.content.events"
     ></zek-text>
-    <zek-initials 
-        v-else-if="column && column.content && column.content.component == 'initials'" 
-        class="card-initials" 
+    <zek-initials
+        v-else-if="column && column.content && column.content.component == 'initials'"
+        class="card-initials"
         v-bind="column.content.data"
     ></zek-initials>
     <client-only v-else-if="column && column.content && column.content.component == 'video'">
         <zek-video v-bind="column.content.data" v-on="column.content.events"></zek-video>
     </client-only>
+    <zek-radio-button
+        @click="stopPropagation($event)"
+        v-else-if="column && column.content && column.content.component == 'radio-button'"
+        v-bind="column.content.data"
+        v-on="column.content.events"
+    ></zek-radio-button>
+    <zek-dropdown
+        @click="stopPropagation($event)"
+        v-else-if="column && column.content && column.content.component == 'dropdown'"
+        v-bind="column.content.data"
+        v-on="column.content.events"
+    ></zek-dropdown>
 
-    
+
 </template>
 
 <script>
@@ -64,17 +76,21 @@ import ZekImage from "../image/Image.vue";
 import ZekList from "../lists-block/ListsBlock.vue";
 import ZekText from "../text-block/TextBlock.vue";
 import ZekVideo from "../video/Video.vue";
+import ZekRadioButton from "../radio-button/RadioButton.vue";
+import ZekDropdown from "../dropdown/Dropdown.vue";
 
 export default {
     components: {
-        ZekButton, 
-        ZekHeading, 
-        ZekHtml, 
-        ZekImage, 
-        ZekList, 
-        ZekText, 
+        ZekButton,
+        ZekHeading,
+        ZekHtml,
+        ZekImage,
+        ZekList,
+        ZekText,
         ZekInitials,
-        ZekVideo
+        ZekVideo,
+        ZekRadioButton,
+        ZekDropdown
     },
     name: "ZekColumnContent",
     props: {

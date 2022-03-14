@@ -9,7 +9,7 @@
       :disabled="disabled"
       :minlength="minMaxValue.min"
       :maxlength="minMaxValue.max"
-      @input="onInput"
+      @change="onChange"
       :style="styleObject"
       :form="form"
       v-model="value"
@@ -77,8 +77,8 @@ export default {
     },
   },
   methods: {
-    onInput(event) {
-      this.$emit("onInput", event);
+    onChange(event) {
+      this.$emit("onChange", this.value);
     },
   },
 };

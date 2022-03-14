@@ -49,7 +49,7 @@ const Template = (args, { argTypes }) => ({
     props: Object.keys(argTypes),
     methods: { action },
 
-    template: '<zek-textarea v-bind="$props" @onInput="action(`input`)()"></zek-textarea>',
+    template: '<zek-textarea v-bind="$props" @onChange="action(`changed`)()"></zek-textarea>',
 });
 
 export const Primary = Template.bind({});

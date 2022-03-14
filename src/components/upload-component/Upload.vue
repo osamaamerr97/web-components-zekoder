@@ -13,7 +13,7 @@
       <embed v-for="(item, i) in uploaded" :key="i" :src="item" />
     </div> -->
     <input
-      type="file"
+      :type="type"
       :id="id"
       :name="name"
       :accept="fileTypes"

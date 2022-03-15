@@ -1,5 +1,5 @@
 import ZekXYChart from "../../components/charts/XYChart.vue";
-
+import { action } from "@storybook/addon-actions";
 // More on default export: https://storybook.js.org/docs/vue/writing-stories/introduction#default-export
 export default {
     title: 'Zekoder/Charts/XY Chart',
@@ -12,8 +12,9 @@ const Template = (args, { argTypes }) => ({
     // Components used in your story `template` are defined in the `components` object
     components: { ZekXyChart: ZekXYChart },
     props: Object.keys(argTypes),
+    methods: { action },
     // And then the `args` are bound to your component with `v-bind="args"`
-    template: '<zek-xy-chart v-bind="$props"></zek-xy-chart>',
+    template: '<zek-xy-chart v-bind="$props" @dataPointSelection="action(`selected`)()"></zek-xy-chart>',
 });
 
 export const Primary = Template.bind({});

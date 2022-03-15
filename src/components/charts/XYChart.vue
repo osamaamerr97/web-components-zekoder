@@ -33,6 +33,11 @@ export default {
       options: {
         chart: {
           id: `area-chart-${this.id}`,
+          events: {
+            dataPointSelection: (event, chartContext, config) => {
+              this.$emit("dataPointSelection", config);
+            }
+          }
         },
         noData: {
           text: "Loading...",
@@ -157,7 +162,7 @@ export default {
           (item) => item[this.xAxis.dataKey]
         );
       }
-    },
+    }
   },
   watch: {
     title: function (val) {
@@ -171,13 +176,13 @@ export default {
         };
       }
     },
-    data: function(val){
-        if (val && val.length) {
-          this.chartData = val;
-          this.series = [];
-          this.options = {...this.options};
-          this.populateGraph();
-        }
+    data: function (val) {
+      if (val && val.length) {
+        this.chartData = val;
+        this.series = [];
+        this.options = { ...this.options };
+        this.populateGraph();
+      }
     },
     yAxis: function (val) {
       if (val && val.series && val.series.length) {

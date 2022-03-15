@@ -32,6 +32,11 @@ export default {
         labels: [],
         chart: {
           id: `pie-chart-${this.id}`,
+          events: {
+            dataPointSelection: (event, chartContext, config) => {
+              this.$emit("dataPointSelection", config);
+            }
+          }
         },
         noData: {
           text: "Loading...",

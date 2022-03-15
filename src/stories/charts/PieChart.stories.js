@@ -1,5 +1,5 @@
 import ZekPieChart from "../../components/charts/PieChart.vue";
-
+import { action } from '@storybook/addon-actions';
 // More on default export: https://storybook.js.org/docs/vue/writing-stories/introduction#default-export
 export default {
     title: 'Zekoder/Charts/Pie Chart',
@@ -12,8 +12,9 @@ const Template = (args, { argTypes }) => ({
     // Components used in your story `template` are defined in the `components` object
     components: { ZekPieChart: ZekPieChart },
     props: Object.keys(argTypes),
+    methods: { action },
     // And then the `args` are bound to your component with `v-bind="args"`
-    template: '<zek-pie-chart v-bind="$props"></zek-pie-chart>',
+    template: '<zek-pie-chart @dataPointSelection="action(`selected`)()" v-bind="$props"></zek-pie-chart>',
 });
 
 export const Primary = Template.bind({});

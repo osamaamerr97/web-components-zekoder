@@ -119,11 +119,6 @@ export default {
         }
       }
     },
-  },
-  watch: {
-    showLegend(val) {
-      this.options = { ...this.options, legend: { show: val } };
-    },
-  },
+  }
 };
 </script>

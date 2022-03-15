@@ -159,5 +159,68 @@ export default {
       }
     },
   },
+  watch: {
+    title: function (val) {
+      if (val) {
+        this.options = {
+          ...this.options,
+          title: {
+            text: val.text || val,
+            style: val.style || {},
+          },
+        };
+      }
+    },
+    data: function(val){
+        if (val && val.length) {
+          this.chartData = val;
+          this.series = [];
+          this.options = {...this.options};
+          this.populateGraph();
+        }
+    },
+    yAxis: function (val) {
+      if (val && val.series && val.series.length) {
+        this.options = {
+          ...this.options,
+          yaxis: {
+            title: {
+              text: val.label ? val.label.text || val.label : undefined,
+              style: val.label && val.label.style ? val.label.style : {},
+            },
+            labels: {
+              style: {
+                colors: val.tickColor,
+                fontSize: val.tickSize,
+              },
+            },
+          },
+        };
+        this.series = [];
+        this.populateGraph();
+      }
+    },
+    xAxis: function (val) {
+      if (val && val.dataKey && val.label) {
+        this.options = {
+          ...this.options,
+          xaxis: {
+            title: {
+              text: val.label ? val.label.text || val.label : undefined,
+              style: val.label && val.label.style ? val.label.style : {},
+            },
+            labels: {
+              style: {
+                colors: val.tickColor,
+                fontSize: val.tickSize,
+              },
+            },
+          },
+        };
+        this.series = [];
+        this.populateGraph();
+      }
+    },
+  },
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div :class="customClass" :style="styleObj">
-    <chart :type="type" :options="options" :series="series" :width="width" :height="height"></chart>
+    <chart :options="options" :series="series" :width="width" :height="height"></chart>
   </div>
 </template>
 
@@ -32,11 +32,17 @@ export default {
       series: [],
       options: {
         chart: {
-          id: `area-chart-${this.id}`,
+          id: `xy-chart-${this.id}`,
           events: {
             dataPointSelection: (event, chartContext, config) => {
               this.$emit("dataPointSelection", config);
             }
+          },
+          stacked: this.type == 'stacked-bar' ? true : null,
+        },
+        plotOptions: {
+          bar: {
+            horizontal: this.type == 'horizontal-bar' ? true : null,
           }
         },
         noData: {
@@ -92,7 +98,13 @@ export default {
   },
   created() {
     //chart settings
-
+    if (this.type == 'horizontal-bar') {
+      this.options.chart.type = 'bar';
+    } else if (this.type == 'stacked-bar') {
+      this.options.chart.type = 'bar';
+    } else {
+      this.options.chart.type = this.type;
+    }
     //chart data
     if (this.data && this.data.length) {
       this.chartData = this.data;

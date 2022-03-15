@@ -9,7 +9,7 @@ export default {
         type: {
             control: {
                 type: 'select',
-                options: ['line', 'bar', 'area', 'scatter', 'radar','heatmap']
+                options: ['line', 'bar', 'horizontal-bar', 'stacked-bar', 'area', 'scatter', 'radar','heatmap']
             }
         }
     }

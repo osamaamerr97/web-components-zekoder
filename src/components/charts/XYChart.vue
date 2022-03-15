@@ -1,6 +1,6 @@
 <template>
     <div :class="customClass" :style="styleObj">
-        <chart type="line" :options="options" :series="series" :width="width" :height="height"></chart>
+        <chart :type="type" :options="options" :series="series" :width="width" :height="height"></chart>
     </div>
 </template>
 
@@ -8,11 +8,12 @@
 import VueApexCharts from 'vue-apexcharts';
 import * as axios from 'axios';
 export default {
-    name: 'ZekLineChart',
+    name: 'ZekXYChart',
     components: {
         chart : VueApexCharts
     },
     props: {
+        type: String,
         width: [String, Number],
         height: [String, Number],
         data: Array,
@@ -31,7 +32,7 @@ export default {
             series: [],
             options: {
                 chart: {
-                    id: 'line-chart'
+                    id: 'area-chart'
                 },
                 noData: {
                     text: 'Loading...',

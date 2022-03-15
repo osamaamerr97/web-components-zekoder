@@ -1,24 +1,25 @@
-import ZekLineChart from "../../components/charts/LineChart.vue";
+import ZekXYChart from "../../components/charts/XYChart.vue";
 
 // More on default export: https://storybook.js.org/docs/vue/writing-stories/introduction#default-export
 export default {
-    title: 'Zekoder/Charts/Line Chart',
-    component: ZekLineChart,
+    title: 'Zekoder/Charts/XY Chart',
+    component: ZekXYChart,
     // More on argTypes: https://storybook.js.org/docs/vue/api/argtypes
     argTypes: {}
 };
 
 const Template = (args, { argTypes }) => ({
     // Components used in your story `template` are defined in the `components` object
-    components: { ZekLineChart: ZekLineChart },
+    components: { ZekXyChart: ZekXYChart },
     props: Object.keys(argTypes),
     // And then the `args` are bound to your component with `v-bind="args"`
-    template: '<zek-line-chart v-bind="$props"></zek-line-chart>',
+    template: '<zek-xy-chart v-bind="$props"></zek-xy-chart>',
 });
 
 export const Primary = Template.bind({});
-// More on args: https://storybook.js.org/docs/vue/writing-stories/args
+  // More on args: https://storybook.js.org/docs/vue/writing-stories/args
 Primary.args = {
+    type: "area",
     height: "500px",
     width: "90%",
     styleObj: {

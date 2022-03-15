@@ -32,7 +32,7 @@ export default {
             series: [],
             options: {
                 chart: {
-                    id: 'area-chart'
+                    id: `area-chart-${this.id}`,
                 },
                 noData: {
                     text: 'Loading...',

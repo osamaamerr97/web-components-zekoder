@@ -107,6 +107,7 @@ Primary.args = {
             // data: [55, 49, 45, 49, 30, 28, 40],
             dataKey: 'apples',
             label: 'apples'
-        }]
-    }
+        }],
+    },
+    showLegend: true
 };

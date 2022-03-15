@@ -5,7 +5,14 @@ export default {
     title: 'Zekoder/Charts/XY Chart',
     component: ZekXYChart,
     // More on argTypes: https://storybook.js.org/docs/vue/api/argtypes
-    argTypes: {}
+    argTypes: {
+        type: {
+            control: {
+                type: 'select',
+                options: ['line', 'bar', 'area', 'scatter', 'radar','heatmap']
+            }
+        }
+    }
 };
 
 const Template = (args, { argTypes }) => ({

@@ -17,7 +17,7 @@ const Template = (args, { argTypes }) => ({
 });
 
 export const Primary = Template.bind({});
-  // More on args: https://storybook.js.org/docs/vue/writing-stories/args
+// More on args: https://storybook.js.org/docs/vue/writing-stories/args
 Primary.args = {
     height: "500px",
     width: "90%",
@@ -33,12 +33,13 @@ Primary.args = {
         }
     },
     data: [55, 66, 12],
-    colors: ['#ff0000', '#00ff00', '#0000ff'],
+    colors: ['#ff0000', '#00ff00', '#cccccc'],
     apiInfo: {
         url: 'https://api.coindesk.com/v1/bpi/currentprice.json',
         method: 'get',
         type: 'http',
         query: ''
     },
-    labels: ['Grapes', 'Apples'],
+    labels: ['Grapes', 'Apples', 'Bananas'],
+    showLegend: true,
 };

@@ -1,12 +1,6 @@
 <template>
   <div :class="customClass" :style="styleObj">
-    <chart
-      type="pie"
-      :options="options"
-      :series="series"
-      :width="width"
-      :height="height"
-    ></chart>
+    <chart type="pie" :options="options" :series="series" :width="width" :height="height"></chart>
   </div>
 </template>
 
@@ -22,7 +16,6 @@ export default {
     width: [String, Number],
     height: [String, Number],
     data: Array,
-    labels: Array,
     colors: Array,
     title: [String, Object],
     id: [String, Number],
@@ -36,8 +29,9 @@ export default {
       chartData: [],
       series: [],
       options: {
+        labels: [],
         chart: {
-          id: "pie-chart",
+          id: `pie-chart-${this.id}`,
         },
         noData: {
           text: "Loading...",
@@ -51,7 +45,6 @@ export default {
           style: this.title && this.title.style ? this.title.style : {},
         },
         colors: [],
-        labels: [],
         responsive: [
           {
             breakpoint: 480,
@@ -104,21 +97,37 @@ export default {
         });
     },
     populateGraph() {
-      if (
-        this.chartData &&
-        this.labels &&
-        this.chartData.length &&
-        this.labels.length
-      ) {
-        this.series = this.data;
-        this.options.labels = this.labels;
-        this.options.colors = this.colors;
+      if (this.chartData && this.chartData.length) {
+        this.chartData.forEach(ser => {
+          let data = [];
+          if (ser.data) {
+            data = ser.data;
+          } else if (ser.dataKey && this.chartData.length && ser.dataKey in this.chartData[0]) {
+            data = this.chartData.map(item => item[ser.dataKey]);
+          }
+
+          if (data.length < 1) {
+            return;
+          } else {
+            this.options.labels.push(ser.label || ser.dataKey || undefined);
+            this.options.colors.push(ser.color || undefined);
+            this.series.push(data);
+          }
+        });
         if (this.series.length < 1) {
           this.options.noData.text = "No data available!";
           this.options.noData.style.color = "rgb(255,0,0)";
         }
       }
     },
+  },
+  watch:{
+    data: function(val){
+      this.chartData = val;
+      this.series = [];
+      this.options = {...this.options, labels: [], colors: []}
+      this.populateGraph();
+    }
   }
 };
 </script>

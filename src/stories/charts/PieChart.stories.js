@@ -32,14 +32,22 @@ Primary.args = {
             fontSize: '24px'
         }
     },
-    data: [55, 66, 12],
-    colors: ['#ff0000', '#00ff00', '#cccccc'],
+    data: [{
+        color: '#ff0000',
+        data: 30,
+        dataKey: 'grapes',
+        label: 'grapes'
+    }, {
+        color: '#cccccc',
+        data: 40,
+        dataKey: 'apples',
+        label: 'apples'
+    }],
     apiInfo: {
         url: 'https://api.coindesk.com/v1/bpi/currentprice.json',
         method: 'get',
         type: 'http',
         query: ''
     },
-    labels: ['Grapes', 'Apples', 'Bananas'],
     showLegend: true,
 };

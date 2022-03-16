@@ -1,24 +1,33 @@
-import ZekAreaChart from "../../components/charts/AreaChart.vue";
-
+import ZekXYChart from "../../components/charts/XYChart.vue";
+import { action } from "@storybook/addon-actions";
 // More on default export: https://storybook.js.org/docs/vue/writing-stories/introduction#default-export
 export default {
-    title: 'Zekoder/Charts/Area Chart',
-    component: ZekAreaChart,
+    title: 'Zekoder/Charts/XY Chart',
+    component: ZekXYChart,
     // More on argTypes: https://storybook.js.org/docs/vue/api/argtypes
-    argTypes: {}
+    argTypes: {
+        type: {
+            control: {
+                type: 'select',
+                options: ['line', 'bar', 'horizontal-bar', 'stacked-bar', 'area', 'scatter', 'radar','heatmap']
+            }
+        }
+    }
 };
 
 const Template = (args, { argTypes }) => ({
     // Components used in your story `template` are defined in the `components` object
-    components: { ZekAreaChart },
+    components: { ZekXyChart: ZekXYChart },
     props: Object.keys(argTypes),
+    methods: { action },
     // And then the `args` are bound to your component with `v-bind="args"`
-    template: '<zek-area-chart v-bind="$props"></zek-area-chart>',
+    template: '<zek-xy-chart v-bind="$props" @dataPointSelection="action(`selected`)()"></zek-xy-chart>',
 });
 
 export const Primary = Template.bind({});
   // More on args: https://storybook.js.org/docs/vue/writing-stories/args
 Primary.args = {
+    type: "area",
     height: "500px",
     width: "90%",
     styleObj: {
@@ -106,6 +115,7 @@ Primary.args = {
             // data: [55, 49, 45, 49, 30, 28, 40],
             dataKey: 'apples',
             label: 'apples'
-        }]
-    }
+        }],
+    },
+    showLegend: true
 };

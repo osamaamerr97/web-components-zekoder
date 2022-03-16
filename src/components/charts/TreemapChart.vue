@@ -21,9 +21,6 @@ export default {
         customClass: String,
         styleObj: Object,
         apiInfo: Object, // {url, method:get|post, type:graphql||http, query}
-        xAxis: Object, //{label,dataKey,tickSize,tickColor,data,type:category|datetime}
-        yAxis: Object, //{label,tickSize,tickColor,series} // series: [{label, color, data[], dataKey}]
-        showLegend: Boolean,
     },
     data() {
         return {

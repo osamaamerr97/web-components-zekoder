@@ -1,4 +1,5 @@
 import ZekTreemapChart from "../../components/charts/TreemapChart.vue";
+import { action } from '@storybook/addon-actions';
 
 // More on default export: https://storybook.js.org/docs/vue/writing-stories/introduction#default-export
 export default {
@@ -12,8 +13,9 @@ const Template = (args, { argTypes }) => ({
     // Components used in your story `template` are defined in the `components` object
     components: { ZekTreemapChart: ZekTreemapChart },
     props: Object.keys(argTypes),
+    methods: { action},
     // And then the `args` are bound to your component with `v-bind="args"`
-    template: '<zek-treemap-chart v-bind="$props"></zek-treemap-chart>',
+    template: '<zek-treemap-chart  @dataPointSelection="action(`selected`)()" v-bind="$props"></zek-treemap-chart>',
 });
 
 export const Primary = Template.bind({});

@@ -30,6 +30,11 @@ export default {
                 series: [],
                 chart: {
                     id: `treemap-chart-${this.id}`,
+                    events: {
+                        dataPointSelection: (event, chartContext, config) => {
+                            this.$emit("dataPointSelection", config);
+                        }
+                    }
                 },
                 noData: {
                     text: 'Loading...',

@@ -63,6 +63,12 @@
         v-bind="column.content.data"
         v-on="column.content.events"
     ></zek-dropdown>
+    <zek-input
+        @click="stopPropagation($event)"
+        v-else-if="column && column.content && column.content.component == 'input'"
+        v-bind="column.content.data"
+        v-on="column.content.events"
+    ></zek-input>
 
 
 </template>
@@ -78,6 +84,7 @@ import ZekText from "../text-block/TextBlock.vue";
 import ZekVideo from "../video/Video.vue";
 import ZekRadioButton from "../radio-button/RadioButton.vue";
 import ZekDropdown from "../dropdown/Dropdown.vue";
+import ZekInput from "../input-field/InputField.vue";
 
 export default {
     components: {
@@ -90,7 +97,8 @@ export default {
         ZekInitials,
         ZekVideo,
         ZekRadioButton,
-        ZekDropdown
+        ZekDropdown,
+        ZekInput
     },
     name: "ZekColumnContent",
     props: {

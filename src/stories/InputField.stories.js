@@ -1,4 +1,4 @@
-import ZekInput  from '../components/input-field/InputField.vue';
+import ZekInput from '../components/input-field/InputField.vue';
 import { action } from '@storybook/addon-actions';
 export default {
     title: 'Zekoder/Input Field',
@@ -6,8 +6,13 @@ export default {
     argTypes: {
         type: {
             control: { type: 'select' },
-            options: ['text', 'number', 'password', 'email'],
+            options: ['text', 'number', 'password', 'email', 'checkbox'],
         },
+        label: {
+            control: { type: 'object' },
+        },
+        customClass: { type: 'text' },
+        inputStyle: { type: 'object' },
         required: {
             control: { type: 'boolean' },
         },
@@ -60,6 +65,12 @@ const Template = (args, { argTypes }) => ({
 export const Primary = Template.bind({});
 Primary.args = {
     type: "text",
+    label: {
+        text: "Label",
+        style: { padding: '0 10px' }
+    },
+    customClass: '',
+    inputStyle: {},
     required: true,
     disabled: false,
     icon: "fa fa-search",
@@ -74,8 +85,8 @@ Primary.args = {
     pattern: "",
     initialValue: "",
     minMaxValue: {
-            min: "10",
-            max: "100",
+        min: "10",
+        max: "100",
     },
     styleObject: {
     },
@@ -83,7 +94,8 @@ Primary.args = {
     id: "",
     placeholder: "input",
     readonly: false,
- };
+    inputStyle: {}
+};
 
 export const Secondary = Template.bind({});
-Secondary.args = {  };
+Secondary.args = {};

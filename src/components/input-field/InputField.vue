@@ -1,5 +1,5 @@
 <template>
-  <div style="display: flex; align-items: center">
+  <div :style="styleObject" :class="customClass">
     <i
       v-if="icon && iconSettings.position == 'left'"
       :class="icon"
@@ -9,6 +9,7 @@
         cursor: iconSettings.clickable ? 'pointer' : 'default',
       }"
     />
+    <span v-if="label.text" :style="label.style">{{ label.text }}</span>
     <input
       class="required"
       :type="type"
@@ -25,7 +26,7 @@
       :max="type == 'number' ? minMaxValue.max : null"
       :pattern="pattern"
       @input="onInput"
-      :style="styleObject"
+      :style="inputStyle"
     />
     <i
       v-if="icon && showPasswordButton"
@@ -57,6 +58,20 @@ export default {
     type: {
       type: String,
       default: "text",
+    },
+    label: {
+      type: Object,
+      default: () => ({
+        text: "",
+        style: {},
+      }),
+    },
+    customClass: {
+      type: String,
+      default: "",
+    },
+    inputStyle: {
+      type: Object
     },
     required: {
       type: Boolean,
@@ -132,12 +147,12 @@ export default {
 </script>
 
 <style scoped>
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
 }
 
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 </style>

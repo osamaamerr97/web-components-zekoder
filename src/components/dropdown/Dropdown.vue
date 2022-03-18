@@ -6,10 +6,12 @@
       :class="showIcon ? 'dropdown-toggle' : ''"
       @click="onToggle($event)"
       :style="buttonStyle"
+      @blur="onToggle($event)"
     >
       {{ label }}
+      <i v-if="customIcon" :class="customIcon"></i>
     </button>
-    <ul v-if="toggle" class="dropdown-menu show" style="padding: 0" :style="listStyle">
+    <ul v-if="toggle" class="dropdown-menu show" style="padding: 0" :style="listStyle" >
       <li
         class="dropdown-item"
         v-for="(item, i) in items"
@@ -17,7 +19,7 @@
         :class="
           selected.includes(item) && selectType != 'Multi' ? 'active' : ''
         "
-        :style="itemStyle"
+        :style="selected.includes(item) ? selectedItemStyle : itemStyle"
         @click="onSelect($event, item)"
       >
         <input
@@ -73,7 +75,7 @@
       </button>
       <div :style="listStyle" v-if="toggle">
         <div
-          :style="selected.includes(item) ? selectedItemStyle : itemStyle"
+          :style="selected.includes(item) && selectType == 'Multi' ? selectedItemStyle : itemStyle"
           v-for="(item, i) in items"
           :key="i"
           href="#"
@@ -96,6 +98,7 @@
 export default {
   name: "ZekDropdown",
   props: {
+    customIcon: String,
     label: {
       type: String,
       required: true,

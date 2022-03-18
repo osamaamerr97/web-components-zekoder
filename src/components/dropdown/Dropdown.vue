@@ -142,11 +142,6 @@ export default {
       selected: ["2"],
     };
   },
-  created() {
-    this.styleObject = {
-      ...this.styleObj,
-    };
-  },
   computed: {
     styleObject() {
       return {

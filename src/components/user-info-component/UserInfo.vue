@@ -78,11 +78,6 @@ export default {
       toggle: false,
     };
   },
-  created() {
-    this.styleObject = {
-      ...this.styleObj,
-    };
-  },
   computed: {
     styleObject() {
       return {

@@ -75,7 +75,8 @@ Primary.args = {
     dropdownLinks: [
         {
             label: 'Link 1',
-            url: 'https://google.com'
+            url: 'https://google.com',
+            icon: 'fas fa-link'
         },
         {
             label: 'Link 2',

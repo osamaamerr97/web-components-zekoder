@@ -1,14 +1,17 @@
 <template>
   <!-- Bootstrap -->
-  <div v-if="theme == 'Bootstrap'" class="dropdown">
+  <div v-if="theme == 'Bootstrap'" class="dropdown" :style="styleObj">
     <button
       class="btn btn-secondary"
       :class="showIcon ? 'dropdown-toggle' : ''"
       @click="onToggle($event)"
+      :style="buttonStyle"
+      @blur="onToggle($event)"
     >
       {{ label }}
+      <i v-if="customIcon" :class="customIcon"></i>
     </button>
-    <ul v-if="toggle" class="dropdown-menu show" style="padding: 0">
+    <ul v-if="toggle" class="dropdown-menu show" style="padding: 0" :style="listStyle" >
       <li
         class="dropdown-item"
         v-for="(item, i) in items"
@@ -16,6 +19,7 @@
         :class="
           selected.includes(item) && selectType != 'Multi' ? 'active' : ''
         "
+        :style="selected.includes(item) ? selectedItemStyle : itemStyle"
         @click="onSelect($event, item)"
       >
         <input
@@ -63,15 +67,15 @@
   </div>
   <!-- Custom -->
   <div :style="styleObj" v-else>
-      <button :style="buttonStyle" @click="onToggle($event)">
-        <span style="display: flex; align-items: center; position: relative">
+      <button style="display: flex; align-items: center; position: relative" :style="buttonStyle" @click="onToggle($event)">
+        <span>
           {{ label }}
           <i v-if="showIcon" class="fa fa-angle-down" :style="iconStyle"></i>
         </span>
       </button>
       <div :style="listStyle" v-if="toggle">
         <div
-          :style="selected.includes(item) ? selectedItemStyle : itemStyle"
+          :style="selected.includes(item) && selectType == 'Multi' ? selectedItemStyle : itemStyle"
           v-for="(item, i) in items"
           :key="i"
           href="#"
@@ -94,6 +98,7 @@
 export default {
   name: "ZekDropdown",
   props: {
+    customIcon: String,
     label: {
       type: String,
       required: true,
@@ -127,15 +132,14 @@ export default {
     selectedItemStyle: {
       type: Object,
     },
+    iconStyle: {
+      type: Object,
+    },
   },
   data() {
     return {
       toggle: false,
       selected: ["2"],
-      iconStyle: {
-        position: "absolute",
-        right: "10px",
-      },
     };
   },
   created() {

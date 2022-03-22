@@ -98,7 +98,7 @@ export default {
                         this.series = { ...this.series, ...data };
                     }
                 });
-                if (this.series) {
+                if (!this.series) {
                     this.noData.text = 'No data available!'
                     this.noData.style.color = 'rgb(255,0,0)';
                 }

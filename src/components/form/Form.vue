@@ -63,14 +63,16 @@ export default {
                                 component: 'input',
                                 data: {
                                     label: 'First Name',
-                                    title: 'firstName',
                                     id: 'firstName',
                                     type: 'text',
                                     placeholder: 'First Name',
                                     required: true,
                                     customClass: 'form-control',
                                     styleObject: {display: 'flex', justifyContent: 'space-between'},
-                                    inputStyle: {width: 'calc(100% - 150px)',outline: 'none'}
+                                    inputStyle: {width: 'calc(100% - 150px)',outline: 'none'},
+                                },
+                                events: {
+                                    input: (input) => this.formData[input.id] = input.value
                                 }
                             },
                         },
@@ -87,6 +89,9 @@ export default {
                                     customClass: 'form-control',
                                     styleObject: {display: 'flex', justifyContent: 'space-between'},
                                     inputStyle: {width: 'calc(100% - 150px)',outline: 'none'}
+                                },
+                                events: {
+                                    input: (input) => this.formData[input.id] = input.value
                                 }
                             },
                         },
@@ -103,6 +108,9 @@ export default {
                                     customClass: 'form-control',
                                     styleObject: {display: 'flex', justifyContent: 'space-between'},
                                     inputStyle: {width: 'calc(100% - 150px)',outline: 'none'}
+                                },
+                                events: {
+                                    input: (input) => this.formData[input.id] = input.value
                                 }
                             },
                         },
@@ -119,6 +127,9 @@ export default {
                                     customClass: 'form-control',
                                     styleObject: {display: 'flex', justifyContent: 'space-between'},
                                     inputStyle: {width: 'calc(100% - 150px)',outline: 'none'}
+                                },
+                                events: {
+                                    input: (input) => this.formData[input.id] = input.value
                                 }
                             },
                         },
@@ -135,6 +146,9 @@ export default {
                                     customClass: 'form-control',
                                     styleObject: {display: 'flex', justifyContent: 'space-between'},
                                     inputStyle: {width: 'calc(100% - 150px)',outline: 'none'}
+                                },
+                                events: {
+                                    input: (input) => this.formData[input.id] = input.value
                                 }
                             },
                         },

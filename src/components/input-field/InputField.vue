@@ -139,7 +139,7 @@ export default {
   computed: {
     value: {
       get() { return this.initialValue },
-      set(value) { this.$emit("input", value) },
+      set(value) { this.$emit("input", {id: this.id, value: value}) },
     }
   },
   methods: {

@@ -1,62 +1,24 @@
 <template>
     <div :style="styleObj">
-        <zek-heading v-if="heading" v-bind="headingProps"></zek-heading>
-        <zek-heading v-if="subheading" v-bind="subheadingProps"></zek-heading>
-        <zek-text v-if="description" v-bind="descProps"></zek-text>
-        <form v-on:submit.prevent="submitForm" action="/" method="">
-            <div class="form-group" v-for="(field,i) in inputs" :key="'field'+i">
-                <label :class="field.name+'-label field-label'" v-if="field.label" :for="field.name+i">{{field.label}} <span class="required-asterik" v-if="field.required">*</span></label>
-                <input v-if="field.type=='short-text'"
-                    :type="field.inputType"
-                    :name="field.name" 
-                    :class="field.customClass"
-                    :placeholder="field.placeholder" 
-                    :id="field.name+i"
-                    :required="field.required"
-                    :style="field.styleObj"
-                    v-model="formData[field.name]"
-                    >
-                <a v-if="field.showPasswordButton" class="show-hide-password" href='javascript:' @click="togglePasswordShowHide(field)">{{field.inputType=='password' ? 'show' : 'hide'}}</a>
-                <textarea v-else-if="field.type=='long-text'" 
-                    :name="field.name"
-                    :placeholder="field.placeholder"
-                    :class="field.customClass"
-                    :id="field.name+i" 
-                    :required="field.required"
-                    v-model="formData[field.name]"
-                    cols="30"
-                    rows="10"></textarea>
-                <input v-else-if="field.type=='number'"
-                    type="number"
-                    :placeholder="field.placeholder"
-                    :class="field.customClass"
-                    :name="field.name"
-                    :id="field.name+i"
-                    :required="field.required"
-                    v-model="formData[field.name]"
-                    >
-            </div>
-
-            <zek-text v-if="successMessage" :text="successMessage" class="text-success"></zek-text>
-            <zek-text v-if="errorMessage" :text="errorMessage" class="text-danger"></zek-text>
-            <zek-button v-if="cancelProps.show" v-bind="cancelProps" @onClick="cancelForm()"></zek-button>            
-            <zek-button v-if="submitProps.show" v-bind="submitProps"></zek-button>            
+        <form v-on:submit.prevent="submitForm" action="/" method>
+            <zek-column-content :column="column" />
         </form>
     </div>
 </template>
 
 <script>
-// import ZekColumnContent from "../column-content/ColumnContent.vue"
+import ZekColumnContent from "../column-content/ColumnContent.vue"
 import ZekButton from "../action-button/ActionButton.vue";
 import ZekHeading from "../heading-block/HeadingBlock.vue";
 import ZekText from "../text-block/TextBlock.vue"
+import ZekInput from "../input-field/InputField.vue"
 export default {
-    components: { ZekButton,ZekHeading,ZekText},
+    components: { ZekColumnContent },
     name: "ZekForm",
     props: {
-        heading: [String,Object], //for object it should be {text:String, headingLevel:Number, styleObj:Object}
-        subheading: [String,Object],
-        description: [String,Object], //for object {text: String, lineBreaks: Number, styleObj: Object}
+        heading: [String, Object], //for object it should be {text:String, headingLevel:Number, styleObj:Object}
+        subheading: [String, Object],
+        description: [String, Object], //for object {text: String, lineBreaks: Number, styleObj: Object}
         inputs: {
             type: Array, //array of objects
             required: true
@@ -72,67 +34,133 @@ export default {
     },
     data() {
         return {
+            column: {
+                rows: [{
+                    columns: [
+                        {
+                            columnWidth: 12,
+                            content: {
+                                component: 'heading',
+                                data: {
+                                    text: 'New User',
+                                    headingLevel: 6
+                                }
+                            },
+                        },
+                        {
+                            columnWidth: 12,
+                            content: {
+                                component: 'text',
+                                data: {
+                                    text: 'Please enter your details below to create an account.',
+                                    lineBreaks: 2
+                                }
+                            },
+                        },
+                        {
+                            columnWidth: 12,
+                            content: {
+                                component: 'input',
+                                data: {
+                                    label: 'First Name',
+                                    title: 'firstName',
+                                    id: 'firstName',
+                                    type: 'text',
+                                    placeholder: 'First Name',
+                                    required: true,
+                                    customClass: 'form-control',
+                                    styleObject: {display: 'flex', justifyContent: 'space-between'},
+                                    inputStyle: {width: 'calc(100% - 150px)',outline: 'none'}
+                                }
+                            },
+                        },
+                        {
+                            columnWidth: 12,
+                            content: {
+                                component: 'input',
+                                data: {
+                                    label: 'Last Name',
+                                    id: 'lastName',
+                                    type: 'text',
+                                    placeholder: 'Last Name',
+                                    required: true,
+                                    customClass: 'form-control',
+                                    styleObject: {display: 'flex', justifyContent: 'space-between'},
+                                    inputStyle: {width: 'calc(100% - 150px)',outline: 'none'}
+                                }
+                            },
+                        },
+                        {
+                            columnWidth: 12,
+                            content: {
+                                component: 'input',
+                                data: {
+                                    label: 'Email',
+                                    id: 'email',
+                                    type: 'email',
+                                    placeholder: 'Email',
+                                    required: true,
+                                    customClass: 'form-control',
+                                    styleObject: {display: 'flex', justifyContent: 'space-between'},
+                                    inputStyle: {width: 'calc(100% - 150px)',outline: 'none'}
+                                }
+                            },
+                        },
+                        {
+                            columnWidth: 12,
+                            content: {
+                                component: 'input',
+                                data: {
+                                    label: 'Password',
+                                    id: 'password',
+                                    type: 'password',
+                                    placeholder: 'Password',
+                                    required: true,
+                                    customClass: 'form-control',
+                                    styleObject: {display: 'flex', justifyContent: 'space-between'},
+                                    inputStyle: {width: 'calc(100% - 150px)',outline: 'none'}
+                                }
+                            },
+                        },
+                        {
+                            columnWidth: 12,
+                            content: {
+                                component: 'input',
+                                data: {
+                                    label: 'Confirm Password',
+                                    id: 'confirmPassword',
+                                    type: 'password',
+                                    placeholder: 'Confirm Password',
+                                    required: true,
+                                    customClass: 'form-control',
+                                    styleObject: {display: 'flex', justifyContent: 'space-between'},
+                                    inputStyle: {width: 'calc(100% - 150px)',outline: 'none'}
+                                }
+                            },
+                        },
+                        {
+                            columnWidth: 12,
+                            content: {
+                                component: 'button',
+                                data: {
+                                    label: 'Submit',
+                                    id: 'submit',
+                                    type: 'submit',
+                                    customClass: 'form-control',
+                                    styleObject: {display: 'flex', justifyContent: 'space-between'},
+                                }
+                            },
+                        },
+                    ]
+                }]
+            },
             formData: {},
             defaultData: {}
         };
     },
-    created() {
-        this.inputs.forEach(input => {
-            this.formData[input.name] = input.value;
-        });
-        this.defaultData = {...{}, ...this.formData};
-    },
-    computed: {
-        headingProps() {
-            return typeof(this.heading)=='string'? {text: this.heading, headingLevel:1} : this.heading;
-        },
-        subheadingProps() {
-            return typeof(this.subheading)=='string'? {text: this.subheading, headingLevel:3} : this.subheading;
-        },
-        descProps() {
-            return typeof(this.description)=='string'? {text: this.description} : this.subheading;
-        },
-        cancelProps() {
-            let props= {
-                theme: this.theme,
-                buttonType: 'button',
-                label: 'Cancel',
-                show: true
-            };
-            if(typeof(this.cancelButton)=='string'){
-                props = { ...props,
-                    label: this.cancelButton,
-                    show: this.cancelButton
-                }
-            } else {
-                props = { ...props,
-                    ...this.cancelButton
-                }
-            }
-            return props
-        },
-        submitProps() {
-            let props= {
-                theme: this.theme,
-                buttonType: 'submit',
-                label: 'Submit',
-                show: true
-            };
-            if(typeof(this.submitButton)=='string'){
-                props = { ...props,
-                    label: this.submitButton,
-                    show: this.submitButton
-                }
-            } else {
-                props = { ...props,
-                    ...this.submitButton
-                }
-            }
-            return props
-        }
-    },
     methods: {
         submitForm() {
+            console.log('submitForm', this.formData);
             this.$emit('submit', this.formData);
 
         },
@@ -141,10 +169,10 @@ export default {
             this.$emit('cancel', this.formData);
         },
         resetForm() {
-            this.formData = {...{}, ...this.defaultData};
+            this.formData = { ...{}, ...this.defaultData };
         },
         togglePasswordShowHide(field) {
-            field.inputType = field.inputType=='password' ? 'text' : 'password';
+            field.inputType = field.inputType == 'password' ? 'text' : 'password';
         }
     }
 };

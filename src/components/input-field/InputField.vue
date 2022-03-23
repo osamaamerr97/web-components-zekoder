@@ -16,7 +16,8 @@
       :name="name"
       :id="id"
       :placeholder="placeholder"
-      :value="initialValue"
+      :value="value"
+      v-model="value"
       :readonly="readonly"
       :required="required"
       :disabled="disabled"
@@ -134,6 +135,12 @@ export default {
       type: Boolean,
       default: false,
     },
+  },
+  computed: {
+    value: {
+      get() { return this.initialValue },
+      set(value) { this.$emit("input", value) },
+    }
   },
   methods: {
     onInput(event) {

@@ -9,7 +9,7 @@
         cursor: iconSettings.clickable ? 'pointer' : 'default',
       }"
     />
-    <span v-if="label.text" :style="label.style">{{ label.text }}</span>
+    <span v-if="label" :style="label.style">{{ label.text || label }}</span>
     <input
       class="required"
       :type="type"
@@ -61,7 +61,7 @@ export default {
       default: "text",
     },
     label: {
-      type: Object,
+      type: [Object, String],
       default: () => ({
         text: "",
         style: {},

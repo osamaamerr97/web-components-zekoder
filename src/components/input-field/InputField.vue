@@ -25,7 +25,7 @@
       :maxlength="type != 'number' ? minMaxValue.max : null"
       :min="type == 'number' ? minMaxValue.min : null"
       :max="type == 'number' ? minMaxValue.max : null"
-      :pattern="pattern"
+      :pattern="pattern ? pattern : null"
       @input="onInput"
       :style="inputStyle"
     />

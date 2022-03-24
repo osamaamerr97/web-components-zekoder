@@ -1,7 +1,7 @@
 <template>
     <div :style="styleObj">
         <form v-on:submit.prevent="submitForm" action="/" method>
-            <zek-column-content :column="column" />
+            <zek-column-content :column="content" />
         </form>
     </div>
 </template>
@@ -34,7 +34,7 @@ export default {
     },
     data() {
         return {
-            column: {
+            content: {
                 rows: [{
                     columns: [
                         {
@@ -43,7 +43,7 @@ export default {
                                 component: 'heading',
                                 data: {
                                     text: 'New User',
-                                    headingLevel: 6
+                                    headingLevel: 1
                                 }
                             },
                         },
@@ -68,8 +68,8 @@ export default {
                                     placeholder: 'First Name',
                                     required: true,
                                     customClass: 'form-control',
-                                    styleObject: {display: 'flex', justifyContent: 'space-between'},
-                                    inputStyle: {width: 'calc(100% - 150px)',outline: 'none'},
+                                    styleObject: {display: 'flex', justifyContent: 'space-between', alignItems: 'center'},
+                                    inputStyle: {width: 'calc(100% - 200px)',outline: 'none'},
                                 },
                                 events: {
                                     input: (input) => this.formData[input.id] = input.value
@@ -87,8 +87,8 @@ export default {
                                     placeholder: 'Last Name',
                                     required: true,
                                     customClass: 'form-control',
-                                    styleObject: {display: 'flex', justifyContent: 'space-between'},
-                                    inputStyle: {width: 'calc(100% - 150px)',outline: 'none'}
+                                    styleObject: {display: 'flex', justifyContent: 'space-between', alignItems: 'center'},
+                                    inputStyle: {width: 'calc(100% - 200px)',outline: 'none'}
                                 },
                                 events: {
                                     input: (input) => this.formData[input.id] = input.value
@@ -106,8 +106,8 @@ export default {
                                     placeholder: 'Email',
                                     required: true,
                                     customClass: 'form-control',
-                                    styleObject: {display: 'flex', justifyContent: 'space-between'},
-                                    inputStyle: {width: 'calc(100% - 150px)',outline: 'none'}
+                                    styleObject: {display: 'flex', justifyContent: 'space-between', alignItems: 'center'},
+                                    inputStyle: {width: 'calc(100% - 200px)',outline: 'none'}
                                 },
                                 events: {
                                     input: (input) => this.formData[input.id] = input.value
@@ -123,10 +123,11 @@ export default {
                                     id: 'password',
                                     type: 'password',
                                     placeholder: 'Password',
+                                    showPasswordButton: true,
                                     required: true,
                                     customClass: 'form-control',
-                                    styleObject: {display: 'flex', justifyContent: 'space-between'},
-                                    inputStyle: {width: 'calc(100% - 150px)',outline: 'none'}
+                                    styleObject: {display: 'flex', justifyContent: 'space-between', alignItems: 'center'},
+                                    inputStyle: {width: 'calc(100% - 200px)',outline: 'none'}
                                 },
                                 events: {
                                     input: (input) => this.formData[input.id] = input.value
@@ -142,10 +143,11 @@ export default {
                                     id: 'confirmPassword',
                                     type: 'password',
                                     placeholder: 'Confirm Password',
+                                    showPasswordButton: true,
                                     required: true,
                                     customClass: 'form-control',
-                                    styleObject: {display: 'flex', justifyContent: 'space-between'},
-                                    inputStyle: {width: 'calc(100% - 150px)',outline: 'none'}
+                                    styleObject: {display: 'flex', justifyContent: 'space-between', alignItems: 'center'},
+                                    inputStyle: {width: 'calc(100% - 200px)',outline: 'none'}
                                 },
                                 events: {
                                     input: (input) => this.formData[input.id] = input.value
@@ -161,7 +163,7 @@ export default {
                                     id: 'submit',
                                     type: 'submit',
                                     customClass: 'form-control',
-                                    styleObject: {display: 'flex', justifyContent: 'space-between'},
+                                    styleObject: {display: 'flex', justifyContent: 'space-between', alignItems: 'center'},
                                 }
                             },
                         },
@@ -184,9 +186,6 @@ export default {
         },
         resetForm() {
             this.formData = { ...{}, ...this.defaultData };
-        },
-        togglePasswordShowHide(field) {
-            field.inputType = field.inputType == 'password' ? 'text' : 'password';
         }
     }
 };

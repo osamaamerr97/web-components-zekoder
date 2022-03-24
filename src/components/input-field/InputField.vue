@@ -62,10 +62,6 @@ export default {
     },
     label: {
       type: [Object, String],
-      default: () => ({
-        text: "",
-        style: {},
-      }),
     },
     customClass: {
       type: String,

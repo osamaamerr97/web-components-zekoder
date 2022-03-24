@@ -20,6 +20,7 @@ import ZekDropdown from './components/dropdown/Dropdown.vue';
 import ZekInput from './components/input-field/InputField.vue';
 import ZekTextarea from './components/textarea/Textarea.vue';
 import ZekUpload from './components/upload-component/Upload.vue';
+import ZekTable from './components/table/Table.vue';
 
 export {
     ZekButton,
@@ -43,5 +44,6 @@ export {
     ZekDropdown,
     ZekInput,
     ZekTextarea,
-    ZekUpload
+    ZekUpload,
+    ZekTable
 }

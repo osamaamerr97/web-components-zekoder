@@ -19,9 +19,9 @@
                 </template>
             </b-table>
             <!-- Pagination -->
-            <div class="align-items-right ">
+            <div v-if="pagination" class="align-items-right ">
                 <p> Showing {{start}} to {{end}} of {{data.length}} items</p>
-                <b-pagination v-if="pagination" v-model="currentPage" :total-rows="data.length" :per-page="pagination.itemsPerPage" align="right"></b-pagination>
+                <b-pagination v-model="currentPage" :total-rows="data.length" :per-page="pagination.itemsPerPage" align="right"></b-pagination>
             </div>
         </div>
     </div>
@@ -64,6 +64,7 @@ export default {
                 label: col.label,
                 sortable: col.sortable || false,
                 thStyle: col.styleObj,
+                tdClass: col.class,
                 component: col.component || null
             }
         });

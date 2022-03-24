@@ -1,6 +1,6 @@
 <template>
     <div :style="styleObj">
-        <form v-on:submit.prevent="submitForm" action="/" method>
+        <form @submit.prevent="submitForm" @reset="cancelForm" action="/" method>
             <zek-column-content :column="content" />
         </form>
     </div>
@@ -68,8 +68,8 @@ export default {
                                     placeholder: 'First Name',
                                     required: true,
                                     customClass: 'form-control',
-                                    styleObject: {display: 'flex', justifyContent: 'space-between', alignItems: 'center'},
-                                    inputStyle: {width: 'calc(100% - 200px)',outline: 'none'},
+                                    styleObject: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' },
+                                    inputStyle: { width: 'calc(100% - 200px)', outline: 'none' },
                                 },
                                 events: {
                                     input: (input) => this.formData[input.id] = input.value
@@ -87,8 +87,8 @@ export default {
                                     placeholder: 'Last Name',
                                     required: true,
                                     customClass: 'form-control',
-                                    styleObject: {display: 'flex', justifyContent: 'space-between', alignItems: 'center'},
-                                    inputStyle: {width: 'calc(100% - 200px)',outline: 'none'}
+                                    styleObject: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' },
+                                    inputStyle: { width: 'calc(100% - 200px)', outline: 'none' }
                                 },
                                 events: {
                                     input: (input) => this.formData[input.id] = input.value
@@ -106,8 +106,8 @@ export default {
                                     placeholder: 'Email',
                                     required: true,
                                     customClass: 'form-control',
-                                    styleObject: {display: 'flex', justifyContent: 'space-between', alignItems: 'center'},
-                                    inputStyle: {width: 'calc(100% - 200px)',outline: 'none'}
+                                    styleObject: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' },
+                                    inputStyle: { width: 'calc(100% - 200px)', outline: 'none' }
                                 },
                                 events: {
                                     input: (input) => this.formData[input.id] = input.value
@@ -126,11 +126,11 @@ export default {
                                     showPasswordButton: true,
                                     required: true,
                                     customClass: 'form-control',
-                                    styleObject: {display: 'flex', justifyContent: 'space-between', alignItems: 'center'},
-                                    inputStyle: {width: 'calc(100% - 200px)',outline: 'none'}
+                                    styleObject: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' },
+                                    inputStyle: { width: 'calc(100% - 200px)', outline: 'none' }
                                 },
                                 events: {
-                                    input: (input) => this.formData[input.id] = input.value
+                                    input: (input) => this.formData[input.id] = input.value,
                                 }
                             },
                         },
@@ -145,9 +145,10 @@ export default {
                                     placeholder: 'Confirm Password',
                                     showPasswordButton: true,
                                     required: true,
+                                    initialValue: '',
                                     customClass: 'form-control',
-                                    styleObject: {display: 'flex', justifyContent: 'space-between', alignItems: 'center'},
-                                    inputStyle: {width: 'calc(100% - 200px)',outline: 'none'}
+                                    styleObject: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' },
+                                    inputStyle: { width: 'calc(100% - 200px)', outline: 'none' },
                                 },
                                 events: {
                                     input: (input) => this.formData[input.id] = input.value
@@ -155,7 +156,7 @@ export default {
                             },
                         },
                         {
-                            columnWidth: 12,
+                            columnWidth: 6,
                             content: {
                                 component: 'button',
                                 data: {
@@ -163,7 +164,19 @@ export default {
                                     id: 'submit',
                                     type: 'submit',
                                     customClass: 'form-control',
-                                    styleObject: {display: 'flex', justifyContent: 'space-between', alignItems: 'center'},
+                                    styleObject: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' },
+                                }
+                            },
+                        },
+                        {
+                            columnWidth: 6,
+                            content: {
+                                component: 'input',
+                                data: {
+                                    id: 'cancel',
+                                    type: 'reset',
+                                    customClass: 'form-control',
+                                    inputStyle: { width: '100%', outline: 'none' }
                                 }
                             },
                         },
@@ -173,6 +186,17 @@ export default {
             formData: {},
             defaultData: {}
         };
+    },
+    created() {
+        this.formData = this.content.rows[0].columns.forEach(
+            (column) => {
+                let content = column.content;
+                if (content.component === 'input' && content.data.type !== 'reset') {
+                    this.defaultData[column.content.data.id] = column.content.data.initialValue ? column.content.data.initialValue : '';
+                }
+            }
+        );
+        this.formData = {...this.defaultData};
     },
     methods: {
         submitForm() {
@@ -185,7 +209,7 @@ export default {
             this.$emit('cancel', this.formData);
         },
         resetForm() {
-            this.formData = { ...{}, ...this.defaultData };
+            this.formData = {...this.defaultData};
         }
     }
 };

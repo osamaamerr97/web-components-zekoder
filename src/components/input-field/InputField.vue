@@ -12,7 +12,7 @@
     <span v-if="label" :style="label.style">{{ label.text || label }}</span>
     <input
       class="required"
-      :type="type"
+      :type="inputType"
       :name="name"
       :id="id"
       :placeholder="placeholder"
@@ -21,19 +21,19 @@
       :readonly="readonly"
       :required="required"
       :disabled="disabled"
-      :minlength="type != 'number' ? minMaxValue.min : null"
-      :maxlength="type != 'number' ? minMaxValue.max : null"
-      :min="type == 'number' ? minMaxValue.min : null"
-      :max="type == 'number' ? minMaxValue.max : null"
+      :minlength="inputType != 'number' ? minMaxValue.min : null"
+      :maxlength="inputType != 'number' ? minMaxValue.max : null"
+      :min="inputType == 'number' ? minMaxValue.min : null"
+      :max="inputType == 'number' ? minMaxValue.max : null"
       :pattern="pattern ? pattern : null"
       @input="onInput"
       :style="inputStyle"
     />
     <i
-      v-if="icon && showPasswordButton"
-      :class="type == 'password' ? 'fa fa-eye-slash' : 'fa fa-eye'"
+      v-if="showPasswordButton"
+      :class="inputType == 'password' ? 'fa fa-eye-slash' : 'fa fa-eye'"
       @click.prevent="
-        type == 'password' ? (type = 'text') : (type = 'password')
+        inputType == 'password' ? (inputType = 'text') : (inputType = 'password')
       "
       :style="{
         ...iconSettings.style,
@@ -136,10 +136,10 @@ export default {
       default: false,
     },
   },
-  computed: {
-    value: {
-      get() { return this.initialValue },
-      set(value) { this.$emit("input", {id: this.id, value: value}) },
+  data() {
+    return {
+      inputType: this.type,
+      value: this.initialValue,
     }
   },
   methods: {
@@ -150,7 +150,12 @@ export default {
       this.iconSettings.clickable ? this.$emit("iconClicked", event) : "";
     },
   },
-};
+  watch: {
+    value(newValue) {
+      this.$emit("input", { id: this.id, value: newValue })
+    }
+  }
+}
 </script>
 
 <style scoped>

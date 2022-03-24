@@ -6,7 +6,7 @@ export default {
     argTypes: {
         type: {
             control: { type: 'select' },
-            options: ['text', 'number', 'password', 'email', 'checkbox'],
+            options: ['text', 'number', 'password', 'email', 'checkbox', 'date'],
         },
         label: {
             control: { type: 'object' },

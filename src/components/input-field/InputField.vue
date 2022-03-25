@@ -1,5 +1,5 @@
 <template>
-  <div :style="styleObject" :class="customClass">
+  <div :style="styleObject">
     <i
       v-if="icon && iconSettings.position == 'left'"
       :class="icon"
@@ -9,10 +9,10 @@
         cursor: iconSettings.clickable ? 'pointer' : 'default',
       }"
     />
-    <span v-if="label" :style="label.style">{{ label.text || label }}</span>
+    <span v-if="label" :style="label.style">{{ label.text || label }}<span class="required-asterik" v-if="required">*</span></span>
     <input
-      class="required"
-      :type="inputType"
+      :class="customClass"
+      :type="actualType"
       :name="name"
       :id="id"
       :placeholder="placeholder"
@@ -21,25 +21,31 @@
       :readonly="readonly"
       :required="required"
       :disabled="disabled"
-      :minlength="inputType != 'number' ? minMaxValue.min : null"
-      :maxlength="inputType != 'number' ? minMaxValue.max : null"
-      :min="inputType == 'number' ? minMaxValue.min : null"
-      :max="inputType == 'number' ? minMaxValue.max : null"
+      :minlength="actualType != 'number' ? minMaxValue.min : null"
+      :maxlength="actualType != 'number' ? minMaxValue.max : null"
+      :min="actualType == 'number' ? minMaxValue.min : null"
+      :max="actualType == 'number' ? minMaxValue.max : null"
       :pattern="pattern ? pattern : null"
       @input="onInput"
       :style="inputStyle"
     />
     <i
-      v-if="showPasswordButton"
-      :class="inputType == 'password' ? 'fa fa-eye-slash' : 'fa fa-eye'"
+      v-if="showPasswordButton && showPasswordButton.type == 'icon'"
+      :class="actualType == 'password' ? 'fa fa-eye-slash' : 'fa fa-eye'"
       @click.prevent="
-        inputType == 'password' ? (inputType = 'text') : (inputType = 'password')
+        actualType == 'password' ? (actualType = 'text') : (actualType = 'password')
       "
       :style="{
         ...iconSettings.style,
         cursor: 'pointer',
       }"
     />
+    <a
+      v-if="showPasswordButton"
+      class="show-hide-password"
+      href="javascript:"
+      @click="actualType == 'password' ? (actualType = 'text') : (actualType = 'password')"
+    >{{ actualType == 'password' ? 'show' : 'hide' }}</a>
     <i
       v-if="icon && iconSettings.position == 'right'"
       :class="icon"
@@ -57,6 +63,10 @@ export default {
   name: "ZekInput",
   props: {
     type: {
+      type: String,
+      default: "short-text",
+    },
+    inputType: {
       type: String,
       default: "text",
     },
@@ -134,8 +144,8 @@ export default {
   },
   data() {
     return {
-      inputType: this.type,
       value: this.initialValue,
+      actualType: this.inputType,
     }
   },
   methods: {
@@ -163,4 +173,16 @@ input[type="number"]::-webkit-outer-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
+.show-hide-password {
+    text-transform: uppercase;
+    position: absolute;
+    right: 15px;
+    font-size: 12px;
+    line-height: 50px;
+}
+.required-asterik {
+    color: red;
+}
+
 </style>

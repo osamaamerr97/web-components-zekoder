@@ -1,7 +1,16 @@
 <template>
     <div :style="styleObj">
+        <zek-heading v-if="heading" v-bind="headingProps"></zek-heading>
+        <zek-heading v-if="subheading" v-bind="subheadingProps"></zek-heading>
+        <zek-text v-if="description" v-bind="descProps"></zek-text>
         <form @submit.prevent="submitForm" @reset="cancelForm" action="/" method>
-            <zek-column-content :column="content" />
+            <div class="form-group">
+                <zek-column-content :column="content()" />
+            </div>
+            <zek-text v-if="successMessage" :text="successMessage" class="text-success"></zek-text>
+            <zek-text v-if="errorMessage" :text="errorMessage" class="text-danger"></zek-text>
+            <zek-button v-if="cancelProps.show" v-bind="cancelProps" @onClick="cancelForm()"></zek-button>
+            <zek-button v-if="submitProps.show" v-bind="submitProps"></zek-button>
         </form>
     </div>
 </template>
@@ -11,9 +20,8 @@ import ZekColumnContent from "../column-content/ColumnContent.vue"
 import ZekButton from "../action-button/ActionButton.vue";
 import ZekHeading from "../heading-block/HeadingBlock.vue";
 import ZekText from "../text-block/TextBlock.vue"
-import ZekInput from "../input-field/InputField.vue"
 export default {
-    components: { ZekColumnContent },
+    components: { ZekColumnContent, ZekButton, ZekHeading, ZekText },
     name: "ZekForm",
     props: {
         heading: [String, Object], //for object it should be {text:String, headingLevel:Number, styleObj:Object}
@@ -32,171 +40,92 @@ export default {
         rememberMe: Boolean,
         styleObj: Object,
     },
+    computed: {
+        headingProps() {
+            return typeof (this.heading) == 'string' ? { text: this.heading, headingLevel: 1 } : this.heading;
+        },
+        subheadingProps() {
+            return typeof (this.subheading) == 'string' ? { text: this.subheading, headingLevel: 3 } : this.subheading;
+        },
+        descProps() {
+            return typeof (this.description) == 'string' ? { text: this.description } : this.subheading;
+        },
+        cancelProps() {
+            let props = {
+                theme: this.theme,
+                buttonType: 'button',
+                label: 'Cancel',
+                show: true
+            };
+            if (typeof (this.cancelButton) == 'string') {
+                props = {
+                    ...props,
+                    label: this.cancelButton,
+                    show: this.cancelButton
+                }
+            } else {
+                props = {
+                    ...props,
+                    ...this.cancelButton
+                }
+            }
+            return props
+        },
+        submitProps() {
+            let props = {
+                theme: this.theme,
+                buttonType: 'submit',
+                label: 'Submit',
+                show: true
+            };
+            if (typeof (this.submitButton) == 'string') {
+                props = {
+                    ...props,
+                    label: this.submitButton,
+                    show: this.submitButton
+                }
+            } else {
+                props = {
+                    ...props,
+                    ...this.submitButton
+                }
+            }
+            return props
+        }
+    },
     data() {
         return {
-            content: {
-                rows: [{
-                    columns: [
-                        {
-                            columnWidth: 12,
-                            content: {
-                                component: 'heading',
-                                data: {
-                                    text: 'New User',
-                                    headingLevel: 1
-                                }
-                            },
-                        },
-                        {
-                            columnWidth: 12,
-                            content: {
-                                component: 'text',
-                                data: {
-                                    text: 'Please enter your details below to create an account.',
-                                    lineBreaks: 2
-                                }
-                            },
-                        },
-                        {
-                            columnWidth: 12,
-                            content: {
-                                component: 'input',
-                                data: {
-                                    label: 'First Name',
-                                    id: 'firstName',
-                                    type: 'text',
-                                    placeholder: 'First Name',
-                                    required: true,
-                                    customClass: 'form-control',
-                                    styleObject: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' },
-                                    inputStyle: { width: 'calc(100% - 200px)', outline: 'none' },
-                                },
-                                events: {
-                                    input: (input) => this.formData[input.id] = input.value
-                                }
-                            },
-                        },
-                        {
-                            columnWidth: 12,
-                            content: {
-                                component: 'input',
-                                data: {
-                                    label: 'Last Name',
-                                    id: 'lastName',
-                                    type: 'text',
-                                    placeholder: 'Last Name',
-                                    required: true,
-                                    customClass: 'form-control',
-                                    styleObject: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' },
-                                    inputStyle: { width: 'calc(100% - 200px)', outline: 'none' }
-                                },
-                                events: {
-                                    input: (input) => this.formData[input.id] = input.value
-                                }
-                            },
-                        },
-                        {
-                            columnWidth: 12,
-                            content: {
-                                component: 'input',
-                                data: {
-                                    label: 'Email',
-                                    id: 'email',
-                                    type: 'email',
-                                    placeholder: 'Email',
-                                    required: true,
-                                    customClass: 'form-control',
-                                    styleObject: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' },
-                                    inputStyle: { width: 'calc(100% - 200px)', outline: 'none' }
-                                },
-                                events: {
-                                    input: (input) => this.formData[input.id] = input.value
-                                }
-                            },
-                        },
-                        {
-                            columnWidth: 12,
-                            content: {
-                                component: 'input',
-                                data: {
-                                    label: 'Password',
-                                    id: 'password',
-                                    type: 'password',
-                                    placeholder: 'Password',
-                                    showPasswordButton: true,
-                                    required: true,
-                                    customClass: 'form-control',
-                                    styleObject: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' },
-                                    inputStyle: { width: 'calc(100% - 200px)', outline: 'none' }
-                                },
-                                events: {
-                                    input: (input) => this.formData[input.id] = input.value,
-                                }
-                            },
-                        },
-                        {
-                            columnWidth: 12,
-                            content: {
-                                component: 'input',
-                                data: {
-                                    label: 'Confirm Password',
-                                    id: 'confirmPassword',
-                                    type: 'password',
-                                    placeholder: 'Confirm Password',
-                                    showPasswordButton: true,
-                                    required: true,
-                                    initialValue: '',
-                                    customClass: 'form-control',
-                                    styleObject: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' },
-                                    inputStyle: { width: 'calc(100% - 200px)', outline: 'none' },
-                                },
-                                events: {
-                                    input: (input) => this.formData[input.id] = input.value
-                                }
-                            },
-                        },
-                        {
-                            columnWidth: 6,
-                            content: {
-                                component: 'button',
-                                data: {
-                                    label: 'Submit',
-                                    id: 'submit',
-                                    type: 'submit',
-                                    customClass: 'form-control',
-                                    styleObject: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' },
-                                }
-                            },
-                        },
-                        {
-                            columnWidth: 6,
-                            content: {
-                                component: 'input',
-                                data: {
-                                    id: 'cancel',
-                                    type: 'reset',
-                                    customClass: 'form-control',
-                                    inputStyle: { width: '100%', outline: 'none' }
-                                }
-                            },
-                        },
-                    ]
-                }]
+            content: () => {
+                let columns = []
+                this.inputs.forEach(input => {
+                    columns.push({
+                        columnWidth: 12,
+                        content: {
+                            component: 'input',
+                            data: input,
+                            events: {
+                                input: (input) => this.formData[input.id] = input.value
+                            }
+                        }
+                    })
+                })
+                return {
+                    rows: [{
+                        columns: columns
+                    }]
+                }
             },
             formData: {},
             defaultData: {}
         };
     },
     created() {
-        this.formData = this.content.rows[0].columns.forEach(
-            (column) => {
-                let content = column.content;
-                if (content.component === 'input' && content.data.type !== 'reset') {
-                    this.defaultData[column.content.data.id] = column.content.data.initialValue ? column.content.data.initialValue : '';
-                }
+        this.formData = this.inputs.forEach(
+            (input) => {
+                this.defaultData[input.id] = input.initialValue ? input.initialValue : '';
             }
         );
-        this.formData = {...this.defaultData};
+        this.formData = { ...this.defaultData };
     },
     methods: {
         submitForm() {
@@ -209,7 +138,7 @@ export default {
             this.$emit('cancel', this.formData);
         },
         resetForm() {
-            this.formData = {...this.defaultData};
+            this.formData = { ...this.defaultData };
         }
     }
 };

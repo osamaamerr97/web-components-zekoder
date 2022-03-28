@@ -14,7 +14,11 @@ export default {
         showLimitIndicator: {
             control: { type: 'boolean' },
         },
-        value: {
+        label: {
+            control: { type: 'object' },
+        },
+        customClass: { type: 'text' },
+        initialValue: {
             control: { type: 'text' },
         },
         minMaxValue: {
@@ -57,7 +61,8 @@ Primary.args = {
     required: true,
     disabled: false,
     showLimitIndicator: true,
-    value: "",
+    label: "Label",
+    initialValue: "",
     minMaxValue: {
         min: "10",
         max: "100",

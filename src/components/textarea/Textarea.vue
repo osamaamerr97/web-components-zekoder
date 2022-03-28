@@ -1,6 +1,8 @@
 <template>
-  <div style="position: relative">
+  <div style="position: relative" :style="styleObject">
+    <span v-if="label" :style="label.style">{{ label.text || label }}<span class="required-asterik" v-if="required">*</span></span>
     <textarea
+      :class="customClass"
       :name="name"
       :id="id"
       :placeholder="placeholder"
@@ -10,7 +12,6 @@
       :minlength="minMaxValue.min"
       :maxlength="minMaxValue.max"
       @change="onChange"
-      :style="styleObject"
       :form="form"
       v-model="value"
     />
@@ -24,6 +25,13 @@
 export default {
   name: "ZekTextarea",
   props: {
+    label: {
+      type: [Object, String],
+    },
+    customClass: {
+      type: String,
+      default: "",
+    },
     required: {
       type: Boolean,
       default: false,
@@ -36,7 +44,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    value: {
+    initialValue: {
       type: String,
       default: "",
     },
@@ -76,13 +84,29 @@ export default {
       default: () => ({}),
     },
   },
+    data() {
+    return {
+      value: this.initialValue,
+    }
+  },
   methods: {
     onChange(event) {
       this.$emit("onChange", this.value);
     },
   },
+  watch: {
+    value(newValue) {
+      this.$emit("input", { id: this.id, value: newValue })
+    }
+  }
 };
 </script>
 
 <style scoped>
+.required-asterik {
+    color: red;
+}
+textarea{
+  resize: none;
+}
 </style>

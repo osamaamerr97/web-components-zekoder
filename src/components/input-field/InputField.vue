@@ -16,7 +16,6 @@
       :name="name"
       :id="id"
       :placeholder="placeholder"
-      :value="value"
       v-model="value"
       :readonly="readonly"
       :required="required"

@@ -69,6 +69,12 @@
         v-bind="column.content.data"
         v-on="column.content.events"
     ></zek-input>
+    <zek-textarea
+        @click="stopPropagation($event)"
+        v-else-if="column && column.content && column.content.component == 'textarea'"
+        v-bind="column.content.data"
+        v-on="column.content.events"
+    ></zek-textarea>
 
 
 </template>
@@ -85,6 +91,7 @@ import ZekVideo from "../video/Video.vue";
 import ZekRadioButton from "../radio-button/RadioButton.vue";
 import ZekDropdown from "../dropdown/Dropdown.vue";
 import ZekInput from "../input-field/InputField.vue";
+import ZekTextarea from "../textarea/Textarea.vue";
 
 export default {
     components: {
@@ -98,7 +105,8 @@ export default {
         ZekVideo,
         ZekRadioButton,
         ZekDropdown,
-        ZekInput
+        ZekInput,
+        ZekTextarea
     },
     name: "ZekColumnContent",
     props: {

@@ -101,7 +101,7 @@ export default {
                     columns.push({
                         columnWidth: 12,
                         content: {
-                            component: 'input',
+                            component: input.type == 'long-text' ? 'textarea' : 'input',
                             data: input,
                             events: {
                                 input: (input) => this.formData[input.id] = input.value

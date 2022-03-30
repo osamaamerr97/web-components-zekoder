@@ -3,7 +3,7 @@
   <div v-if="theme == 'Bootstrap'" class="dropdown" :style="styleObj">
     <button
       class="btn btn-secondary"
-      :class="showIcon ? 'dropdown-toggle' : ''"
+      :class="showIcon ? 'dropdown-toggle' : 'dropdown-toggle no-caret'"
       @click="onToggle($event)"
       :style="buttonStyle"
       @blur="onToggle($event)"
@@ -17,9 +17,9 @@
         v-for="(item, i) in items"
         :key="i"
         :class="
-          selected.includes(item) && selectType != 'Multi' ? 'active' : ''
+          selected.includes(item.value || item) && selectType != 'Multi' ? 'active' : ''
         "
-        :style="selected.includes(item) ? selectedItemStyle : itemStyle"
+        :style="selected.includes(item.value || item) ? selectedItemStyle : itemStyle"
         @click="onSelect($event, item)"
       >
         <input
@@ -31,8 +31,9 @@
           id="flexCheckDefault"
         />
         <label class="form-check-label" for="flexCheckDefault">
-          {{ item }}
+          {{ item.text || item }}
         </label>
+         <i v-if="item.icon" :class="item.icon"></i>
       </li>
     </ul>
   </div>
@@ -41,7 +42,7 @@
     <v-menu
       offset-y
       :style="styleObj"
-      :close-on-content-click="selectType == 'Single'"
+      :close-on-content-click="selectType.toLowerCase() == 'single'"
     >
       <template v-slot:activator="{ on, attrs }">
         <v-btn v-bind="attrs" v-on="on">
@@ -103,10 +104,11 @@ export default {
       type: String,
       required: true,
     },
-    items: {
+    items: { // [{text,value},{text,value}] or [text,text]
       type: Array,
       required: true,
     },
+    value: [String, Array],
     selectType: {
       type: String,
     },
@@ -139,8 +141,14 @@ export default {
   data() {
     return {
       toggle: false,
-      selected: ["2"],
+      selected: [], //selected 
     };
+  },
+  created() {
+    if(this.value) {
+        this.selected  = typeof this.value == 'object'? this.value : [this.value];
+    }
+
   },
   computed: {
     styleObject() {
@@ -151,9 +159,8 @@ export default {
   },
   methods: {
     onSelect(event, item) {
-      if (this.selectType == "Single") {
-        this.selected = [item];
-        this.toggle = false;
+      if (this.selectType.toLowerCase() == "single") {
+        this.selected = [item.value || item];
       } else {
         if (this.selected.includes(item)) {
           this.selected.splice(this.selected.indexOf(item), 1);
@@ -161,13 +168,20 @@ export default {
           this.selected.push(item);
         }
       }
-      console.log(this.selected);
-      this.$emit("onSelect", event);
+      this.$emit("onSelect", this.selected);
     },
     onToggle(event) {
-      this.toggle = !this.toggle;
+      setTimeout(()=> {
+          this.toggle = !this.toggle;
+      },300)
       this.$emit("onToggle", event);
     },
   },
 };
 </script>
+
+<style scoped>
+.no-caret:after{
+    content: none;
+}
+</style>

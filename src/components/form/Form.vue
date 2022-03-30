@@ -104,7 +104,7 @@ export default {
                             component: input.type == 'long-text' ? 'textarea' : 'input',
                             data: input,
                             events: {
-                                input: (input) => this.formData[input.id] = input.value
+                                onInput: (e) => this.formData[input.name] = e.target.value
                             }
                         }
                     })

@@ -25,7 +25,7 @@
       :min="actualType == 'number' ? minMaxValue.min : null"
       :max="actualType == 'number' ? minMaxValue.max : null"
       :pattern="pattern ? pattern : null"
-      @input="onInput"
+      @change="onInput"
       :style="inputStyle"
     />
     <i

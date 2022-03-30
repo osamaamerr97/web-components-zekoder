@@ -104,7 +104,7 @@ export default {
                             component: input.type == 'long-text' ? 'textarea' : 'input',
                             data: input,
                             events: input.type == 'long-text' ?  {
-                                onChange: (e) => this.formData[input.name] = e.target.value
+                                onChange: (e) => this.formData[input.name] = e
                             } : {
                                 onInput: (e) => this.formData[input.name] = e.target.value
                                 }

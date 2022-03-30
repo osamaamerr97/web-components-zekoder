@@ -4,7 +4,7 @@
         <zek-heading v-if="subheading" v-bind="subheadingProps"></zek-heading>
         <zek-text v-if="description" v-bind="descProps"></zek-text>
         <form @submit.prevent="submitForm" @reset="cancelForm" action="/" method>
-            <div class="form-group position-relative">
+            <div class="form-group">
                 <zek-column-content :column="content()" />
             </div>
             <zek-text v-if="successMessage" :text="successMessage" class="text-success"></zek-text>

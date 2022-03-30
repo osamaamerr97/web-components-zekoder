@@ -122,7 +122,9 @@ export default {
     },
     styleObject: {
       type: Object,
-      default: () => ({}),
+      default: () => ({
+        position: "relative"
+      }),
     },
     name: {
       type: String,
@@ -176,7 +178,7 @@ input[type="number"] {
 .show-hide-password {
     text-transform: uppercase;
     position: absolute;
-    right: 15px;
+    right: 0;
     font-size: 12px;
     line-height: 50px;
 }

@@ -1,5 +1,5 @@
 <template>
-  <div :style="styleObject" :class="customClass">
+  <div :style="styleObject">
     <i
       v-if="icon && iconSettings.position == 'left'"
       :class="icon"
@@ -9,36 +9,42 @@
         cursor: iconSettings.clickable ? 'pointer' : 'default',
       }"
     />
-    <span v-if="label.text" :style="label.style">{{ label.text }}</span>
+    <span v-if="label" :style="label.style">{{ label.text || label }}<span class="required-asterik" v-if="required">*</span></span>
     <input
-      class="required"
-      :type="type"
+      :class="customClass"
+      :type="actualType"
       :name="name"
       :id="id"
       :placeholder="placeholder"
-      :value="initialValue"
+      v-model="value"
       :readonly="readonly"
       :required="required"
       :disabled="disabled"
-      :minlength="type != 'number' ? minMaxValue.min : null"
-      :maxlength="type != 'number' ? minMaxValue.max : null"
-      :min="type == 'number' ? minMaxValue.min : null"
-      :max="type == 'number' ? minMaxValue.max : null"
-      :pattern="pattern"
-      @input="onInput"
+      :minlength="actualType != 'number' ? minMaxValue.min : null"
+      :maxlength="actualType != 'number' ? minMaxValue.max : null"
+      :min="actualType == 'number' ? minMaxValue.min : null"
+      :max="actualType == 'number' ? minMaxValue.max : null"
+      :pattern="pattern ? pattern : null"
+      @change="onInput"
       :style="inputStyle"
     />
     <i
-      v-if="icon && showPasswordButton"
-      :class="type == 'password' ? 'fa fa-eye-slash' : 'fa fa-eye'"
+      v-if="showPasswordButton && showPasswordButton.type == 'icon'"
+      :class="actualType == 'password' ? 'fa fa-eye-slash' : 'fa fa-eye'"
       @click.prevent="
-        type == 'password' ? (type = 'text') : (type = 'password')
+        actualType == 'password' ? (actualType = 'text') : (actualType = 'password')
       "
       :style="{
         ...iconSettings.style,
         cursor: 'pointer',
       }"
     />
+    <a
+      v-if="showPasswordButton"
+      class="show-hide-password"
+      href="javascript:"
+      @click="actualType == 'password' ? (actualType = 'text') : (actualType = 'password')"
+    >{{ actualType == 'password' ? 'show' : 'hide' }}</a>
     <i
       v-if="icon && iconSettings.position == 'right'"
       :class="icon"
@@ -57,14 +63,14 @@ export default {
   props: {
     type: {
       type: String,
+      default: "short-text",
+    },
+    inputType: {
+      type: String,
       default: "text",
     },
     label: {
-      type: Object,
-      default: () => ({
-        text: "",
-        style: {},
-      }),
+      type: [Object, String],
     },
     customClass: {
       type: String,
@@ -116,7 +122,9 @@ export default {
     },
     styleObject: {
       type: Object,
-      default: () => ({}),
+      default: () => ({
+        position: "relative"
+      }),
     },
     name: {
       type: String,
@@ -135,6 +143,12 @@ export default {
       default: false,
     },
   },
+  data() {
+    return {
+      value: this.initialValue,
+      actualType: this.inputType,
+    }
+  },
   methods: {
     onInput(event) {
       this.$emit("onInput", event);
@@ -143,7 +157,12 @@ export default {
       this.iconSettings.clickable ? this.$emit("iconClicked", event) : "";
     },
   },
-};
+  watch: {
+    value(newValue) {
+      this.$emit("input", { id: this.id, value: newValue })
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -155,4 +174,16 @@ input[type="number"]::-webkit-outer-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
+.show-hide-password {
+    text-transform: uppercase;
+    position: absolute;
+    right: 0;
+    font-size: 12px;
+    line-height: 50px;
+}
+.required-asterik {
+    color: red;
+}
+
 </style>

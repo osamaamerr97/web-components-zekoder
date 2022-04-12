@@ -30,7 +30,7 @@
         password: Object,
         showForgotLink: Boolean,
         showRememberMe: Boolean,
-        loginButton: [String, Boolean],
+        loginButton: [String, Object],
         image: Object,
         webAuthConfig: Object,
         firebaseConfig: Object,
@@ -113,9 +113,9 @@
             const auth = getAuth();
             signInWithEmailAndPassword(auth, data['email'], data['password'])
             .then((userCredential) => {
-                this.$emit('onLoginSuccess', userCredential);
                 localStorage.setItem('userInfo', JSON.stringify(userCredential.user));
                 this.error = '';
+                this.$emit('onLoginSuccess', userCredential);
             })
             .catch((error) => {
                 this.$emit('onLoginError', error);

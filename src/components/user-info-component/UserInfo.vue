@@ -28,7 +28,7 @@
       style="cursor: pointer"
     />
     <div v-if="toggle" class="user-info-dropdown" :style="dropdownStyleObj">
-      <a v-for="(link, i) in dropdownLinks" :key="i" :href="link.url" :style="dropdownLinkStyle">
+      <a v-for="(link, i) in dropdownLinks" :key="i" :href="link.url" :style="dropdownLinkStyle" @click="$emit('linkClicked',link)" >
         <i v-if="link.icon" :class="link.icon" style="color: inherit"/>
         {{link.label}}
         </a>

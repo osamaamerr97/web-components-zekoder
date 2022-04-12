@@ -9,7 +9,7 @@
         <div
             v-for="(row,i) in cardContent.rows"
             :key="'row'+ i"
-            class="row no-gutters"
+            class="row g-0"
             :style="row.styleObj"
         >
             <div

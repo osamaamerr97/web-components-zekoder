@@ -2,7 +2,7 @@
     <div :class="customClass" :style="styleObj">
         <zek-text v-if="label" v-bind="labelProps"></zek-text>
         <div v-for="(item,i) in items" :key="item.value" :class="radioClasses">
-            <input class="form-check-input" type="radio" :name="name" :id="name+'-'+i" :value="item.value" :checked="item.checked" :disabled="item.disabled">
+            <input class="form-check-input" type="radio" :name="name" :id="name+'-'+i" :value="item.value" :checked="item.checked" :disabled="item.disabled" @change="onChange(item)">
             <label class="form-check-label" :for="name+'-'+i">
                 {{item.text}}
             </label>
@@ -41,15 +41,8 @@
         }
     },
     methods: {
-        clicked(event) {
-            this.$emit('onClick', event);
-            if( this.url ) {
-                if ( this.url[0] == '/' ) {
-                    this.$router.push(this.url);
-                } else {
-                    window.location.assign(this.url);
-                }
-            }
+        onChange(item) {
+            this.$emit('onInput', item);
         }
     }
   }

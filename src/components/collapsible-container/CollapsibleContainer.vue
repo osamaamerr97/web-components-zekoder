@@ -43,12 +43,11 @@ export default {
         headerIcon: String,
         customClass: String,
         headerStyles: Object,
+        collapsed: {
+            type: Boolean,
+            default: false
+        },
         styleObj: Object,
-    },
-    data() {
-        return {
-            collapsed: false
-        }
     }
 };
 </script>

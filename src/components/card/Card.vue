@@ -9,14 +9,17 @@
         <div
             v-for="(row,i) in cardContent.rows"
             :key="'row'+ i"
-            class="row g-0"
+            class="row"
+            :class="row.class"
             :style="row.styleObj"
+            :id="row.id+''"
         >
             <div
                 v-for="(col,i) in row.columns"
                 :key="'col'+i"
-                :class="col.columnWidth ? 'col-'+col.columnWidth : 'col'"
+                :class="(col.columnWidth ? 'col-'+col.columnWidth : 'col') + ' ' + (col.class||'')"
                 :style="col.styleObj"
+                :id="col.id||''"
             >
                 <zek-column-content v-if="col" :column="col"></zek-column-content>
             </div>
@@ -26,9 +29,7 @@
 </template>
 
 <script>
-import ZekColumnContent from "../column-content/ColumnContent.vue"
 export default {
-    components: { ZekColumnContent},
     name: "ZekCard",
     props: {
         backgroundColor: String,
@@ -44,6 +45,9 @@ export default {
             default: 0
         },
         styleObj: Object,
+    },
+    beforeCreate() {
+        this.$options.components.ZekColumnContent = require("../column-content/ColumnContent.vue").default;
     },
     data() {
         return {

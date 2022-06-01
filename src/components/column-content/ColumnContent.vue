@@ -1,8 +1,8 @@
 <template>
 
-    <div v-if="column && column.rows && column.rows.length" class="row">
-        <div v-for="(row,i) in column.rows" :key="'row'+i" class="row">
-            <div v-for="(col,i) in row.columns" :key="'col'+i" :class="col.columnWidth ? 'col-'+col.columnWidth : 'col'">
+    <div v-if="column && column.rows && column.rows.length" class="">
+        <div v-for="(row,i) in column.rows" :key="'row'+i" class="row" :id="row.id" :class="row.class">
+            <div v-for="(col,i) in row.columns" :key="'col'+i" :class="(col.columnWidth ? 'col-'+col.columnWidth : 'col')+' '+(col.class || '')" :id="col.id">
                 <zek-column-content :column="col"></zek-column-content>
             </div>
         </div>
@@ -75,7 +75,27 @@
         v-bind="column.content.data"
         v-on="column.content.events"
     ></zek-textarea>
-
+    <zek-card
+        v-else-if="column && column.content && column.content.component == 'card'"
+        v-bind="column.content.data"
+        v-on="column.content.events"
+    ></zek-card>
+    <zek-collapsible-container
+        v-else-if="column && column.content && column.content.component == 'collapsible-container'"
+        v-bind="column.content.data"
+        v-on="column.content.events"
+    ></zek-collapsible-container>
+    <zek-table
+        v-else-if="column && column.content && column.content.component == 'table'"
+        v-bind="column.content.data"
+        v-on="column.content.events"
+    ></zek-table>
+    <component 
+        v-else-if="column && column.content && column.content.type == 'custom'" 
+        :is="column.content.component"
+        v-bind="column.content.data"
+        v-on="column.content.events"
+    ></component>
 
 </template>
 
@@ -92,6 +112,9 @@ import ZekRadioButton from "../radio-button/RadioButton.vue";
 import ZekDropdown from "../dropdown/Dropdown.vue";
 import ZekInput from "../input-field/InputField.vue";
 import ZekTextarea from "../textarea/Textarea.vue";
+import ZekCard from "../card/Card.vue";
+import ZekCollapsibleContainer from "../collapsible-container/CollapsibleContainer.vue";
+import ZekTable from "../table/Table.vue"
 
 export default {
     components: {
@@ -106,7 +129,10 @@ export default {
         ZekRadioButton,
         ZekDropdown,
         ZekInput,
-        ZekTextarea
+        ZekTextarea,
+        ZekCard,
+        ZekCollapsibleContainer,
+        ZekTable
     },
     name: "ZekColumnContent",
     props: {

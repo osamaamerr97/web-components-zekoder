@@ -2,7 +2,7 @@
     <div :style="styleObject" class="zek-sidebar d-flex align-items-center">
         <li v-if="allowExpandCollapse" class="link-container">
             <a
-                :title="collapsed ? 'Collapse' : 'Expand'"
+                :title="isCollapsed ? 'Collapse' : 'Expand'"
                 class="link"
                 @click="onCollapse"
             >
@@ -13,43 +13,46 @@
             </a>
         </li>
         <div class="zek-sidebar-links">
-            <li
-                v-for="(link, i) in links"
-                :key="i"
-                class="link-container"
-                @mouseover="link.isHovering = true"
-                @mouseout="link.isHovering = false"
-                :class="
-                    (link.isActive && activeClass) || link.isHovering
-                        ? [activeClass]
-                        : ''
-                "
-            >
-                <a
-                    :href="link.url"
-                    :title="link.tooltip"
-                    class="link"
-                    :style="
-                        link.isActive && activeColor
-                            ? { color: activeColor }
+            <div v-for="(sec,i) in sections" :key="i">
+                
+                <li
+                    v-for="(link, i) in sec.links"
+                    :key="i"
+                    class="link-container"
+                    @mouseover="link.isHovering = true"
+                    @mouseout="link.isHovering = false"
+                    :class="
+                        (link.isActive && activeClass) || link.isHovering
+                            ? [activeClass]
                             : ''
                     "
                 >
-                    <i
-                        v-if="link.icon && link.iconType !== 'custom'"
-                        class="icon"
-                        :class="link.icon"
-                    ></i>
-                    <img
-                        v-else-if="link.icon && link.iconType === 'custom'"
-                        class="icon"
-                        :src="link.icon"
-                    />
-                    <span v-if="link.label && !collapsed">{{
-                        link.label
-                    }}</span>
-                </a>
-            </li>
+                    <a
+                        :href="link.url"
+                        :title="link.tooltip"
+                        class="link"
+                        :style="
+                            link.isActive && activeColor
+                                ? { color: activeColor }
+                                : ''
+                        "
+                    >
+                        <i
+                            v-if="link.icon && link.iconType !== 'custom'"
+                            class="icon"
+                            :class="link.icon"
+                        ></i>
+                        <img
+                            v-else-if="link.icon && link.iconType === 'custom'"
+                            class="icon"
+                            :src="link.icon"
+                        />
+                        <span v-if="link.label && !isCollapsed">{{
+                            link.label
+                        }}</span>
+                    </a>
+                </li>
+            </div>
         </div>
     </div>
 </template>
@@ -76,6 +79,10 @@ export default {
         links: {
             type: Array,
         },
+        sections: {
+            type: Array, // [{links, type, label, icon, collapsable}]
+            default: () => []
+        },
         activeClass: {
             type: String,
         },
@@ -86,10 +93,10 @@ export default {
             type: Object,
         },
     },
-    created() {
-        this.styleObject = {
-            ...this.styleObj,
-        };
+    data() {
+        return {
+            isCollapsed: this.collapsed
+        }
     },
     created() {
         this.styleObject = {
@@ -100,11 +107,20 @@ export default {
             backgroundColor:
                 this.backgroundColor || this.styleObj.backgroundColor || "",
         };
+        if((!this.sections.length) && this.links && this.links.length) {
+            this.sections.push(
+                {
+                    links: this.links
+                }
+            )
+
+        }
     },
     methods: {
         onCollapse(event) {
-            this.collapsed = !this.collapsed;
-            this.$emit("onExpandCollapse", this.collapsed);
+            this.isCollapsed = !this.isCollapsed;
+            this.styleObject.width = this.isCollapsed ? this.collapsedWidth : this.width || this.styleObj.width || "";
+            this.$emit("onExpandCollapse", this.isCollapsed);
         },
     },
 };
@@ -114,6 +130,7 @@ export default {
 .zek-sidebar {
     height: 100%;
     overflow-y: auto;
+    flex-direction: column;
 }
 .zek-sidebar-links {
     padding: 0 10px;

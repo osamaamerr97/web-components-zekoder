@@ -124,7 +124,7 @@ export default {
     created() {
         this.formData = this.inputs.forEach(
             (input) => {
-                this.defaultData[input.id] = input.initialValue ? input.initialValue : '';
+                this.defaultData[input.name] = input.initialValue ? input.initialValue : '';
             }
         );
         this.formData = { ...this.defaultData };

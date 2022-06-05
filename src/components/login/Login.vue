@@ -17,6 +17,7 @@
 <script>
   import ZekForm from "../form/Form.vue";
   import auth0 from 'auth0-js';
+  import * as axios from 'axios';
   import { initializeApp } from 'firebase/app';
   import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
@@ -107,6 +108,8 @@
                 this.auth0Login(data);
             } else if (this.fireBase) {
                 this.firebaseLogin(data);
+            } else {
+                this.defaultLogin(data);
             }
         },
         firebaseLogin(data) {
@@ -138,6 +141,24 @@
                     this.error = '';
                 }
             }); 
+        },
+        defaultLogin(data){
+            axios({
+                method: 'post',
+                url: 'https://zkdoer-zeauth-dev-kacxkbhvxa-uc.a.run.app/signin',
+                data
+            })
+            .then((res) => {
+                localStorage.setItem('userInfo', JSON.stringify(res.data));
+                this.error = '';
+                this.$emit('onLoginSuccess', res.data);
+            })
+            .catch((error) => {
+                this.$emit('onLoginError', error);
+                const errorCode = error.code;
+                // const errorMessage = error.message;
+                this.error = errorCode;
+            });
         },
         cancel() {
             this.error = '';

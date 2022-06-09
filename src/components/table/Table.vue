@@ -14,7 +14,7 @@
                 <template v-if="showRowIndex" #cell(index)="data"> {{data.index + 1}} </template>    
                 <!-- Show custom column content if component property exists-->
                 <template #cell()="data">
-                    <component v-if="data.field.component" :is="data.field.component" :row="data.item"></component>
+                    <component v-if="data.field.component" :is="data.field.component" :row="data.item" @customEvent="emitTableEvent($event)"></component>
                     <span v-else> {{data.value}}</span>
                 </template>
             </b-table>
@@ -120,6 +120,9 @@ export default {
             } else {
                 this.$refs.bTable.clearSelected();
             }
+        },
+        emitTableEvent(data){
+            this.$emit('tableRowEvent',data);
         }
     },
 }

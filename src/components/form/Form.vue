@@ -91,7 +91,26 @@ export default {
                 }
             }
             return props
-        }
+        },
+        formData() {
+            let obj = {};
+            this.inputs.forEach( 
+                (input) => {
+                    obj[input.name] = input.initialValue || '';
+                }
+            )
+            return {...obj}
+        },
+        defaultData() {
+            let obj = {};
+            this.inputs.forEach(
+                (input) => {
+                    obj[input.name] = input.initialValue || '';
+                }
+            )
+            return {...obj}
+        },
+        
     },
     data() {
         return {
@@ -106,7 +125,7 @@ export default {
                             events: input.type == 'long-text' ?  {
                                 onChange: (e) => this.formData[input.name] = e
                             } : {
-                                onInput: (e) => this.formData[input.name] = e.target.value
+                                onInput: (e) => this.formData[input.name] = input.inputType=='checkbox' ? e.target.checked : e.target.value
                                 }
                         }
                     })
@@ -116,19 +135,17 @@ export default {
                         columns: columns
                     }]
                 }
-            },
-            formData: {},
-            defaultData: {}
+            }
         };
     },
-    created() {
-        this.formData = this.inputs.forEach(
-            (input) => {
-                this.defaultData[input.name] = input.initialValue ? input.initialValue : '';
-            }
-        );
-        this.formData = { ...this.defaultData };
-    },
+    // created() {
+    //     this.formData = this.inputs.forEach(
+    //         (input) => {
+    //             this.defaultData[input.name] = input.initialValue ? input.initialValue : '';
+    //         }
+    //     );
+    //     this.formData = { ...this.defaultData };
+    // },
     methods: {
         submitForm() {
             console.log('submitForm', this.formData);

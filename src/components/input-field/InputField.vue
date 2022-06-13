@@ -110,7 +110,7 @@ export default {
       default: "",
     },
     initialValue: {
-      type: String,
+      type: [String,Number,Boolean],
       default: "",
     },
     minMaxValue: {

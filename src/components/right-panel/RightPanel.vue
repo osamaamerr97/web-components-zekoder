@@ -2,6 +2,7 @@
     <div class="right-panel-container">
         <div :class="show ? 'right-panel p-4 active':'right-panel p-4'">
             <ZekForm
+                v-if="showForm"
                 v-bind="formProps"
                 @submit="$emit('submit', $event)"
                 @cancel="$emit('cancel', $event)"
@@ -20,6 +21,22 @@ export default {
     props: {
         show: Boolean,
         formProps: Object
+    },
+    data() {
+        return {
+            showForm: false
+        }
+    },
+    watch: {
+        show: function(newVal) {
+            if(newVal) {
+                this.showForm = true;
+            } else {
+                setTimeout(() => {
+                    this.showForm = false;
+                }, 700);
+            }
+        }
     }
 }
 </script>

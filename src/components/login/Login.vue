@@ -117,6 +117,7 @@
             signInWithEmailAndPassword(auth, data['email'], data['password'])
             .then((userCredential) => {
                 localStorage.setItem('userInfo', JSON.stringify(userCredential.user));
+                localStorage.setItem('accessToken', userCredential.user.stsTokenManager.accessToken);
                 this.error = '';
                 this.$emit('onLoginSuccess', userCredential);
             })
@@ -145,11 +146,12 @@
         defaultLogin(data){
             axios({
                 method: 'post',
-                url: 'https://zkdoer-zeauth-dev-kacxkbhvxa-uc.a.run.app/signin',
+                url: 'https://zkdoer-zeauth-dev-kacxkbhvxa-uc.a.run.app/users/login',
                 data
             })
             .then((res) => {
                 localStorage.setItem('userInfo', JSON.stringify(res.data));
+                localStorage.setItem('accessToken', res.data);
                 this.error = '';
                 this.$emit('onLoginSuccess', res.data);
             })

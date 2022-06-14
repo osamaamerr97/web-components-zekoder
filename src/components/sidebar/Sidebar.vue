@@ -13,7 +13,7 @@
             </a>
         </li>
         <div class="zek-sidebar-links">
-            <div v-for="(sec,i) in sections" :key="i">
+            <template v-for="(sec) in sections">
                 
                 <li
                     v-for="(link, i) in sec.links"
@@ -27,8 +27,8 @@
                             : ''
                     "
                 >
-                    <a
-                        :href="link.url"
+                    <NuxtLink
+                        :to="link.url"
                         :title="link.tooltip"
                         class="link"
                         :style="
@@ -50,9 +50,9 @@
                         <span v-if="link.label && !isCollapsed">{{
                             link.label
                         }}</span>
-                    </a>
+                    </NuxtLink>
                 </li>
-            </div>
+            </template>
         </div>
     </div>
 </template>
@@ -130,7 +130,6 @@ export default {
 .zek-sidebar {
     height: 100%;
     overflow-y: auto;
-    flex-direction: column;
 }
 .zek-sidebar-links {
     padding: 0 10px;

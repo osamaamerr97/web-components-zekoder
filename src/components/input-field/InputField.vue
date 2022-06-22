@@ -20,6 +20,7 @@
       :readonly="readonly"
       :required="required"
       :disabled="disabled"
+      :autocomplete="autocomplete"
       :minlength="actualType != 'number' ? minMaxValue.min : null"
       :maxlength="actualType != 'number' ? minMaxValue.max : null"
       :min="actualType == 'number' ? minMaxValue.min : null"
@@ -141,6 +142,10 @@ export default {
     readonly: {
       type: Boolean,
       default: false,
+    },
+    autocomplete: {
+      type: String,
+      default: "on",
     },
   },
   data() {

@@ -146,12 +146,12 @@
         defaultLogin(data){
             axios({
                 method: 'post',
-                url: 'https://zkdoer-zeauth-dev-kacxkbhvxa-uc.a.run.app/users/login',
+                url: 'https://zkdoer-zeauth-dev-kacxkbhvxa-uc.a.run.app/login',
                 data
             })
             .then((res) => {
-                localStorage.setItem('userInfo', JSON.stringify(res.data));
-                localStorage.setItem('accessToken', res.data);
+                localStorage.setItem('userInfo', JSON.stringify(res.data.user));
+                localStorage.setItem('accessToken', res.data.accessToken);
                 this.error = '';
                 this.$emit('onLoginSuccess', res.data);
             })

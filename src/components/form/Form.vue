@@ -118,7 +118,7 @@ export default {
                 let columns = []
                 this.inputs.forEach(input => {
                     columns.push({
-                        columnWidth: 12,
+                        columnWidth: input.columnWidth || 12,
                         content: {
                             component: input.type == 'long-text' ? 'textarea' : 'input',
                             data: input,
@@ -148,7 +148,6 @@ export default {
     // },
     methods: {
         submitForm() {
-            console.log('submitForm', this.formData);
             this.$emit('submit', this.formData);
 
         },

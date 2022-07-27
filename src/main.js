@@ -22,6 +22,7 @@ import ZekTextarea from './components/textarea/Textarea.vue';
 import ZekUpload from './components/upload-component/Upload.vue';
 import ZekTable from './components/table/Table.vue';
 import ZekRightPanel from './components/right-panel/RightPanel.vue';
+import ZekSignup from './components/signup/Signup.vue';
 
 export {
     ZekButton,
@@ -47,5 +48,6 @@ export {
     ZekTextarea,
     ZekUpload,
     ZekTable,
-    ZekRightPanel
+    ZekRightPanel,
+    ZekSignup
 }

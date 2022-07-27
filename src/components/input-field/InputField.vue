@@ -26,6 +26,7 @@
       :min="actualType == 'number' ? minMaxValue.min : null"
       :max="actualType == 'number' ? minMaxValue.max : null"
       :pattern="pattern ? pattern : null"
+      :title="title"
       @change="onInput"
       :style="inputStyle"
     />
@@ -147,6 +148,7 @@ export default {
       type: String,
       default: "on",
     },
+    title: String
   },
   data() {
     return {

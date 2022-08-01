@@ -1,7 +1,18 @@
 <template>
     <div class="row" :style="styleObj">
         <div class="col">
-            <div class="row social-login"></div>
+            <template v-if="socialIcons && socialIcons.length">
+                <div class="row social-login">
+                    <div class="col social-icon" :class="social.label" v-for="(social, i) in socialIcons" :key="i" :title="social.label" :style="social.styleObj">
+                        <i v-if="social.icon" :class="social.icon" @click.prevent="$emit('socialIconClicked',social.label)"></i>
+                        <img v-else-if="social.image" :src="social.image" :alt="social.label">
+                    </div>
+                </div>
+                <div class="row or">
+                    <p>or</p>
+                    <div class="line"></div> 
+                </div>
+            </template>
             <div class="row">
                 <zek-form
                     class="col-12"
@@ -16,8 +27,6 @@
                     @submit="signup($event)"
                     @cancel="cancel()"
                 ></zek-form>
-            </div>
-            <div class="row captcha">
             </div>
         </div>
     </div>
@@ -80,15 +89,8 @@
                     customClass: 'password',
                     placeholder: 'Please enter your password',
                     label: 'Password',
-                    required: true,
-                },
-                {
-                    name: 'confirm_password',
-                    type: 'short-text',
-                    inputType: 'password',
-                    customClass: 'confirm-password',
-                    placeholder: 'Please confirm your password',
-                    label: 'Confirm Password',
+                    showConfirmation: true,
+                    confirmationLabel: 'Confirm Password',
                     required: true,
                 },
                 {
@@ -102,19 +104,14 @@
                 }
             ]}
         },
-        created() {
-
-        },
         signupButton: [String, Object],
-        showSocialIcons: Boolean,
-        showCaptcha: Boolean,
+        socialIcons: Array, // [{icon: '', image:'', label:''}]
         styleObj: Object
     },
     data() {
-        const data = {
+        return {
             error: '',
-        }
-        return data;
+        };
     },
     computed:{
         submitButton() {
@@ -141,14 +138,8 @@
     },
     methods:{
         signup(data) {
-            let confirmIndex = this.inputs.findIndex(obj => obj.name=='confirm_password');
-            if (confirmIndex>-1) {
-                this.inputs[confirmIndex]['pattern'] = data.password;
-            }
             delete data.confirm_password;
             delete data.tnc;
-            console.log(data);
-            return;
             this.$emit('beforeSignup',data);
             axios({
                 method: 'post',
@@ -172,4 +163,24 @@
   }
 </script>
 
-<style></style>
+<style lang="scss">
+.or{
+    text-align: center;
+    justify-content: center;
+    .line {
+        height: 2px;
+        background: #CBCBD4;
+        margin-bottom: 20px;
+    }
+    p {
+        position: relative;
+        top: 30px;
+        background: #fff;
+        display: inline-block;
+        padding: 0 10px;
+        width: initial;
+        font-size: 22px;
+        font-weight: 700;
+    }
+}
+</style>

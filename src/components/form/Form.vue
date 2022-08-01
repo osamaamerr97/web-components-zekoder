@@ -117,25 +117,62 @@ export default {
             content: () => {
                 let columns = []
                 this.inputs.forEach(input => {
+                    if(input.type == 'captcha') {
+                        this.captchaVerified = false;
+                    } 
                     columns.push({
                         columnWidth: input.columnWidth || 12,
                         content: {
-                            component: input.type == 'long-text' ? 'textarea' : 'input',
+                            component: input.type == 'long-text' ? 'textarea' : input.type == 'captcha'? 'captcha' : 'input',
                             data: input,
                             events: input.type == 'long-text' ?  {
                                 onChange: (e) => this.formData[input.name] = e
-                            } : {
+                            } : 
+                            input.type == 'captcha' ? {
+                                onVerify: () => {this.captchaVerified = true;},
+                                onExpired: () => {this.captchaVerified = false;}
+                            } :
+                            {
                                 onInput: (e) => this.formData[input.name] = input.inputType=='checkbox' ? e.target.checked : e.target.value
-                                }
+                            }
                         }
                     })
+                    if(input.inputType == 'password' && input.showConfirmation) {
+                        columns.push({
+                            columnWidth: input.columnWidth || 12,
+                            content: {
+                                component: 'input',
+                                data: {
+                                    ...input,
+                                    name: 'confirm_password',
+                                    id: 'confirm-password',
+                                    label: input.confirmationLabel || 'Confirm Password',
+                                    placeholder: 'Please confirm your password',
+                                    title:'Both passwords should match',
+                                    customClass: 'confirm-password'
+                                },
+                                events: {
+                                    onInput: (e) => {
+                                        if( e.target.value != this.formData[input.name] ) {
+                                            e.target.setCustomValidity('Passwords do no match');
+                                        } 
+                                        else {
+                                            e.target.setCustomValidity('');
+                                        }
+
+                                    }
+                                }
+                            }
+                        })
+                    }
                 })
                 return {
                     rows: [{
                         columns: columns
                     }]
                 }
-            }
+            },
+            captchaVerified: true
         };
     },
     // created() {
@@ -148,6 +185,11 @@ export default {
     // },
     methods: {
         submitForm() {
+            if(!this.captchaVerified) {
+                this.errorMessage = 'Please verify reCaptcha before proceeding';
+                return;
+            }
+            this.errorMessage = '';
             this.$emit('submit', this.formData);
 
         },

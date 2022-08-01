@@ -96,6 +96,13 @@
         v-bind="column.content.data"
         v-on="column.content.events"
     ></component>
+    <div
+        v-else-if="column && column.content && column.content.component == 'captcha'"
+        v-bind="column.content.data"
+        v-on="column.content.events"
+    >
+        <vue-recaptcha ref="recaptcha" @verify="column.content.events.onVerify" @expired="column.content.events.onExpired" :loadRecaptchaScript="true" :sitekey="column.content.data.siteKey"></vue-recaptcha>
+    </div>
 
 </template>
 
@@ -114,7 +121,8 @@ import ZekInput from "../input-field/InputField.vue";
 import ZekTextarea from "../textarea/Textarea.vue";
 import ZekCard from "../card/Card.vue";
 import ZekCollapsibleContainer from "../collapsible-container/CollapsibleContainer.vue";
-import ZekTable from "../table/Table.vue"
+import ZekTable from "../table/Table.vue";
+import VueRecaptcha from '../../../node_modules/vue-recaptcha/dist/vue-recaptcha.es';
 
 export default {
     components: {
@@ -132,7 +140,8 @@ export default {
         ZekTextarea,
         ZekCard,
         ZekCollapsibleContainer,
-        ZekTable
+        ZekTable,
+        VueRecaptcha
     },
     name: "ZekColumnContent",
     props: {

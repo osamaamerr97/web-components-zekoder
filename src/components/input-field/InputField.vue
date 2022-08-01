@@ -9,7 +9,10 @@
         cursor: iconSettings.clickable ? 'pointer' : 'default',
       }"
     />
-    <span v-if="label" :style="label.style">{{ label.text || label }}<span class="required-asterik" v-if="required">*</span></span>
+    <span v-if="label" :style="label.style">
+        <span v-html="label.html || label.text || label" ></span>
+        <span class="required-asterik" v-if="required">*</span>
+    </span>
     <input
       :class="customClass"
       :type="actualType"

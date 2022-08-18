@@ -2,15 +2,17 @@
     <div class="row" :style="styleObj">
         <div class="col">
             <template v-if="socialIcons && socialIcons.length">
-                <div class="row social-login">
-                    <div class="col social-icon" :class="social.label" v-for="(social, i) in socialIcons" :key="i" :title="social.label" :style="social.styleObj">
+                <div class="social-login">
+                    <div class="social-icon" :class="social.label" v-for="(social, i) in socialIcons" :key="i" :title="social.label" :style="social.styleObj">
                         <i v-if="social.icon" :class="social.icon" @click.prevent="$emit('socialIconClicked',social.label)"></i>
                         <img v-else-if="social.image" :src="social.image" :alt="social.label">
                     </div>
                 </div>
                 <div class="row or">
-                    <p>or</p>
-                    <div class="line"></div> 
+                    <div class="col-8 col-offset-2">
+                        <p>or</p>
+                        <div class="line"></div> 
+                    </div>
                 </div>
             </template>
             <div class="row">
@@ -164,7 +166,14 @@
 </script>
 
 <style lang="scss">
-.or{
+.social-icon {
+    &:hover {
+        cursor: pointer;
+    }
+}
+.or {
+    margin-top: -17px;
+    margin-bottom: 5px;
     text-align: center;
     justify-content: center;
     .line {

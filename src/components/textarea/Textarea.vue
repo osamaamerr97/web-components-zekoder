@@ -102,7 +102,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .required-asterik {
     color: red;
 }

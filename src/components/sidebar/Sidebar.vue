@@ -126,7 +126,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .zek-sidebar {
     height: 100%;
     overflow-y: auto;

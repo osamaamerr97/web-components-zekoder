@@ -180,7 +180,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .no-caret:after{
     content: none;
 }

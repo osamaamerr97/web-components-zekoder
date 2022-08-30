@@ -1,3 +1,4 @@
+import "./set-public-path";
 import ZekButton from './components/action-button/ActionButton.vue';
 import ZekCard from './components/card/Card.vue';
 import ZekCardsList from './components/cards-list/CardsList.vue';

@@ -108,7 +108,7 @@ export default {
   },
 };
 </script>
-<style scoped>
+<style scoped lang="scss">
 .wrapper {
   display: flex;
   justify-content: space-between;

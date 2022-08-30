@@ -48,7 +48,7 @@
   }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 
 .justify input{
     margin-left: 10px;

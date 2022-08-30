@@ -163,7 +163,7 @@
   }
 </script>
 
-<style lang="scss">
+<style>
 .or{
     text-align: center;
     justify-content: center;

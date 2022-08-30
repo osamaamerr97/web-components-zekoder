@@ -10,7 +10,7 @@ module.exports = (webpackConfigEnv) => {
   });
 
   const config = merge(defaultConfig, {
-    module: {
+    module: { 
       rules: [
         {
           test: /\.vue$/,

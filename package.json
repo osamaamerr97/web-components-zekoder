@@ -16,7 +16,7 @@
   ],
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build-via-webpack": "webpack --mode=production",
+    "build:webpack": "webpack --mode=production",
     "build-app": "vue-cli-service build",
     "build": "vue-cli-service build --target lib --name zekoder-web-components src/main.js",
     "buildBasic": "vue-cli-service build --target lib --dest dist/basic --name basic-components src/basic-components/main.js",

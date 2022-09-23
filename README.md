@@ -27,3 +27,9 @@ npm run storybook
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+## Deploy Token
+
+*Username:* `gitlab+deploy-token-904475`
+*Token:* `nHTz2hByW11bNUKxgK5p`
+

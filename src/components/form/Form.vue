@@ -3,60 +3,30 @@
         <zek-heading v-if="heading" v-bind="headingProps"></zek-heading>
         <zek-heading v-if="subheading" v-bind="subheadingProps"></zek-heading>
         <zek-text v-if="description" v-bind="descProps"></zek-text>
-        <form v-on:submit.prevent="submitForm" action="/" method="">
-            <div class="form-group" v-for="(field,i) in inputs" :key="'field'+i">
-                <label :class="field.name+'-label field-label'" v-if="field.label" :for="field.name+i">{{field.label}} <span class="required-asterik" v-if="field.required">*</span></label>
-                <input v-if="field.type=='short-text'"
-                    :type="field.inputType"
-                    :name="field.name" 
-                    :class="field.customClass"
-                    :placeholder="field.placeholder" 
-                    :id="field.name+i"
-                    :required="field.required"
-                    :style="field.styleObj"
-                    v-model="formData[field.name]"
-                    >
-                <a v-if="field.showPasswordButton" class="show-hide-password" href='javascript:' @click="togglePasswordShowHide(field)">{{field.inputType=='password' ? 'show' : 'hide'}}</a>
-                <textarea v-else-if="field.type=='long-text'" 
-                    :name="field.name"
-                    :placeholder="field.placeholder"
-                    :class="field.customClass"
-                    :id="field.name+i" 
-                    :required="field.required"
-                    v-model="formData[field.name]"
-                    cols="30"
-                    rows="10"></textarea>
-                <input v-else-if="field.type=='number'"
-                    type="number"
-                    :placeholder="field.placeholder"
-                    :class="field.customClass"
-                    :name="field.name"
-                    :id="field.name+i"
-                    :required="field.required"
-                    v-model="formData[field.name]"
-                    >
+        <form @submit.prevent="submitForm" @reset="cancelForm" action="/" method>
+            <div class="form-group">
+                <zek-column-content :column="content()" />
             </div>
-
             <zek-text v-if="successMessage" :text="successMessage" class="text-success"></zek-text>
-            <zek-text v-if="errorMessage" :text="errorMessage" class="text-danger"></zek-text>
-            <zek-button v-if="cancelProps.show" v-bind="cancelProps" @onClick="cancelForm()"></zek-button>            
-            <zek-button v-if="submitProps.show" v-bind="submitProps"></zek-button>            
+            <zek-text v-if="errorMessage || internalError" :text="errorMessage||internalError" class="text-danger"></zek-text>
+            <zek-button v-if="cancelProps.show" v-bind="cancelProps" @onClick="cancelForm()"></zek-button>
+            <zek-button v-if="submitProps.show" v-bind="submitProps"></zek-button>
         </form>
     </div>
 </template>
 
 <script>
-// import ZekColumnContent from "../column-content/ColumnContent.vue"
+import ZekColumnContent from "../column-content/ColumnContent.vue"
 import ZekButton from "../action-button/ActionButton.vue";
 import ZekHeading from "../heading-block/HeadingBlock.vue";
 import ZekText from "../text-block/TextBlock.vue"
 export default {
-    components: { ZekButton,ZekHeading,ZekText},
+    components: { ZekColumnContent, ZekButton, ZekHeading, ZekText },
     name: "ZekForm",
     props: {
-        heading: [String,Object], //for object it should be {text:String, headingLevel:Number, styleObj:Object}
-        subheading: [String,Object],
-        description: [String,Object], //for object {text: String, lineBreaks: Number, styleObj: Object}
+        heading: [String, Object], //for object it should be {text:String, headingLevel:Number, styleObj:Object}
+        subheading: [String, Object],
+        description: [String, Object], //for object {text: String, lineBreaks: Number, styleObj: Object}
         inputs: {
             type: Array, //array of objects
             required: true
@@ -70,70 +40,149 @@ export default {
         rememberMe: Boolean,
         styleObj: Object,
     },
-    data() {
-        return {
-            formData: {},
-            defaultData: {}
-        };
-    },
-    created() {
-        this.inputs.forEach(input => {
-            this.formData[input.name] = input.value;
-        });
-        this.defaultData = {...{}, ...this.formData};
-    },
     computed: {
         headingProps() {
-            return typeof(this.heading)=='string'? {text: this.heading, headingLevel:1} : this.heading;
+            return typeof (this.heading) == 'string' ? { text: this.heading, headingLevel: 1 } : this.heading;
         },
         subheadingProps() {
-            return typeof(this.subheading)=='string'? {text: this.subheading, headingLevel:3} : this.subheading;
+            return typeof (this.subheading) == 'string' ? { text: this.subheading, headingLevel: 3 } : this.subheading;
         },
         descProps() {
-            return typeof(this.description)=='string'? {text: this.description} : this.subheading;
+            return typeof (this.description) == 'string' ? { text: this.description } : this.subheading;
         },
         cancelProps() {
-            let props= {
+            let props = {
                 theme: this.theme,
                 buttonType: 'button',
                 label: 'Cancel',
                 show: true
             };
-            if(typeof(this.cancelButton)=='string'){
-                props = { ...props,
+            if (typeof (this.cancelButton) == 'string') {
+                props = {
+                    ...props,
                     label: this.cancelButton,
                     show: this.cancelButton
                 }
             } else {
-                props = { ...props,
+                props = {
+                    ...props,
                     ...this.cancelButton
                 }
             }
             return props
         },
         submitProps() {
-            let props= {
+            let props = {
                 theme: this.theme,
                 buttonType: 'submit',
                 label: 'Submit',
                 show: true
             };
-            if(typeof(this.submitButton)=='string'){
-                props = { ...props,
+            if (typeof (this.submitButton) == 'string') {
+                props = {
+                    ...props,
                     label: this.submitButton,
                     show: this.submitButton
                 }
             } else {
-                props = { ...props,
+                props = {
+                    ...props,
                     ...this.submitButton
                 }
             }
             return props
-        }
+        },
+        formData() {
+            let obj = {};
+            this.inputs.forEach( 
+                (input) => {
+                    obj[input.name] = input.initialValue || '';
+                }
+            )
+            return {...obj}
+        },
+        defaultData() {
+            let obj = {};
+            this.inputs.forEach(
+                (input) => {
+                    obj[input.name] = input.initialValue || '';
+                }
+            )
+            return {...obj}
+        },
+        
+    },
+    data() {
+        return {
+            content: () => {
+                let columns = []
+                this.inputs.forEach(input => {
+                    if(input.type == 'captcha') {
+                        this.captchaVerified = false;
+                    } 
+                    columns.push({
+                        columnWidth: input.columnWidth || 12,
+                        content: {
+                            component: input.type == 'long-text' ? 'textarea' : input.type == 'captcha'? 'captcha' : 'input',
+                            data: input,
+                            events: input.type == 'long-text' ?  {
+                                onChange: (e) => this.formData[input.name] = e
+                            } : 
+                            input.type == 'captcha' ? {
+                                onVerify: () => {this.captchaVerified = true;},
+                                onExpired: () => {this.captchaVerified = false;}
+                            } :
+                            {
+                                onInput: (e) => this.formData[input.name] = input.inputType=='checkbox' ? e.target.checked : e.target.value
+                            }
+                        }
+                    })
+                    if(input.inputType == 'password' && input.showConfirmation) {
+                        columns.push({
+                            columnWidth: input.columnWidth || 12,
+                            content: {
+                                component: 'input',
+                                data: {
+                                    ...input,
+                                    name: 'confirm_password',
+                                    id: 'confirm-password',
+                                    label: input.confirmationLabel || 'Confirm Password',
+                                    placeholder: 'Please confirm your password',
+                                    title:'Both passwords should match',
+                                    customClass: 'confirm-password'
+                                },
+                                events: {
+                                    onInput: (e) => {
+                                        if( e.target.value != this.formData[input.name] ) {
+                                            e.target.setCustomValidity('Passwords do no match');
+                                        } 
+                                        else {
+                                            e.target.setCustomValidity('');
+                                        }
+
+                                    }
+                                }
+                            }
+                        })
+                    }
+                })
+                return {
+                    rows: [{
+                        columns: columns
+                    }]
+                }
+            },
+            captchaVerified: true,
+            internalError: ''
+        };
     },
     methods: {
         submitForm() {
-            console.log(this.formData);
+            if(!this.captchaVerified) {
+                this.internalError = 'Please verify reCaptcha before proceeding';
+                return;
+            }
+            this.internalError = '';
             this.$emit('submit', this.formData);
 
         },
@@ -142,27 +191,13 @@ export default {
             this.$emit('cancel', this.formData);
         },
         resetForm() {
-            this.formData = {...{}, ...this.defaultData};
-        },
-        togglePasswordShowHide(field) {
-            field.inputType = field.inputType=='password' ? 'text' : 'password';
+            this.formData = { ...this.defaultData };
         }
     }
 };
 </script>
 
-<style scoped>
-.zek-card {
-  width: 100%;
-  background-color: var(--background-color);
-  box-sizing: border-box;
-}
-.zek-card:hover {
-  background-color: var(--hover-background-color);
-}
-.zek-card > .zek-card-content {
-  padding: 10px;
-}
+<style scoped lang="scss">
 .show-hide-password {
     text-transform: uppercase;
     position: absolute;

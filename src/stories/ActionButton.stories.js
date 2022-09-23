@@ -7,58 +7,61 @@ export default {
     // More on argTypes: https://storybook.js.org/docs/vue/api/argtypes
     argTypes: {
         size: {
-          control: 'select',
-          options: ['small', 'medium', 'large', 'block'],
+            control: 'select',
+            options: ['small', 'medium', 'large', 'block'],
         },
         type: {
-          control: 'select' ,
-          options: ['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark', 'link', 'raised']
+            control: 'select' ,
+            options: ['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark', 'link', 'raised']
         },
         theme: {
-          control: 'select',
-          options: ['material', 'bootstrap', 'custom']
+            control: 'select',
+            options: ['material', 'bootstrap', 'custom']
         },
         disabled: {
-          control: 'boolean'
+            control: 'boolean'
         },
         active: {
-          control: 'boolean'
+            control: 'boolean'
         },
         loading: {
-          control: 'boolean'
+            control: 'boolean'
         },
         outlineButton: {
-          control: 'boolean'
+            control: 'boolean'
         }
         
-      },
-  };
+    },
+};
 
 
-  const Template = (args, { argTypes }) => ({
+const Template = (args, { argTypes }) => ({
     // Components used in your story `template` are defined in the `components` object
     components: { ZekButton },
     props: Object.keys(argTypes),
     // And then the `args` are bound to your component with `v-bind="args"`
     template: '<zek-button v-bind="$props"></zek-button>',
-  });
+});
 
-  export const Primary = Template.bind({});
+export const Primary = Template.bind({});
 // More on args: https://storybook.js.org/docs/vue/writing-stories/args
 Primary.args = {
-  theme: '', 
-  label: '',
-  icon: '',
-  url: '',
-  size: '',
-  type: '',
-  disabled: false,
-  loading: false,
-  active: false,
-  outlineButton: false,
-  iconTrailing: false,
-  styleObj: {
-    "textTransform": "capitalize",
-    "textAlign": "center"
-  }
+    theme: 'bootstrap', 
+    label: 'My button',
+    icon: '',
+    url: '',
+    size: '',
+    type: '',
+    disabled: false,
+    loading: false,
+    active: false,
+    outlineButton: false,
+    iconTrailing: false,
+    styleObj: {
+        "textTransform": "capitalize",
+        "textAlign": "center"
+    }
 };
+
+export const Wireframe = Template.bind({});
+Wireframe.args = {};

@@ -6,8 +6,21 @@
         @mouseenter="cardHovered($event)"
         @mouseleave="onHoverOut()"
     >
-        <div v-for="(row,i) in cardContent.rows" :key="'row'+ i" class="row">
-            <div v-for="(col,i) in row.columns" :key="'col'+i" :class="col.columnWidth ? 'col-'+col.columnWidth : 'col'">
+        <div
+            v-for="(row,i) in cardContent.rows"
+            :key="'row'+ i"
+            class="row"
+            :class="row.class"
+            :style="row.styleObj"
+            :id="row.id+''"
+        >
+            <div
+                v-for="(col,i) in row.columns"
+                :key="'col'+i"
+                :class="(col.columnWidth ? 'col-'+col.columnWidth : 'col') + ' ' + (col.class||'')"
+                :style="col.styleObj"
+                :id="col.id||''"
+            >
                 <zek-column-content v-if="col" :column="col"></zek-column-content>
             </div>
         </div>
@@ -16,9 +29,7 @@
 </template>
 
 <script>
-import ZekColumnContent from "../column-content/ColumnContent.vue"
 export default {
-    components: { ZekColumnContent},
     name: "ZekCard",
     props: {
         backgroundColor: String,
@@ -35,6 +46,9 @@ export default {
         },
         styleObj: Object,
     },
+    beforeCreate() {
+        this.$options.components.ZekColumnContent = require("../column-content/ColumnContent.vue").default;
+    },
     data() {
         return {
             cardContent: {},
@@ -43,22 +57,15 @@ export default {
     },
     created() {
         this.styleObject = {
-        ...this.styleObj,
-        };
-        this.cardContent = this.content;
-    },
-    computed: {
-        styleObject() {
-        return {
             ...this.styleObj,
             "--background-color": this.backgroundColor || '',
             "--hover-background-color": this.hoverBackgroundColor || this.backgroundColor || '',
         };
-        },
+        this.cardContent = this.content;
     },
     methods: {
         cardClicked(event) {
-            if(!this.cardFlipped && this.flipOn == 'click' && this.flipContent && this.flipContent.rows && this.flipContent.rows.length){ 
+            if(!this.cardFlipped && this.flipOn == 'click' && this.flipContent && this.flipContent.rows && this.flipContent.rows.length){
                 this.cardContent = this.flipContent;
                 this.cardFlipped = true;
 
@@ -68,25 +75,30 @@ export default {
             } else {
                 this.$emit('onClick', event);
             }
-            
+
         },
         cardHovered(event) {
-            if(this.flipOn == 'hover' && this.flipContent && this.flipContent.rows && this.flipContent.rows.length){ 
+            if(this.flipOn == 'hover' && this.flipContent && this.flipContent.rows && this.flipContent.rows.length){
                 this.cardContent = this.flipContent;
             } else {
                 this.$emit('onHover', event);
             }
         },
         onHoverOut() {
-            if(this.flipOn == 'hover' && this.flipContent){ 
+            if(this.flipOn == 'hover' && this.flipContent){
                 this.cardContent = this.content;
             }
+        }
+    },
+    watch: {
+        content: function(newVal) {
+            this.cardContent = newVal;
         }
     }
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .zek-card {
   width: 100%;
   background-color: var(--background-color);

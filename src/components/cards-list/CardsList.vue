@@ -75,7 +75,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .cards-list {
     display: flex;
     overflow: auto;

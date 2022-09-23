@@ -8,7 +8,7 @@
                 <zek-column-content :column="content()" />
             </div>
             <zek-text v-if="successMessage" :text="successMessage" class="text-success"></zek-text>
-            <zek-text v-if="errorMessage" :text="errorMessage" class="text-danger"></zek-text>
+            <zek-text v-if="errorMessage || internalError" :text="errorMessage||internalError" class="text-danger"></zek-text>
             <zek-button v-if="cancelProps.show" v-bind="cancelProps" @onClick="cancelForm()"></zek-button>
             <zek-button v-if="submitProps.show" v-bind="submitProps"></zek-button>
         </form>
@@ -172,24 +172,17 @@ export default {
                     }]
                 }
             },
-            captchaVerified: true
+            captchaVerified: true,
+            internalError: ''
         };
     },
-    // created() {
-    //     this.formData = this.inputs.forEach(
-    //         (input) => {
-    //             this.defaultData[input.name] = input.initialValue ? input.initialValue : '';
-    //         }
-    //     );
-    //     this.formData = { ...this.defaultData };
-    // },
     methods: {
         submitForm() {
             if(!this.captchaVerified) {
-                this.errorMessage = 'Please verify reCaptcha before proceeding';
+                this.internalError = 'Please verify reCaptcha before proceeding';
                 return;
             }
-            this.errorMessage = '';
+            this.internalError = '';
             this.$emit('submit', this.formData);
 
         },

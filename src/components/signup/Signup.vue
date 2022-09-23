@@ -24,6 +24,7 @@
                     :submitButton="submitButton"
                     :cancelButton="{show:false}"
                     :errorMessage="error"
+                    :successMessage="success"
                     @submit="signup($event)"
                     @cancel="cancel()"
                 ></zek-form>
@@ -104,13 +105,15 @@
                 }
             ]}
         },
+        url: String,
         signupButton: [String, Object],
         socialIcons: Array, // [{icon: '', image:'', label:''}]
-        styleObj: Object
+        styleObj: Object,
+        error: String,
+        success: String
     },
     data() {
         return {
-            error: '',
         };
     },
     computed:{
@@ -140,10 +143,12 @@
         signup(data) {
             delete data.confirm_password;
             delete data.tnc;
+            delete data.undefined;
             this.$emit('beforeSignup',data);
             axios({
                 method: 'post',
-                url: 'https://zkdoer-zeauth-dev-kacxkbhvxa-uc.a.run.app/signup',
+                url: this.url || 'https://zkdoer-zeauth-dev-kacxkbhvxa-uc.a.run.app/signup',
+                data
             })
             .then((res) => {
                 this.error = '';
@@ -151,8 +156,6 @@
             })
             .catch((error) => {
                 this.$emit('onSignupError', error);
-                const errorCode = error.code;
-                this.error = errorCode;
             });
            
         },

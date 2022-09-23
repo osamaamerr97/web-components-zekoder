@@ -11,9 +11,10 @@ dev build:
   before_script:
     - npm install
   script:
-    - npm run build:webpack
+    - npm run build
   only:
-    - styleguide
+    - dev
+    - merge_requests
   artifacts:
     paths:
       - dist
@@ -22,6 +23,7 @@ dev deploy:
     stage: deploy
     image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
     script:
-      - aws s3 sync dist/ s3://${BUCKET_NAME}/     
+      - aws s3 sync dist/ s3://${BUCKET_NAME}/    
     only:
-      - styleguide
+      - dev
+      - merge_requests

@@ -10,7 +10,7 @@ export default {
           control: 'select',
           options: ['material', 'bootstrap', 'custom']
         },
-
+        
       },
   };
 
@@ -59,14 +59,7 @@ Primary.args = {
         placeholder: 'Enter last name',
         label: 'Last Name',
         inputType: 'text'
-    },
-    {
-        name: 'lname',
-        type: 'long-text',
-        value: '',
-        placeholder: 'Enter last name',
-        label: 'Last Name',
-    },
+    }
   ],
   submitButton: 'Proceed', //for string it is button label, for object it should be {show:true, label:'Submit', styleObj: {}}
   cancelButton: {

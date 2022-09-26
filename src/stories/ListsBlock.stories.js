@@ -46,11 +46,9 @@ Primary.args = {
     type: 'unordered',
     styleObj: {
         "color": "#000000",
-        "fontSize": "14px",
+        "fontSize": "24px",
         "textTransform": "capitalize",
         "textDecoration": "underline"
     }
- };
 
-export const Wireframe = Template.bind({});
-Wireframe.args = {};
+ };

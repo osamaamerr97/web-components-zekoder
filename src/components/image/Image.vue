@@ -128,7 +128,7 @@
   }
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 
 .image-container {
     position: relative;

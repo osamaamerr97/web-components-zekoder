@@ -52,7 +52,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
     .zek-cc-header-icon {
         margin-top: 4px;
     }

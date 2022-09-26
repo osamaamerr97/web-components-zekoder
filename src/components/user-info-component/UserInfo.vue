@@ -93,7 +93,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .user-info-container {
   display: flex;
   align-items: center;

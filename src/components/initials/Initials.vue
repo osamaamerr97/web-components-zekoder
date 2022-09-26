@@ -39,7 +39,7 @@
   }
 </script>
 
-<style>
+<style lang="scss">
     .initials {
         margin: 0 auto;
         text-align: center;

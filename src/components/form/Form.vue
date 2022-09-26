@@ -197,7 +197,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .show-hide-password {
     text-transform: uppercase;
     position: absolute;

@@ -14,7 +14,6 @@ dev build:
     - npm run build
   only:
     - dev
-    - merge_requests
   artifacts:
     paths:
       - dist
@@ -23,7 +22,6 @@ dev deploy:
     stage: deploy
     image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
     script:
-      - aws s3 sync dist/ s3://${BUCKET_NAME}/    
+      - aws s3 cp dist/ s3://${BUCKET_NAME}/ --recursive
     only:
       - dev
-      - merge_requests

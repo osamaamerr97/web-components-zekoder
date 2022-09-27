@@ -35,6 +35,7 @@
         image: Object,
         webAuthConfig: Object,
         firebaseConfig: Object,
+        url: String,
         styleObj: Object
     },
     data() {
@@ -146,7 +147,7 @@
         defaultLogin(data){
             axios({
                 method: 'post',
-                url: 'https://zkdoer-zeauth-dev-kacxkbhvxa-uc.a.run.app/login',
+                url: this.url || 'https://zkdoer-zeauth-dev-kacxkbhvxa-uc.a.run.app/login',
                 data
             })
             .then((res) => {
@@ -169,4 +170,4 @@
   }
 </script>
 
-<style lang="scss"></style>
+<style></style>

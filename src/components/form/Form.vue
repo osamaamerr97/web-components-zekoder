@@ -92,14 +92,18 @@ export default {
             }
             return props
         },
-        formData() {
-            let obj = {};
-            this.inputs.forEach( 
-                (input) => {
-                    obj[input.name] = input.initialValue || '';
-                }
-            )
-            return {...obj}
+        formData: {
+            get() {
+                let obj = {};
+                this.inputs.forEach( 
+                    (input) => {
+                        obj[input.name] = input.initialValue || '';
+                    }
+                )
+                return {...obj}
+            },
+            set(newVal) {
+            }
         },
         defaultData() {
             let obj = {};
@@ -197,7 +201,7 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 .show-hide-password {
     text-transform: uppercase;
     position: absolute;

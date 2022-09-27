@@ -25,31 +25,30 @@ import ZekTable from './components/table/Table.vue';
 import ZekRightPanel from './components/right-panel/RightPanel.vue';
 import ZekSignup from './components/signup/Signup.vue';
 
-export default ZekButton;
-// export {
-//     ZekButton,
-//     ZekCard,
-//     ZekCardsList,
-//     ZekColumnContent,
-//     ZekHeading,
-//     ZekHtml,
-//     ZekImage,
-//     ZekList,
-//     ZekSlider,
-//     ZekText,
-//     ZekVideo,
-//     ZekLogin,
-//     ZekForm,
-//     ZekSidebar,
-//     ZekInitials,
-//     ZekCollapsibleContainer,
-//     ZekRadioButton,
-//     ZekUserInfo,
-//     ZekDropdown,
-//     ZekInput,
-//     ZekTextarea,
-//     ZekUpload,
-//     ZekTable,
-//     ZekRightPanel,
-//     ZekSignup
-// }
+export {
+    ZekButton,
+    ZekCard,
+    ZekCardsList,
+    ZekColumnContent,
+    ZekHeading,
+    ZekHtml,
+    ZekImage,
+    ZekList,
+    ZekSlider,
+    ZekText,
+    ZekVideo,
+    ZekLogin,
+    ZekForm,
+    ZekSidebar,
+    ZekInitials,
+    ZekCollapsibleContainer,
+    ZekRadioButton,
+    ZekUserInfo,
+    ZekDropdown,
+    ZekInput,
+    ZekTextarea,
+    ZekUpload,
+    ZekTable,
+    ZekRightPanel,
+    ZekSignup
+}

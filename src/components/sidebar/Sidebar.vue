@@ -27,7 +27,7 @@
                             : ''
                     "
                 >
-                    <NuxtLink
+                    <RouterLink
                         :to="link.url"
                         :title="link.tooltip"
                         class="link"
@@ -50,7 +50,7 @@
                         <span v-if="link.label && !isCollapsed">{{
                             link.label
                         }}</span>
-                    </NuxtLink>
+                    </RouterLink>
                 </li>
             </template>
         </div>

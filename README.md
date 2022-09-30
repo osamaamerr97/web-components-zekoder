@@ -1,5 +1,14 @@
 # zekoder-web-components
 
+## S3 Bucket Name
+```
+zekoder-zestudio-mfe-webcomponent
+```
+## Region
+```
+us-east-1
+```
+
 ## Project setup
 ```
 npm install

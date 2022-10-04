@@ -111,6 +111,7 @@ export default {
     value: [String, Array],
     selectType: {
       type: String,
+      default: 'single'
     },
     theme: {
       type: String,

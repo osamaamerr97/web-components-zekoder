@@ -19,7 +19,7 @@
         :name="name"
         :id="id"
         :placeholder="placeholder"
-        v-model="initialValue"
+        v-model="value"
         :readonly="readonly"
         :required="required"
         :disabled="disabled"
@@ -156,8 +156,22 @@
     data() {
       return {
       //   value: this.initialValue,
-        actualType: this.inputType,
+        // actualType: this.inputType,
       }
+    },
+    computed: {
+        actualType: {
+            get() {
+                return this.inputType;
+            },
+            set(newVal) {}
+        },
+        value: {
+            get() {
+                return this.initialValue;
+            },
+            set(newVal) {}
+        }
     },
     methods: {
       onInput(event) {
@@ -168,7 +182,7 @@
       },
     },
     watch: {
-      initialValue(newValue) {
+        value(newValue) {
         this.$emit("input", { id: this.id, value: newValue, name: this.name })
       }
     }

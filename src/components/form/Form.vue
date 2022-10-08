@@ -3,7 +3,7 @@
         <zek-heading v-if="heading" v-bind="headingProps"></zek-heading>
         <zek-heading v-if="subheading" v-bind="subheadingProps"></zek-heading>
         <zek-text v-if="description" v-bind="descProps"></zek-text>
-        <form @submit.prevent="submitForm" @reset="cancelForm" action="/" method :key="formKey" class="container-fluid">
+        <form @submit.prevent="submitForm" @reset="cancelForm" action="/" method :key="formKey">
             <div class="form-group">
                 <zek-column-content :column="content()" />
             </div>

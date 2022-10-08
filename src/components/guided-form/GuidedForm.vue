@@ -35,15 +35,15 @@
                                 @onInput="onAnswer"
                             />
                             <span class="desc" v-if="currentStep.description">{{currentStep.description}}</span>
-                            <div class="row buttons">
-                                <div class="col back-button" v-if="allowNavigate">
+                            <div class="row justify-content-center buttons">
+                                <div class="col-auto back-button" v-if="allowNavigate">
                                     <ZekButton
                                         v-if="stepNumber"
                                         v-bind="backProps"
                                         @onClick="changeStep(stepNumber-1)"
                                     />
                                 </div>
-                                <div class="col next-button">
+                                <div class="col-auto next-button">
                                     <ZekButton
                                         v-if="stepNumber<steps.length"
                                         v-bind="nextProps"
@@ -185,7 +185,7 @@ export default {
             } else {
                 this.completed = true;
                 this.currentStep = null;
-                this.$emit('onComplete')
+                this.$emit('onComplete', this.formData)
             }
         }
     }

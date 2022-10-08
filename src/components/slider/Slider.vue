@@ -92,7 +92,7 @@
     }
 </script>
 
-<style>
+<style lang="scss">
 .slider-content{
     padding: 0 40px;
 }

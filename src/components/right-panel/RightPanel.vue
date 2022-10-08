@@ -1,12 +1,21 @@
 <template>
-    <div class="right-panel-container">
-        <div :class="show ? 'right-panel p-4 active':'right-panel p-4'">
-            <ZekForm
-                v-if="showForm"
-                v-bind="formProps"
-                @submit="$emit('submit', $event)"
-                @cancel="$emit('cancel', $event)"
-            />
+    <div class='right-panel-container'>
+        <div :class="'right-panel p-4 '  + (customClass||'')" :style="{...styleObj, width, right: show? '0':`-${width}`}">
+            <template v-if="showForm">
+                <ZekForm
+                    v-if="formProps"
+                    v-bind="formProps"
+                    @submit="$emit('submit', $event)"
+                    @cancel="$emit('cancel', $event)"
+                />
+                <component
+                    v-else
+                    :is="content.component"
+                    v-bind="content.props"
+                    v-on="content.events"
+                ></component>
+                <!-- <slot v-else></slot> -->
+            </template>
         </div>
         <div v-if="show" class="right-panel-background" @click="$emit('cancel');"></div>
     </div>
@@ -17,10 +26,17 @@ import ZekForm from "../form/Form.vue";
 
 export default {
     name: 'ZekRightPanel',
-    components: { ZekForm },
+    // components: { ZekForm },
     props: {
         show: Boolean,
-        formProps: Object
+        formProps: Object,
+        customClass: String,
+        width: {
+            type: String,
+            default: '500px'
+        },
+        styleObj: Object,
+        content: Object
     },
     data() {
         return {
@@ -46,17 +62,13 @@ export default {
     .right-panel {
         position: fixed;
         z-index: 6;
-        width: 400px;
         height: 100%;
         top: 0;
         bottom: 0;
-        right: -400px;
         background-color: white;
-        -webkit-transition: right 0.3s;
+        -webkit-transition: right 0.7s;
         transition: right 0.7s;
-        &.active {
-            right: 0;
-        }
+        overflow: auto;
     }
     .right-panel-background {
         position: fixed;

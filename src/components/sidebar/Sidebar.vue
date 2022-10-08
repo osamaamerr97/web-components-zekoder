@@ -27,7 +27,7 @@
                             : ''
                     "
                 >
-                    <NuxtLink
+                    <RouterLink
                         :to="link.url"
                         :title="link.tooltip"
                         class="link"
@@ -50,7 +50,7 @@
                         <span v-if="link.label && !isCollapsed">{{
                             link.label
                         }}</span>
-                    </NuxtLink>
+                    </RouterLink>
                 </li>
             </template>
         </div>
@@ -126,7 +126,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .zek-sidebar {
     height: 100%;
     overflow-y: auto;

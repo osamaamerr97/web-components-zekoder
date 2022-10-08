@@ -1,6 +1,9 @@
 <template>
   <div style="position: relative" :style="styleObject">
-    <span v-if="label" :style="label.style">{{ label.text || label }}<span class="required-asterik" v-if="required">*</span></span>
+    <span v-if="label" :style="label.style">
+          <span v-html="label.html || label.text || label" ></span>
+          <span class="required-asterik" v-if="required">*</span>
+    </span>
     <textarea
       :class="customClass"
       :name="name"
@@ -102,7 +105,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .required-asterik {
     color: red;
 }

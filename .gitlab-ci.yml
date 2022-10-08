@@ -1,52 +1,27 @@
-# This file is a template, and might need editing before it works on your project.
-# To contribute improvements to CI/CD templates, please follow the Development guide at:
-# https://docs.gitlab.com/ee/development/cicd/templates.html
-# This specific template is located at:
-# https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/npm.gitlab-ci.yml
+stages:
+  - build
+  - deploy
 
-publish:
-  image: node:latest
-  stage: deploy
-  only:
-     refs:
-        - main
-  
+variables:
+    BUCKET_NAME: zekoder-zestudio-mfe-webcomponents
+
+dev build:
+  stage: build
+  image: node:current-alpine3.16
+  before_script:
+    - npm install
   script:
-    # If no .npmrc is included in the repo, generate a temporary one that is configured to publish to GitLab's NPM registry
-    - |
-      if [[ ! -f .npmrc ]]; then
-        echo 'No .npmrc found! Creating one now. Please review the following link for more information: https://docs.gitlab.com/ee/user/packages/npm_registry/index.html#project-level-npm-endpoint-1'
-        {
-          echo "@zekoder:registry=https://gitlab.com/api/v4/packages/npm/"
-          echo "'//gitlab.com/api/v4/packages/npm/:_authToken'='${CI_JOB_TOKEN}'"
-          echo "'//gitlab.com/api/v4/projects/32338563/packages/npm/:_authToken'='${CI_JOB_TOKEN}'"
-        } >> .npmrc
-      fi
-    - echo "Created the following .npmrc:"; cat .npmrc
-
-    # Extract a few values from package.json
-    - NPM_PACKAGE_NAME=$(node -p "require('./package.json').name")
-    - NPM_PACKAGE_VERSION=$(node -p "require('./package.json').version")
-
-    # Validate that the package name is properly scoped to the project's root namespace.
-    # For more information, see https://docs.gitlab.com/ee/user/packages/npm_registry/#package-naming-convention
-    - |
-      if [[ ! $NPM_PACKAGE_NAME =~ ^@$CI_PROJECT_ROOT_NAMESPACE/ ]]; then
-        echo "Invalid package scope! Packages must be scoped in the root namespace of the project, e.g. \"@${CI_PROJECT_ROOT_NAMESPACE}/${CI_PROJECT_NAME}\""
-        echo 'For more information, see https://docs.gitlab.com/ee/user/packages/npm_registry/#package-naming-convention'
-        exit 1
-        echo "Invalid package scope! Packages must be scoped in the root namespace of the project, e.g. \"@${CI_PROJECT_ROOT_NAMESPACE}/${CI_PROJECT_NAME}\""
-        echo 'For more information, see https://docs.gitlab.com/ee/user/packages/npm_registry/#package-naming-convention'
-        exit 1
-      fi
-
-    # Compare the version in package.json to all published versions.
-    # If the package.json version has not yet been published, run `npm publish`.
-    - |
-      if [[ $(npm view "${NPM_PACKAGE_NAME}" versions) != *"'${NPM_PACKAGE_VERSION}'"* ]]; then
-        npm install
-        npm publish
-        echo "Successfully published version ${NPM_PACKAGE_VERSION} of ${NPM_PACKAGE_NAME} to GitLab's NPM registry: ${CI_PROJECT_URL}/-/packages"
-      else
-        echo "Version ${NPM_PACKAGE_VERSION} of ${NPM_PACKAGE_NAME} has already been published, so no new version has been published."
-      fi
+    - npm run build
+  only:
+    - dev
+  artifacts:
+    paths:
+      - dist
+  
+dev deploy:
+    stage: deploy
+    image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
+    script:
+      - aws s3 cp dist/ s3://${BUCKET_NAME}/ --recursive
+    only:
+      - dev

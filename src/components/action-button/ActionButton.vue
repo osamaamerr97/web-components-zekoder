@@ -101,7 +101,7 @@ export default {
   }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 
 .loading-spinner {
     margin-left: 10px;

@@ -1,3 +1,4 @@
+import "./set-public-path";
 import ZekButton from './components/action-button/ActionButton.vue';
 import ZekCard from './components/card/Card.vue';
 import ZekCardsList from './components/cards-list/CardsList.vue';
@@ -23,8 +24,8 @@ import ZekUpload from './components/upload-component/Upload.vue';
 import ZekTable from './components/table/Table.vue';
 import ZekRightPanel from './components/right-panel/RightPanel.vue';
 import ZekSignup from './components/signup/Signup.vue';
-import ZekGuidedForm from './components/guided-form/GuidedForm.vue';
 
+// export default ZekButton;
 export {
     ZekButton,
     ZekCard,
@@ -50,6 +51,5 @@ export {
     ZekUpload,
     ZekTable,
     ZekRightPanel,
-    ZekSignup,
-    ZekGuidedForm
+    ZekSignup
 }

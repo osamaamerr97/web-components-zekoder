@@ -68,7 +68,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 ul {
   list-style: none;
   padding: 0;

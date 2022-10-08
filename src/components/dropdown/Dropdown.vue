@@ -111,6 +111,7 @@ export default {
     value: [String, Array],
     selectType: {
       type: String,
+      default: 'single'
     },
     theme: {
       type: String,
@@ -180,7 +181,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .no-caret:after{
     content: none;
 }

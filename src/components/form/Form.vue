@@ -129,7 +129,7 @@ export default {
                     columns.push({
                         columnWidth: input.columnWidth || 12,
                         content: {
-                            component: input.type == 'long-text' ? 'textarea' : input.type == 'captcha'? 'captcha' : 'input',
+                            component: input.type == 'long-text' ? 'textarea' : input.type == 'captcha'? 'captcha' : input.type === 'radio' ? 'radio-button' : 'input',
                             data: input,
                             events: input.type == 'long-text' ?  {
                                 onChange: (e) => this.formData[input.name] = e

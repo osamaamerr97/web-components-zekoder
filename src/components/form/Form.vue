@@ -129,7 +129,7 @@ export default {
                     columns.push({
                         columnWidth: input.columnWidth || 12,
                         content: {
-                            component: input.type == 'long-text' ? 'textarea' : input.type == 'captcha'? 'captcha' : input.type === 'radio' ? 'radio-button' : 'input',
+                            component: input.type == 'long-text' ? 'textarea' : input.type == 'captcha'? 'captcha' : input.type === 'radio' ? 'radio-button' : input.type === 'dropdown' ? 'dropdown' : 'input',
                             data: input,
                             events: input.type == 'long-text' ?  {
                                 onChange: (e) => this.formData[input.name] = e
@@ -137,6 +137,9 @@ export default {
                             input.type == 'captcha' ? {
                                 onVerify: () => {this.captchaVerified = true;},
                                 onExpired: () => {this.captchaVerified = false;}
+                            } :
+                            input.type == 'dropdown' ? {
+                                onSelect: e => { this.formData[input.name] = e[0]; }
                             } :
                             {
                                 onInput: (e) => this.formData[input.name] = input.inputType=='checkbox' ? e.target.checked : e.target.value

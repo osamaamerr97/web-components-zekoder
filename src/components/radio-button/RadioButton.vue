@@ -11,9 +11,10 @@
 </template>
 
 <script>
-
+import ZekText from "../text-block/TextBlock.vue";
   export default {
     name: 'ZekRadioButton',
+    components: { ZekText },
     props: {
         theme: String, 
         styleObj: Object,

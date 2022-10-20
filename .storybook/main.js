@@ -10,5 +10,21 @@ module.exports = {
     "@storybook/addon-essentials",
     "@socheatsok78/storybook-addon-vuetify"
   ],
-  "framework": "@storybook/vue"
+  "framework": "@storybook/vue",
+  core: {
+      builder: 'webpack5',
+  },
+  webpackFinal: async (config, { configType }) => {
+      config.module.rules.push(
+          {
+              test: /\.scss$/,
+              use: [
+                  'vue-style-loader',
+                  'style-loader',
+                  'css-loader',
+                  'sass-loader'
+              ]
+          });
+      return config;
+  },
 }

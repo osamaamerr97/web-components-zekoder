@@ -158,9 +158,7 @@
             })
             .catch((error) => {
                 this.$emit('onLoginError', error);
-                const errorCode = error.code;
-                // const errorMessage = error.message;
-                this.error = errorCode;
+                this.error = error && error.response && error.response.data && error.response.data.detail ? error.response.data.detail : 'There was a problem logging you in, please check your username and password. If the problem persists, please contact admin';
             });
         },
         cancel() {

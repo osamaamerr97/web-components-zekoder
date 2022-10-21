@@ -132,24 +132,32 @@ export default {
                             component: input.type == 'long-text' ? 'textarea' : input.type == 'captcha'? 'captcha' : input.type === 'radio' ? 'radio-button' : input.type === 'dropdown' ? 'dropdown' : 'input',
                             data: input,
                             events: input.type == 'long-text' ?  {
-                                onChange: (e) => this.formData[input.name] = e
+                                onChange: (e) => {
+                                    this.formData[input.name] = e; 
+                                    this.emitLatestData(input.name);
+                                }
                             } : 
                             input.type == 'captcha' ? {
                                 onVerify: () => {this.captchaVerified = true;},
                                 onExpired: () => {this.captchaVerified = false;}
                             } :
                             input.type == 'dropdown' ? {
-                                onSelect: e => { this.formData[input.name] = e[0]; }
+                                onSelect: e => { 
+                                    this.formData[input.name] = e[0]; 
+                                    this.emitLatestData(input.name);
+                                }
                             } :
                             {
                                 onInput: (e) => {
                                     if ( input.inputType === 'checkbox' ) {
-                                        return this.formData[input.name] = e.target.checked;
+                                        this.formData[input.name] = e.target.checked;
                                     } else if ( input.inputType === 'radio' ) {
-                                        return this.formData[input.name] = e.value;
+                                        this.formData[input.name] = e.value;
                                     } else {
-                                        return this.formData[input.name] = e.target.value;
+                                        this.formData[input.name] = e.target.value;
                                     }
+                                    console.log(input)
+                                    this.emitLatestData(input.name)
                                 }
                             }
                         }
@@ -204,6 +212,12 @@ export default {
             this.$emit('submit', this.formData);
 
         },
+        emitLatestData(fieldName) {
+            this.$emit('update', { 
+                fieldName, 
+                data: this.formData
+            });
+        },  
         cancelForm() {
             this.resetForm();
             this.$emit('cancel', this.formData);

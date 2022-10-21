@@ -142,7 +142,15 @@ export default {
                                 onSelect: e => { this.formData[input.name] = e[0]; }
                             } :
                             {
-                                onInput: (e) => this.formData[input.name] = input.inputType=='checkbox' ? e.target.checked : e.target.value
+                                onInput: (e) => {
+                                    if ( input.inputType === 'checkbox' ) {
+                                        return this.formData[input.name] = e.target.checked;
+                                    } else if ( input.inputType === 'radio' ) {
+                                        return this.formData[input.name] = e.value;
+                                    } else {
+                                        return this.formData[input.name] = e.target.value;
+                                    }
+                                }
                             }
                         }
                     })

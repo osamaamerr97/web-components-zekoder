@@ -8,7 +8,7 @@
                 <zek-column-content :column="content()" />
             </div>
             <zek-text v-if="successMessage" :text="successMessage" class="text-success"></zek-text>
-            <zek-text v-if="errorMessage || internalError" :text="errorMessage||internalError" class="text-danger"></zek-text>
+            <zek-text v-if="errorMessage || internalError" :text="errorMessage||internalError" class="text-danger login-error-message"></zek-text>
             <div class="align-items-center justify-content-center d-flex">
                 <zek-button v-if="cancelProps.show" v-bind="cancelProps" @onClick="cancelForm()"></zek-button>
                 <zek-button v-if="submitProps.show" v-bind="submitProps"></zek-button>
@@ -156,7 +156,6 @@ export default {
                                     } else {
                                         this.formData[input.name] = e.target.value;
                                     }
-                                    console.log(input)
                                     this.emitLatestData(input.name)
                                 }
                             }
@@ -240,5 +239,12 @@ export default {
 }
 .required-asterik {
     color: red;
+}
+.login-error-message {
+    text-align: left;
+    padding-top: 10px;
+}
+.login-error-message:first-letter {
+    text-transform: capitalize;
 }
 </style>

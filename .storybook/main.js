@@ -12,19 +12,26 @@ module.exports = {
   ],
   "framework": "@storybook/vue",
   core: {
-      builder: 'webpack5',
+    builder: 'webpack5',
   },
   webpackFinal: async (config, { configType }) => {
-      config.module.rules.push(
+    const rules = config.module.rules.filter((rule) => RegExp(rule.test).toString() !== "/\\.css$/");
+    rules.push(
+      {
+        test: /\.(sc|c)ss$/,
+        use: [
+          'vue-style-loader',
           {
-              test: /\.scss$/,
-              use: [
-                  'vue-style-loader',
-                  'style-loader',
-                  'css-loader',
-                  'sass-loader'
-              ]
-          });
-      return config;
+            loader: 'css-loader',
+            options: {
+              modules: true,
+            }
+          },
+          'sass-loader'
+        ]
+      }
+    )
+    config.module.rules = rules;
+    return config;
   },
 }

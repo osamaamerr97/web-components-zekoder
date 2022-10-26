@@ -12,7 +12,8 @@
                 <div class="row input">
                     <div class="col">
                         <form @submit.prevent="changeStep(stepNumber+1)">
-                            <ZekDropdown 
+                            <zek-column-content :column="content()" />
+                            <!-- <ZekDropdown 
                                 v-if="currentStep.type=='dropdown'"
                                 v-bind="currentStep"
                                 :selectType="currentStep.multiple?'Multi':'single'"
@@ -33,7 +34,7 @@
                                 :initialValue="currentStep.value||''"
                                 :minMaxValue="{min:currentStep.min, max:currentStep.max}"
                                 @onInput="onAnswer"
-                            />
+                            /> -->
                             <span class="desc" v-if="currentStep.description">{{currentStep.description}}</span>
                             <div class="row justify-content-center buttons">
                                 <div class="col-auto back-button" v-if="allowNavigate">
@@ -76,11 +77,11 @@
 </template>
 
 <script>
-import {ZekInput, ZekButton, ZekDropdown, ZekTextarea,} from "../../main";
+import { ZekButton, ZekColumnContent } from "../../main";
 
 export default {
     name: "ZekGuidedForm",
-    components: {ZekInput, ZekButton, ZekDropdown, ZekTextarea},
+    components: {ZekButton, ZekColumnContent },
     props: {
         steps: {
             type: Array,
@@ -112,6 +113,49 @@ export default {
     },
     data() {
         return {
+            content: () => {
+                const step = this.currentStep;
+                return {
+                    columnWidth: step.columnWidth || 12,
+                    content: {
+                        component: step.type == 'long-text' ? 'textarea' : step.type === 'radio' ? 'radio-button' : step.type === 'dropdown' ? 'dropdown' : 'input',
+                        data: step,
+                        events: step.type == 'long-text' ?  {
+                            onChange: (e) => {
+                                this.formData[step.name] = e;
+                                this.formSteps[this.stepNumber].value = e;
+                                this.formSteps[this.stepNumber].initialValue = e;
+                                this.emitLatestData(step.name);
+                            }
+                        } :
+                        step.type == 'dropdown' ? {
+                            onSelect: e => { 
+                                this.formData[step.name] = e[0]; 
+                                this.formSteps[this.stepNumber].value = e[0];
+                                this.formSteps[this.stepNumber].initialValue = e[0];
+                                this.emitLatestData(step.name);
+                            }
+                        } : {
+                            onInput: (e) => {
+                                if ( step.inputType === 'checkbox' ) {
+                                    this.formData[step.name] = e.target.checked;
+                                    this.formSteps[this.stepNumber].value = e.target.checked;
+                                    this.formSteps[this.stepNumber].initialValue = e.target.checked;
+                                } else if ( step.inputType === 'radio' ) {
+                                    this.formData[step.name] = e.value;
+                                this.formSteps[this.stepNumber].value = e.value;
+                                this.formSteps[this.stepNumber].initialValue = e.value;
+                                } else {
+                                    this.formData[step.name] = e.target.value;
+                                    this.formSteps[this.stepNumber].value = e.target.value;
+                                    this.formSteps[this.stepNumber].initialValue = e.target.value;
+                                }
+                                this.emitLatestData(step.name)
+                            }
+                        }
+                    }
+                }
+            },
             completed: false,
             currentStep: null,
             stepNumber: 0,
@@ -159,6 +203,12 @@ export default {
         }
     },
     methods: {
+        emitLatestData(fieldName) {
+            this.$emit('update', { 
+                fieldName, 
+                data: this.formData
+            });
+        },  
         submitForm() {
             this.$emit('onSubmit', this.formData);
         },

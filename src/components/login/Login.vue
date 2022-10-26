@@ -8,19 +8,19 @@
             :submitButton="submitButton"
             :cancelButton="{show:false}"
             :errorMessage="error"
+            :forgotPassword="showForgotLink"
+            :rememberMe="showRememberMe"
             @submit="login($event)"
             @cancel="cancel()"
         ></zek-form>
     </div>
 </template>
-
 <script>
   import ZekForm from "../form/Form.vue";
   import auth0 from 'auth0-js';
   import * as axios from 'axios';
   import { initializeApp } from 'firebase/app';
   import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-
   export default {
     name: 'ZekLogin',
     components: { ZekForm },
@@ -88,13 +88,13 @@
                 show: true
             };
             if(typeof(this.loginButton)=='string'){
-                props = { 
+                props = {
                     ...props,
                     label: this.loginButton,
                     show: this.loginButton
                 }
             } else {
-                props = { 
+                props = {
                     ...props,
                     ...this.loginButton
                 }
@@ -138,11 +138,11 @@
                 if ( err ) {
                     this.$emit('onLoginError', err);
                     this.error = err.description || err.error_description || 'There was an error. Please try again';
-                } else if ( dat ) { 
+                } else if ( dat ) {
                     this.$emit('onLoginSuccess', dat);
                     this.error = '';
                 }
-            }); 
+            });
         },
         defaultLogin(data){
             axios({
@@ -167,5 +167,4 @@
     }
   }
 </script>
-
 <style></style>

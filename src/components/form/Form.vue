@@ -6,6 +6,12 @@
         <form @submit.prevent="submitForm" @reset="cancelForm" action="/" method :key="formKey">
             <div class="form-group">
                 <zek-column-content :column="content()" />
+                <div v-if="forgotPassword" class="forgot-link">
+                    <RouterLink  to="auth/forgotpassword">Forgot Password?</RouterLink>
+                </div>
+                <div v-if="rememberMe" class="remember-me">
+                    <ZekInput :inputType="'checkbox'" :label="'Remember me'"></ZekInput>
+                </div>
             </div>
             <zek-text v-if="successMessage" :text="successMessage" class="text-success"></zek-text>
             <zek-text v-if="errorMessage || internalError" :text="errorMessage||internalError" class="text-danger login-error-message"></zek-text>
@@ -16,14 +22,14 @@
         </form>
     </div>
 </template>
-
 <script>
 import ZekColumnContent from "../column-content/ColumnContent.vue"
 import ZekButton from "../action-button/ActionButton.vue";
 import ZekHeading from "../heading-block/HeadingBlock.vue";
 import ZekText from "../text-block/TextBlock.vue"
+import ZekInput from '../input-field/InputField.vue'
 export default {
-    components: { ZekColumnContent, ZekButton, ZekHeading, ZekText },
+    components: { ZekColumnContent, ZekButton, ZekHeading, ZekText, ZekInput },
     name: "ZekForm",
     props: {
         heading: [String, Object], //for object it should be {text:String, headingLevel:Number, styleObj:Object}
@@ -97,7 +103,7 @@ export default {
         formData: {
             get() {
                 let obj = {};
-                this.inputs.forEach( 
+                this.inputs.forEach(
                     (input) => {
                         obj[input.name] = input.initialValue || '';
                     }
@@ -116,7 +122,6 @@ export default {
             )
             return {...obj}
         },
-        
     },
     data() {
         return {
@@ -125,7 +130,7 @@ export default {
                 this.inputs.forEach(input => {
                     if(input.type == 'captcha') {
                         this.captchaVerified = false;
-                    } 
+                    }
                     columns.push({
                         columnWidth: input.columnWidth || 12,
                         content: {
@@ -133,17 +138,17 @@ export default {
                             data: input,
                             events: input.type == 'long-text' ?  {
                                 onChange: (e) => {
-                                    this.formData[input.name] = e; 
+                                    this.formData[input.name] = e;
                                     this.emitLatestData(input.name);
                                 }
-                            } : 
+                            } :
                             input.type == 'captcha' ? {
                                 onVerify: () => {this.captchaVerified = true;},
                                 onExpired: () => {this.captchaVerified = false;}
                             } :
                             input.type == 'dropdown' ? {
-                                onSelect: e => { 
-                                    this.formData[input.name] = e[0]; 
+                                onSelect: e => {
+                                    this.formData[input.name] = e[0];
                                     this.emitLatestData(input.name);
                                 }
                             } :
@@ -179,11 +184,9 @@ export default {
                                     onInput: (e) => {
                                         if( e.target.value != this.formData[input.name] ) {
                                             e.target.setCustomValidity('Passwords do no match');
-                                        } 
-                                        else {
+                                        } else {
                                             e.target.setCustomValidity('');
                                         }
-
                                     }
                                 }
                             }
@@ -209,14 +212,13 @@ export default {
             }
             this.internalError = '';
             this.$emit('submit', this.formData);
-
         },
         emitLatestData(fieldName) {
-            this.$emit('update', { 
-                fieldName, 
+            this.$emit('update', {
+                fieldName,
                 data: this.formData
             });
-        },  
+        },
         cancelForm() {
             this.resetForm();
             this.$emit('cancel', this.formData);
@@ -228,7 +230,6 @@ export default {
     }
 };
 </script>
-
 <style scoped>
 .show-hide-password {
     text-transform: uppercase;
@@ -246,5 +247,9 @@ export default {
 }
 .login-error-message:first-letter {
     text-transform: capitalize;
+}
+.forgot-link{
+    width: 100%;
+    text-align: right;
 }
 </style>

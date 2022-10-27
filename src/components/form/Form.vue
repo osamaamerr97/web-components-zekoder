@@ -10,7 +10,11 @@
                     <RouterLink  to="auth/forgotpassword">Forgot Password?</RouterLink>
                 </div>
                 <div v-if="rememberMe" class="remember-me">
-                    <ZekInput :inputType="'checkbox'" :label="'Remember me'"></ZekInput>
+                    <ZekInput class="remember-input" :inputType="'checkbox'" :inputStyle="{width:'18px',height:'18px'}" :label="{text:'Remember me',
+                style:{
+                    fontSize:'initial',
+                    paddingLeft:'5px'
+                }}"></ZekInput>
                 </div>
             </div>
             <zek-text v-if="successMessage" :text="successMessage" class="text-success"></zek-text>
@@ -251,5 +255,16 @@ export default {
 .forgot-link{
     width: 100%;
     text-align: right;
+    margin-top: 15px;
+    font-size: 0.7vw;
+}
+.remember-me{
+    display: flex;
+    font-size: 1vw;
+}
+.remember-input{
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
 }
 </style>

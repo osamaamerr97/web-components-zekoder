@@ -6,9 +6,19 @@
         <form @submit.prevent="submitForm" @reset="cancelForm" action="/" method :key="formKey">
             <div class="form-group">
                 <zek-column-content :column="content()" />
+                <div v-if="forgotPassword" class="forgot-link">
+                    <RouterLink  to="auth/forgotpassword">Forgot Password?</RouterLink>
+                </div>
+                <div v-if="rememberMe" class="remember-me">
+                    <ZekInput class="remember-input" :inputType="'checkbox'" :inputStyle="{width:'18px',height:'18px'}" :label="{text:'Remember me',
+                style:{
+                    fontSize:'initial',
+                    paddingLeft:'5px'
+                }}"></ZekInput>
+                </div>
             </div>
             <zek-text v-if="successMessage" :text="successMessage" class="text-success"></zek-text>
-            <zek-text v-if="errorMessage || internalError" :text="errorMessage||internalError" class="text-danger"></zek-text>
+            <zek-text v-if="errorMessage || internalError" :text="errorMessage||internalError" class="text-danger login-error-message"></zek-text>
             <div class="align-items-center justify-content-center d-flex">
                 <zek-button v-if="cancelProps.show" v-bind="cancelProps" @onClick="cancelForm()"></zek-button>
                 <zek-button v-if="submitProps.show" v-bind="submitProps"></zek-button>
@@ -16,14 +26,14 @@
         </form>
     </div>
 </template>
-
 <script>
 import ZekColumnContent from "../column-content/ColumnContent.vue"
 import ZekButton from "../action-button/ActionButton.vue";
 import ZekHeading from "../heading-block/HeadingBlock.vue";
 import ZekText from "../text-block/TextBlock.vue"
+import ZekInput from '../input-field/InputField.vue'
 export default {
-    components: { ZekColumnContent, ZekButton, ZekHeading, ZekText },
+    components: { ZekColumnContent, ZekButton, ZekHeading, ZekText, ZekInput },
     name: "ZekForm",
     props: {
         heading: [String, Object], //for object it should be {text:String, headingLevel:Number, styleObj:Object}
@@ -97,7 +107,7 @@ export default {
         formData: {
             get() {
                 let obj = {};
-                this.inputs.forEach( 
+                this.inputs.forEach(
                     (input) => {
                         obj[input.name] = input.initialValue || '';
                     }
@@ -116,7 +126,6 @@ export default {
             )
             return {...obj}
         },
-        
     },
     data() {
         return {
@@ -125,24 +134,39 @@ export default {
                 this.inputs.forEach(input => {
                     if(input.type == 'captcha') {
                         this.captchaVerified = false;
-                    } 
+                    }
                     columns.push({
                         columnWidth: input.columnWidth || 12,
                         content: {
                             component: input.type == 'long-text' ? 'textarea' : input.type == 'captcha'? 'captcha' : input.type === 'radio' ? 'radio-button' : input.type === 'dropdown' ? 'dropdown' : 'input',
                             data: input,
                             events: input.type == 'long-text' ?  {
-                                onChange: (e) => this.formData[input.name] = e
-                            } : 
+                                onChange: (e) => {
+                                    this.formData[input.name] = e;
+                                    this.emitLatestData(input.name);
+                                }
+                            } :
                             input.type == 'captcha' ? {
                                 onVerify: () => {this.captchaVerified = true;},
                                 onExpired: () => {this.captchaVerified = false;}
                             } :
                             input.type == 'dropdown' ? {
-                                onSelect: e => { this.formData[input.name] = e[0]; }
+                                onSelect: e => {
+                                    this.formData[input.name] = e[0];
+                                    this.emitLatestData(input.name);
+                                }
                             } :
                             {
-                                onInput: (e) => this.formData[input.name] = input.inputType=='checkbox' ? e.target.checked : e.target.value
+                                onInput: (e) => {
+                                    if ( input.inputType === 'checkbox' ) {
+                                        this.formData[input.name] = e.target.checked;
+                                    } else if ( input.inputType === 'radio' ) {
+                                        this.formData[input.name] = e.value;
+                                    } else {
+                                        this.formData[input.name] = e.target.value;
+                                    }
+                                    this.emitLatestData(input.name)
+                                }
                             }
                         }
                     })
@@ -164,11 +188,9 @@ export default {
                                     onInput: (e) => {
                                         if( e.target.value != this.formData[input.name] ) {
                                             e.target.setCustomValidity('Passwords do no match');
-                                        } 
-                                        else {
+                                        } else {
                                             e.target.setCustomValidity('');
                                         }
-
                                     }
                                 }
                             }
@@ -194,7 +216,12 @@ export default {
             }
             this.internalError = '';
             this.$emit('submit', this.formData);
-
+        },
+        emitLatestData(fieldName) {
+            this.$emit('update', {
+                fieldName,
+                data: this.formData
+            });
         },
         cancelForm() {
             this.resetForm();
@@ -207,7 +234,6 @@ export default {
     }
 };
 </script>
-
 <style scoped>
 .show-hide-password {
     text-transform: uppercase;
@@ -218,5 +244,27 @@ export default {
 }
 .required-asterik {
     color: red;
+}
+.login-error-message {
+    text-align: left;
+    padding-top: 10px;
+}
+.login-error-message:first-letter {
+    text-transform: capitalize;
+}
+.forgot-link{
+    width: 100%;
+    text-align: right;
+    margin-top: 15px;
+    font-size: 0.7vw;
+}
+.remember-me{
+    display: flex;
+    font-size: 1vw;
+}
+.remember-input{
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
 }
 </style>

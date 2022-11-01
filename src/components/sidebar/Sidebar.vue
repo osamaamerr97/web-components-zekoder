@@ -1,26 +1,81 @@
 <template>
     <div class="zek-sidebar" :style="styleObject">
-        <li v-if="allowExpandCollapse" class="link-container">
+        <li v-if="allowExpandCollapse" class="link-container expand-icon">
             <a
                 :title="isCollapsed ? 'Collapse' : 'Expand'"
                 class="link"
                 @click="onCollapse"
             >
-                <i
-                    class="icon fa fa-bars"/>
+                <i class="icon fa fa-bars" />
             </a>
         </li>
         <div class="zek-sidebar-links">
-            <template v-for="(sec) in sections">
+            <div v-for="sec in sections" :key="sec.title.name" :style="sec.style">
                 <li
+                    v-if="sec.title"
+                    class="link-container"
+                    @mouseover="sec.title.isHovering = true"
+                    @mouseout="sec.title.isHovering = false"
+                    @click="sec.title.isActive = !sec.title.isActive"
+                    :style="
+                        (sec.title.isActive || sec.title.isHovering) &&
+                        activeColor
+                            ? { color: activeColor }
+                            : ''
+                    "
+                >
+                    <RouterLink
+                        :to="sec.title.url"
+                        :title="sec.title.tooltip"
+                        class="link title"
+                        :style="
+                            (sec.title.isActive || sec.title.isHovering) &&
+                            activeColor
+                                ? { color: activeColor }
+                                : ''
+                        "
+                    >
+                        <i
+                            v-if="
+                                sec.title.icon &&
+                                    sec.title.iconType !== 'custom'
+                            "
+                            class="icon"
+                            :class="sec.title.icon"
+                        ></i>
+                        <img
+                            v-else-if="
+                                sec.title.icon &&
+                                    sec.title.iconType === 'custom'
+                            "
+                            class="icon"
+                            :src="sec.title.icon"
+                        />
+                        <span v-show="sec.title.label && !isCollapsed">
+                            {{ sec.title.label }}
+                        </span>
+                        <i
+                            class="icon fa"
+                            :class="
+                                sec.title.isActive
+                                    ? 'fa-chevron-up'
+                                    : 'fa-chevron-down'
+                            "
+                            v-if="sec.title.showArrow && !isCollapsed"
+                        />
+                    </RouterLink>
+                </li>
+                <li
+                    v-show="sec.title.isActive"
                     v-for="(link, i) in sec.links"
                     :key="i"
                     class="link-container"
+                    :class="isCollapsed ? '' : 'nested'"
                     @mouseover="link.isHovering = true"
                     @mouseout="link.isHovering = false"
-                    :class="
-                        (link.isActive && activeClass) || link.isHovering
-                            ? [activeClass]
+                    :style="
+                        (link.isActive || link.isHovering) && activeColor
+                            ? { color: activeColor }
                             : ''
                     "
                 >
@@ -29,7 +84,7 @@
                         :title="link.tooltip"
                         class="link"
                         :style="
-                            link.isActive && activeColor
+                            (link.isActive || link.isHovering) && activeColor
                                 ? { color: activeColor }
                                 : ''
                         "
@@ -49,7 +104,7 @@
                         </span>
                     </RouterLink>
                 </li>
-            </template>
+            </div>
         </div>
     </div>
 </template>
@@ -59,67 +114,67 @@ export default {
     name: "ZekSidebar",
     props: {
         backgroundColor: {
-            type: String,
+            type: String
         },
         width: {
-            type: String,
+            type: String
         },
         allowExpandCollapse: {
-            type: Boolean,
+            type: Boolean
         },
         collapsed: {
-            type: Boolean,
+            type: Boolean
         },
         collapsedWidth: {
-            type: String,
+            type: String
         },
         sections: {
             type: Array, // [{links, type, label, icon, collapsable}]
             default: () => []
         },
         activeClass: {
-            type: String,
+            type: String
         },
         activeColor: {
-            type: String,
+            type: String
         },
         alignItems: {
-            type: String,
+            type: String
         },
         styleObj: {
-            type: Object,
-        },
+            type: Object
+        }
     },
     data() {
         return {
             isCollapsed: this.collapsed,
-            justifyContent: this.alignItems === "center" ? "center" : "flex-start",
+            justifyContent:
+                this.alignItems === "center" ? "center" : "flex-start",
             styleObject: {}
-        }
+        };
     },
     created() {
         this.styleObject = {
             ...this.styleObj,
             width: this.collapsed
                 ? this.collapsedWidth
-                : this.width || this.styleObj.width || "",
+                : this.width || this.styleObj.width || ""
         };
-        if((!this.sections.length) && this.links && this.links.length) {
-            this.sections.push(
-                {
-                    links: this.links
-                }
-            )
-
+        if (!this.sections.length && this.links && this.links.length) {
+            this.sections.push({
+                links: this.links
+            });
         }
     },
     methods: {
         onCollapse(event) {
             this.isCollapsed = !this.isCollapsed;
-            this.styleObject.width = this.isCollapsed ? this.collapsedWidth : this.width || this.styleObj.width || "";
+            this.styleObject.width = this.isCollapsed
+                ? this.collapsedWidth
+                : this.width || this.styleObj.width || "";
             this.$emit("onExpandCollapse", this.isCollapsed);
-        },
-    },
+        }
+    }
 };
 </script>
 
@@ -146,6 +201,14 @@ export default {
     border-radius: 15px;
     text-align: left;
     width: 100%;
+    &.expand-icon {
+        :hover{
+            color: v-bind(activeColor);
+        }
+    }
+    &.nested {
+        padding-left: 20px;
+    }
 }
 .link {
     cursor: pointer;

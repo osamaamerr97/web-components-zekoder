@@ -10,7 +10,7 @@
             </a>
         </li>
         <div class="zek-sidebar-links">
-            <div v-for="sec in sections" :key="sec.title.name" :style="sec.style">
+            <div v-for="(sec, i) in sections" :key="i">
                 <li
                     v-if="sec.title"
                     class="link-container"
@@ -55,7 +55,7 @@
                             {{ sec.title.label }}
                         </span>
                         <i
-                            class="icon fa"
+                            class="icon section-expand fa"
                             :class="
                                 sec.title.isActive
                                     ? 'fa-chevron-up'
@@ -65,45 +65,52 @@
                         />
                     </RouterLink>
                 </li>
-                <li
-                    v-show="sec.title.isActive"
-                    v-for="(link, i) in sec.links"
-                    :key="i"
-                    class="link-container"
+                <section
+                    v-show="sec.title ? sec.title?.isActive : true"
                     :class="isCollapsed ? '' : 'nested'"
-                    @mouseover="link.isHovering = true"
-                    @mouseout="link.isHovering = false"
-                    :style="
-                        (link.isActive || link.isHovering) && activeColor
-                            ? { color: activeColor }
-                            : ''
-                    "
+                    :style="isCollapsed ? '' : sec.style"
                 >
-                    <RouterLink
-                        :to="link.url"
-                        :title="link.tooltip"
-                        class="link"
+                    <li
+                        v-for="(link, i) in sec.links"
+                        :key="i"
+                        class="link-container"
+                        @mouseover="link.isHovering = true"
+                        @mouseout="link.isHovering = false"
                         :style="
                             (link.isActive || link.isHovering) && activeColor
                                 ? { color: activeColor }
                                 : ''
                         "
                     >
-                        <i
-                            v-if="link.icon && link.iconType !== 'custom'"
-                            class="icon"
-                            :class="link.icon"
-                        ></i>
-                        <img
-                            v-else-if="link.icon && link.iconType === 'custom'"
-                            class="icon"
-                            :src="link.icon"
-                        />
-                        <span v-show="link.label && !isCollapsed">
-                            {{ link.label }}
-                        </span>
-                    </RouterLink>
-                </li>
+                        <RouterLink
+                            :to="link.url"
+                            :title="link.tooltip"
+                            class="link"
+                            :style="
+                                (link.isActive || link.isHovering) &&
+                                activeColor
+                                    ? { color: activeColor }
+                                    : ''
+                            "
+                        >
+                            <i
+                                v-if="link.icon && link.iconType !== 'custom'"
+                                class="icon"
+                                :class="link.icon"
+                            ></i>
+                            <img
+                                v-else-if="
+                                    link.icon && link.iconType === 'custom'
+                                "
+                                class="icon"
+                                :src="link.icon"
+                            />
+                            <span v-show="link.label && !isCollapsed">
+                                {{ link.label }}
+                            </span>
+                        </RouterLink>
+                    </li>
+                </section>
             </div>
         </div>
     </div>
@@ -127,6 +134,9 @@ export default {
         },
         collapsedWidth: {
             type: String
+        },
+        links: {
+            type: Array
         },
         sections: {
             type: Array, // [{links, type, label, icon, collapsable}]
@@ -202,13 +212,13 @@ export default {
     text-align: left;
     width: 100%;
     &.expand-icon {
-        :hover{
+        :hover {
             color: v-bind(activeColor);
         }
     }
-    &.nested {
-        padding-left: 20px;
-    }
+}
+.nested {
+    padding-left: 20px;
 }
 .link {
     cursor: pointer;
@@ -219,6 +229,15 @@ export default {
     transition: all 0.2s ease-in-out;
     width: 100%;
     height: 100%;
+    &.title {
+        .icon {
+            &.section-expand {
+                float: right;
+                margin-right: 0.5rem;
+                margin-top: 0.5rem;
+            }
+        }
+    }
 }
 .link span {
     margin-left: 0.5rem;

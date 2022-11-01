@@ -58,8 +58,36 @@ Primary.args = {
     width: '3000px',
     collapsedWidth: '60px',
     allowExpandCollapse: true,
+    // ! Old way of passing sections
+    // links: [
+    //     {
+    //         label: 'Home',
+    //         link: '#',
+    //         tooltip: 'Home',
+    //         icon: 'home',
+    //         isActive: true,
+    //     },
+    //     {
+    //         label: 'About',
+    //         link: '#',
+    //         tooltip: 'About',
+    //         icon: 'info',
+    //         isActive: false,
+    //     },
+    //     {
+    //         label: 'Contact',
+    //         link: '#',
+    //         tooltip: 'Contact',
+    //         icon: 'phone',
+    //         isActive: false,
+    //     },
+    // ],
     sections: [
         {
+            style: {
+                marginLeft: '30px',
+                borderLeft: '2px solid #fff',
+            },
             title: {
                 label: 'Dashboard',
                 icon: 'fa fa-home',
@@ -105,7 +133,7 @@ Primary.args = {
                 icon: 'fa fa-cog',
                 isActive: false,
                 isHovering: false,
-                showArrow: false,
+                showArrow: true,
             },
             links: [
                 {

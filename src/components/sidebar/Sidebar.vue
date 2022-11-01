@@ -1,5 +1,5 @@
 <template>
-    <div :style="styleObject" class="zek-sidebar d-flex align-items-center">
+    <div class="zek-sidebar" :style="styleObject">
         <li v-if="allowExpandCollapse" class="link-container">
             <a
                 :title="isCollapsed ? 'Collapse' : 'Expand'"
@@ -7,14 +7,11 @@
                 @click="onCollapse"
             >
                 <i
-                    class="icon fa fa-bars"
-                    :style="{ width: collapsedWidth }"
-                ></i>
+                    class="icon fa fa-bars"/>
             </a>
         </li>
         <div class="zek-sidebar-links">
             <template v-for="(sec) in sections">
-                
                 <li
                     v-for="(link, i) in sec.links"
                     :key="i"
@@ -47,9 +44,9 @@
                             class="icon"
                             :src="link.icon"
                         />
-                        <span v-if="link.label && !isCollapsed">{{
-                            link.label
-                        }}</span>
+                        <span v-show="link.label && !isCollapsed">
+                            {{ link.label }}
+                        </span>
                     </RouterLink>
                 </li>
             </template>
@@ -76,9 +73,6 @@ export default {
         collapsedWidth: {
             type: String,
         },
-        links: {
-            type: Array,
-        },
         sections: {
             type: Array, // [{links, type, label, icon, collapsable}]
             default: () => []
@@ -89,13 +83,18 @@ export default {
         activeColor: {
             type: String,
         },
+        alignItems: {
+            type: String,
+        },
         styleObj: {
             type: Object,
         },
     },
     data() {
         return {
-            isCollapsed: this.collapsed
+            isCollapsed: this.collapsed,
+            justifyContent: this.alignItems === "center" ? "center" : "flex-start",
+            styleObject: {}
         }
     },
     created() {
@@ -104,8 +103,6 @@ export default {
             width: this.collapsed
                 ? this.collapsedWidth
                 : this.width || this.styleObj.width || "",
-            backgroundColor:
-                this.backgroundColor || this.styleObj.backgroundColor || "",
         };
         if((!this.sections.length) && this.links && this.links.length) {
             this.sections.push(
@@ -130,10 +127,15 @@ export default {
 .zek-sidebar {
     height: 100%;
     overflow-y: auto;
+    background-color: v-bind(backgroundColor);
+    display: flex;
+    flex-direction: column;
+    justify-content: v-bind(justifyContent);
 }
 .zek-sidebar-links {
-    padding: 0 10px;
+    max-width: v-bind(width);
     width: 100%;
+    min-width: v-bind(collapsedWidth);
     text-align: center;
 }
 .link-container {
@@ -142,6 +144,8 @@ export default {
     margin-bottom: 15px;
     padding: 7px 0;
     border-radius: 15px;
+    text-align: left;
+    width: 100%;
 }
 .link {
     cursor: pointer;
@@ -153,14 +157,11 @@ export default {
     width: 100%;
     height: 100%;
 }
-.link > img.icon {
-    width: 40px;
-}
 .link span {
     margin-left: 0.5rem;
 }
-.link .icon {
-    padding: 0.5rem;
+.icon {
+    width: v-bind(collapsedWidth);
     text-align: center;
 }
 </style>

@@ -152,7 +152,7 @@ export default {
                             } :
                             input.type == 'dropdown' ? {
                                 onSelect: e => {
-                                    this.formData[input.name] = e[0];
+                                    this.formData[input.name] = input.selectType.toLowerCase()=='single'? e[0]: e;
                                     this.emitLatestData(input.name);
                                 }
                             } :

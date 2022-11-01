@@ -82,6 +82,7 @@ Primary.args = {
     //         isActive: false,
     //     },
     // ],
+    // ! New way of passing sections
     sections: [
         {
             style: {

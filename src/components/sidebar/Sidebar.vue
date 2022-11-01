@@ -234,7 +234,7 @@ export default {
             &.section-expand {
                 float: right;
                 margin-right: 0.5rem;
-                margin-top: 0.5rem;
+                margin-top: 0.75rem;
             }
         }
     }

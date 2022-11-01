@@ -15,10 +15,11 @@ module.exports = {
         builder: 'webpack5',
     },
     webpackFinal: async (config, { configType }) => {
-        config.module.rules.find(rule => RegExp(rule.test).toString() === '/\\.css$/').use.find(rule => rule.loader.includes('\\css-loader') ? rule.options = { modules: true } : null);
+        let cssRules = config.module.rules.find(rule => RegExp(rule.test).toString() === '/\\.css$/').use
+        cssRules.find(rule => rule.loader.includes('\\css-loader') ? rule.options = { modules: true } : null);
         config.module.rules.push(
             {
-                test: /\.scss$/,
+                test: /\.s(a|c)ss$/,
                 sideEffects: true,
                 use: [
                     'vue-style-loader',

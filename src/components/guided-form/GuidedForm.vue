@@ -130,9 +130,10 @@ export default {
                         } :
                         step.type == 'dropdown' ? {
                             onSelect: e => { 
-                                this.formData[step.name] = e[0]; 
-                                this.formSteps[this.stepNumber].value = e[0];
-                                this.formSteps[this.stepNumber].initialValue = e[0];
+                                let value = step.selectType && step.selectType.toLowerCase()!='single'? e : e[0];
+                                this.formData[step.name] = value; 
+                                this.formSteps[this.stepNumber].value = value;
+                                this.formSteps[this.stepNumber].initialValue = value;
                                 this.emitLatestData(step.name);
                             }
                         } : {

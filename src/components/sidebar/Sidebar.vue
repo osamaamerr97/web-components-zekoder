@@ -6,7 +6,18 @@
                 class="link"
                 @click="onCollapse"
             >
-                <i class="icon fa fa-bars" />
+                <i
+                    v-if="expandIcon.icon && expandIcon.iconType !== 'custom'"
+                    class="icon"
+                    :class="expandIcon.icon"
+                    :style="expandIcon.iconStyle"
+                ></i>
+                <img
+                    v-else-if="expandIcon.icon && expandIcon.iconType === 'custom'"
+                    class="icon"
+                    :src="expandIcon.icon"
+                    :style="expandIcon.iconStyle"
+                />
             </a>
         </li>
         <div class="zek-sidebar-links">
@@ -67,7 +78,7 @@
                 </li>
                 <section
                     v-show="sec.title ? sec.title?.isActive : true"
-                    :class="(!isCollapsed && sec.title) ? 'nested' : ''"
+                    :class="!isCollapsed && sec.title ? 'nested' : ''"
                     :style="isCollapsed ? '' : sec.style"
                 >
                     <li
@@ -120,6 +131,15 @@
 export default {
     name: "ZekSidebar",
     props: {
+        expandIcon: {
+            type: Object,
+            default: () => {
+                return {
+                    icon: "fa fa-bars",
+                    iconType: "font-awesome",
+                };
+            },
+        },
         backgroundColor: {
             type: String
         },

@@ -6,6 +6,7 @@ export default {
     title: 'Zekoder/Sidebar',
     component: Sidebar,
     argTypes: {
+        expandIcon: { control: 'object' },
         backgroundColor: {
             control: {
                 type: 'color',
@@ -54,6 +55,13 @@ const Template = (args, { argTypes }) => ({
 
 export const Primary = Template.bind({});
 Primary.args = {
+    expandIcon: {
+        icon: 'https://www.pngfind.com/pngs/m/9-95287_double-left-chevron-svg-png-icon-free-download.png',
+        iconType: 'custom',
+        iconStyle: {
+            padding: '0 20px',
+        }
+    },
     backgroundColor: '#e4e4e4',
     width: '3000px',
     collapsedWidth: '60px',

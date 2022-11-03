@@ -81,7 +81,7 @@
                     </RouterLink>
                 </li>
                 <section
-                    v-show="sec.title ? sec.title?.isActive : true"
+                    v-show="sec.title ? sec.title.isActive : true"
                     :class="!isCollapsed && sec.title ? 'nested' : ''"
                     :style="isCollapsed ? '' : sec.style"
                 >

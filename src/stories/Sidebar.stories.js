@@ -6,6 +6,7 @@ export default {
     title: 'Zekoder/Sidebar',
     component: Sidebar,
     argTypes: {
+        title: { control: 'object' },
         expandIcon: { control: 'object' },
         backgroundColor: {
             control: {
@@ -60,6 +61,7 @@ const Template = (args, { argTypes }) => ({
 
 export const Primary = Template.bind({});
 Primary.args = {
+    title: 'Zekoder Sidebar',
     footer: {
         links: [
             {

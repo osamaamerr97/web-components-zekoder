@@ -23,6 +23,9 @@
                         :src="expandIcon.icon"
                         :style="expandIcon.iconStyle"
                     />
+                    <span v-show="title && !isCollapsed" :style="title.style">
+                        {{ title.label ? title.label : title }}
+                    </span>
                 </a>
             </li>
             <div v-for="(sec, i) in sections" :key="i">
@@ -206,6 +209,7 @@
 export default {
     name: "ZekSidebar",
     props: {
+        title: { type: [String, Object]  },
         expandIcon: {
             type: Object,
             default: () => {
@@ -314,8 +318,10 @@ export default {
     text-align: left;
     width: 100%;
     &.expand-icon {
-        :hover {
-            color: v-bind(activeColor);
+        .icon{
+            :hover {
+                color: v-bind(activeColor);
+            }
         }
     }
 }
@@ -353,7 +359,7 @@ export default {
     align-items: center;
     padding: 10px 0;
     justify-content: space-between;
-    border-top: 1px solid #EFEFEF;
+    border-top: 1px solid #efefef;
     .footer-darkmode {
         background: #43a8d2;
         box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.25);

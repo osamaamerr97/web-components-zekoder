@@ -55,7 +55,7 @@ const Template = (args, { argTypes }) => ({
     components: { 'zek-sidebar': Sidebar },
     props: Object.keys(argTypes),
     methods: { action },
-    template: '<zek-sidebar @onCollapse="action(`Toggled`)()" v-bind="$props"></zek-sidebar>',
+    template: '<zek-sidebar @onCollapse="action(`Toggled`)()" @darkModeToggle="action(`darkmode toggled`)()" v-bind="$props"></zek-sidebar>',
 });
 
 export const Primary = Template.bind({});
@@ -71,7 +71,14 @@ Primary.args = {
                 isHovering: false,
             },
         ],
-        darkmode: true,
+        // ! This should changed outside the component as it is reactive
+        darkmode: {
+            enabled: true,
+            backgroundColor: '#000',
+            icon: 'fa fa-moon',
+            iconColor: 'yellow',
+            circleColor: '#fff',
+        }
     },
     expandIcon: {
         icon: 'https://www.pngfind.com/pngs/m/9-95287_double-left-chevron-svg-png-icon-free-download.png',
@@ -81,7 +88,7 @@ Primary.args = {
         }
     },
     backgroundColor: '#e4e4e4',
-    width: '3000px',
+    width: '300px',
     collapsedWidth: '60px',
     allowExpandCollapse: true,
     // ! Old way of passing sections
@@ -190,7 +197,7 @@ Primary.args = {
         "color": "red",
         "fontSize": "24px",
         "textTransform": "capitalize",
-        "height": "3000px"
+        "height": "500px"
     }
 
 };

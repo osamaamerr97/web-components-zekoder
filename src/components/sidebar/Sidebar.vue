@@ -129,7 +129,7 @@
             </div>
         </div>
         <div v-if="footer" class="sidebar-footer" :style="footer.style">
-            <div>
+            <div v-if="!isCollapsed" class="footer-links-container">
                 <RouterLink
                     v-for="(link, i) in footer.links"
                     :key="i"
@@ -154,7 +154,50 @@
                     />
                 </RouterLink>
             </div>
-            <div v-if="footer.darkmode" class="footer-darkmode"></div>
+            <div
+                v-if="footer.darkmode"
+                class="footer-darkmode"
+                :style="{ backgroundColor: footer.darkmode.backgroundColor }"
+            >
+                <div class="darkmode-toggle">
+                    <input
+                        type="checkbox"
+                        id="darkmode-toggle"
+                        v-model="footer.darkmode.enabled"
+                        :checked="footer.darkmode.enabled"
+                        @change="
+                            $emit('darkModeToggle', footer.darkmode.enabled)
+                        "
+                    />
+                    <i
+                        v-show="footer.darkmode.enabled"
+                        class="light"
+                        :class="footer.darkmode.icon"
+                        :style="{ color: footer.darkmode.iconColor }"
+                    />
+                    <i
+                        v-show="!footer.darkmode.enabled"
+                        class="dark"
+                        :class="footer.darkmode.icon"
+                        :style="{ color: footer.darkmode.iconColor }"
+                    />
+                    <div
+                        class="toggle-inner-circle"
+                        :style="
+                            footer.darkmode.enabled
+                                ? {
+                                      backgroundColor:
+                                          footer.darkmode.circleColor,
+                                      left: 'calc(100% - 20px)'
+                                  }
+                                : {
+                                      backgroundColor:
+                                          footer.darkmode.circleColor
+                                  }
+                        "
+                    />
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -306,11 +349,65 @@ export default {
     text-align: center;
 }
 .sidebar-footer {
+    display: flex;
+    align-items: center;
     padding: 20px 0;
+    justify-content: space-between;
     .footer-darkmode {
         background: #43a8d2;
         box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.25);
         border-radius: 20px;
+        height: 20px;
+        width: 100%;
+        max-width: v-bind(collapsedWidth);
+        margin: 0 5px;
+        .darkmode-toggle {
+            position: relative;
+            border-radius: 20px;
+            width: 100%;
+            height: 100%;
+            i {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #fff;
+                font-size: 0.75rem;
+                color: #ffee00;
+                animation: op 0.4s ease-in-out;
+                &.light {
+                    left: 5px;
+                }
+                &.dark {
+                    right: 5px;
+                }
+                @keyframes op {
+                    from {
+                        opacity: 0;
+                    }
+                    to {
+                        opacity: 1;
+                    }
+                }
+            }
+            input {
+                width: 100%;
+                height: 100%;
+                opacity: 0;
+                position: absolute;
+                z-index: 1;
+                cursor: pointer;
+            }
+            .toggle-inner-circle {
+                position: absolute;
+                height: 15px;
+                width: 15px;
+                bottom: 3px;
+                left: 3px;
+                background-color: #fff;
+                transition: 0.4s;
+                border-radius: 50%;
+            }
+        }
     }
 }
 </style>

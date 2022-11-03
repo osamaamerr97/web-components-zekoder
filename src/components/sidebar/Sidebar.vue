@@ -161,7 +161,7 @@
             <div
                 v-if="footer.darkmode"
                 class="footer-darkmode"
-                :style="{ backgroundColor: footer.darkmode.backgroundColor }"
+                :style="{ backgroundColor: footer.darkmode.enabled ? footer.darkmode.backgroundColor : 'transparent' }"
             >
                 <div class="darkmode-toggle">
                     <input
@@ -175,15 +175,15 @@
                     />
                     <i
                         v-show="footer.darkmode.enabled"
-                        class="light"
+                        class="dark"
                         :class="footer.darkmode.icon"
                         :style="{ color: footer.darkmode.iconColor }"
                     />
                     <i
                         v-show="!footer.darkmode.enabled"
-                        class="dark"
+                        class="light"
                         :class="footer.darkmode.icon"
-                        :style="{ color: footer.darkmode.iconColor }"
+                        :style="{ color: 'grey' }"
                     />
                     <div
                         class="toggle-inner-circle"
@@ -382,10 +382,10 @@ export default {
                 font-size: 0.75rem;
                 color: #ffee00;
                 animation: op 0.4s ease-in-out;
-                &.light {
+                &.dark {
                     left: 5px;
                 }
-                &.dark {
+                &.light {
                     right: 5px;
                 }
                 @keyframes op {

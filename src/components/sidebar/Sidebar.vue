@@ -1,13 +1,18 @@
 <template>
     <div class="zek-sidebar" :style="styleObject">
         <div class="zek-sidebar-links">
-            <li v-if="allowExpandCollapse" class="link-container expand-icon"
-            :class="!isCollapsed && !title ? 'expanded' : ''">
+            <li
+                v-if="allowExpandCollapse"
+                class="link-container sidebar-title"
+                @click="onCollapse"
+            >
                 <a
                     :title="isCollapsed ? 'Collapse' : 'Expand'"
                     class="link"
-                    @click="onCollapse"
                 >
+                    <span v-show="title && !isCollapsed" class="sidebar-title" :style="title.style">
+                        {{ title.label ? title.label : title }}
+                    </span>
                     <i
                         v-if="
                             expandIcon.icon && expandIcon.iconType !== 'custom'
@@ -24,9 +29,6 @@
                         :src="expandIcon.icon"
                         :style="expandIcon.iconStyle"
                     />
-                    <span v-show="title && !isCollapsed" :style="title.style">
-                        {{ title.label ? title.label : title }}
-                    </span>
                 </a>
             </li>
             <div v-for="(sec, i) in sections" :key="i">
@@ -325,16 +327,19 @@ export default {
     border-radius: 15px;
     text-align: left;
     width: 100%;
-    &.expand-icon {
+    &.sidebar-title {
+        min-height: 50px;
         .icon {
+            object-fit: contain;
+            height: 100%;
+            float:right;
+            vertical-align: bottom;
             :hover {
                 color: v-bind(activeColor);
             }
         }
-        &.expanded{
-            text-align: right;
-            // ? the direction is extra if we want to do also alignt the title later on.
-            direction: rtl;
+        .sidebar-title {
+            margin-left: 8px;
         }
     }
 }

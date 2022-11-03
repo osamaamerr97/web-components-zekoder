@@ -94,6 +94,7 @@
                         class="link-container"
                         @mouseover="link.isHovering = true"
                         @mouseout="link.isHovering = false"
+                        @click="(link.isActive = true,$emit('linkClicked',link))"
                         :style="
                             (link.isActive || link.isHovering) && activeColor
                                 ? { color: activeColor }

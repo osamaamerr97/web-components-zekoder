@@ -1,26 +1,30 @@
 <template>
     <div class="zek-sidebar" :style="styleObject">
-        <li v-if="allowExpandCollapse" class="link-container expand-icon">
-            <a
-                :title="isCollapsed ? 'Collapse' : 'Expand'"
-                class="link"
-                @click="onCollapse"
-            >
-                <i
-                    v-if="expandIcon.icon && expandIcon.iconType !== 'custom'"
-                    class="icon"
-                    :class="expandIcon.icon"
-                    :style="expandIcon.iconStyle"
-                ></i>
-                <img
-                    v-else-if="expandIcon.icon && expandIcon.iconType === 'custom'"
-                    class="icon"
-                    :src="expandIcon.icon"
-                    :style="expandIcon.iconStyle"
-                />
-            </a>
-        </li>
         <div class="zek-sidebar-links">
+            <li v-if="allowExpandCollapse" class="link-container expand-icon">
+                <a
+                    :title="isCollapsed ? 'Collapse' : 'Expand'"
+                    class="link"
+                    @click="onCollapse"
+                >
+                    <i
+                        v-if="
+                            expandIcon.icon && expandIcon.iconType !== 'custom'
+                        "
+                        class="icon"
+                        :class="expandIcon.icon"
+                        :style="expandIcon.iconStyle"
+                    ></i>
+                    <img
+                        v-else-if="
+                            expandIcon.icon && expandIcon.iconType === 'custom'
+                        "
+                        class="icon"
+                        :src="expandIcon.icon"
+                        :style="expandIcon.iconStyle"
+                    />
+                </a>
+            </li>
             <div v-for="(sec, i) in sections" :key="i">
                 <li
                     v-if="sec.title"
@@ -124,6 +128,34 @@
                 </section>
             </div>
         </div>
+        <div v-if="footer" class="sidebar-footer" :style="footer.style">
+            <div>
+                <RouterLink
+                    v-for="(link, i) in footer.links"
+                    :key="i"
+                    :to="link.url"
+                    :title="link.tooltip"
+                    class="link"
+                    :style="
+                        (link.isActive || link.isHovering) && activeColor
+                            ? { color: activeColor }
+                            : ''
+                    "
+                >
+                    <i
+                        v-if="link.icon && link.iconType !== 'custom'"
+                        class="icon"
+                        :class="link.icon"
+                    ></i>
+                    <img
+                        v-else-if="link.icon && link.iconType === 'custom'"
+                        class="icon"
+                        :src="link.icon"
+                    />
+                </RouterLink>
+            </div>
+            <div v-if="footer.darkmode" class="footer-darkmode"></div>
+        </div>
     </div>
 </template>
 
@@ -136,9 +168,9 @@ export default {
             default: () => {
                 return {
                     icon: "fa fa-bars",
-                    iconType: "font-awesome",
+                    iconType: "font-awesome"
                 };
-            },
+            }
         },
         backgroundColor: {
             type: String
@@ -172,6 +204,9 @@ export default {
             type: String
         },
         styleObj: {
+            type: Object
+        },
+        footer: {
             type: Object
         }
     },
@@ -215,13 +250,17 @@ export default {
     background-color: v-bind(backgroundColor);
     display: flex;
     flex-direction: column;
-    justify-content: v-bind(justifyContent);
+    justify-content: space-between;
 }
 .zek-sidebar-links {
     max-width: v-bind(width);
+    display: flex;
+    flex-direction: column;
     width: 100%;
+    height: 100%;
     min-width: v-bind(collapsedWidth);
     text-align: center;
+    justify-content: v-bind(justifyContent);
 }
 .link-container {
     cursor: pointer;
@@ -265,5 +304,13 @@ export default {
 .icon {
     width: v-bind(collapsedWidth);
     text-align: center;
+}
+.sidebar-footer {
+    padding: 20px 0;
+    .footer-darkmode {
+        background: #43a8d2;
+        box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.25);
+        border-radius: 20px;
+    }
 }
 </style>

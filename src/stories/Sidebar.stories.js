@@ -43,6 +43,11 @@ export default {
                 type: 'object',
             }
         },
+        footer: {
+            control: {
+                type: 'object',
+            }
+        }
     }
 };
 
@@ -55,6 +60,19 @@ const Template = (args, { argTypes }) => ({
 
 export const Primary = Template.bind({});
 Primary.args = {
+    footer: {
+        links: [
+            {
+                label: 'Settings',
+                url: '#',
+                tooltip: 'Settings',
+                icon: 'fa fa-cog',
+                isActive: false,
+                isHovering: false,
+            },
+        ],
+        darkmode: true,
+    },
     expandIcon: {
         icon: 'https://www.pngfind.com/pngs/m/9-95287_double-left-chevron-svg-png-icon-free-download.png',
         iconType: 'custom',

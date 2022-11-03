@@ -55,7 +55,7 @@ const Template = (args, { argTypes }) => ({
     components: { 'zek-sidebar': Sidebar },
     props: Object.keys(argTypes),
     methods: { action },
-    template: '<zek-sidebar @onCollapse="action(`Toggled`)()" @darkModeToggle="action(`darkmode toggled`)()" v-bind="$props"></zek-sidebar>',
+    template: '<zek-sidebar @onExpandCollapse="action(`onExpandCollapse`)($event)" @darkModeToggle="action(`darkModeToggle`)($event)" v-bind="$props"></zek-sidebar>',
 });
 
 export const Primary = Template.bind({});

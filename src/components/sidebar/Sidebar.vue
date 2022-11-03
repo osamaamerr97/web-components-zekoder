@@ -1,7 +1,8 @@
 <template>
     <div class="zek-sidebar" :style="styleObject">
         <div class="zek-sidebar-links">
-            <li v-if="allowExpandCollapse" class="link-container expand-icon">
+            <li v-if="allowExpandCollapse" class="link-container expand-icon"
+            :class="!isCollapsed && !title ? 'expanded' : ''">
                 <a
                     :title="isCollapsed ? 'Collapse' : 'Expand'"
                     class="link"
@@ -329,6 +330,11 @@ export default {
             :hover {
                 color: v-bind(activeColor);
             }
+        }
+        &.expanded{
+            text-align: right;
+            // ? the direction is extra if we want to do also alignt the title later on.
+            direction: rtl;
         }
     }
 }

@@ -6,7 +6,7 @@ export default {
     title: 'Zekoder/Sidebar',
     component: Sidebar,
     argTypes: {
-        title: { control: 'object' },
+        title: { control: 'text' },
         expandIcon: { control: 'object' },
         backgroundColor: {
             control: {

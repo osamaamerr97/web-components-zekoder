@@ -94,7 +94,9 @@
                         class="link-container"
                         @mouseover="link.isHovering = true"
                         @mouseout="link.isHovering = false"
-                        @click="(link.isActive = true,$emit('linkClicked',link))"
+                        @click="
+                            (link.isActive = true), $emit('linkClicked', link)
+                        "
                         :style="
                             (link.isActive || link.isHovering) && activeColor
                                 ? { color: activeColor }
@@ -161,7 +163,11 @@
             <div
                 v-if="footer.darkmode"
                 class="footer-darkmode"
-                :style="{ backgroundColor: footer.darkmode.enabled ? footer.darkmode.backgroundColor : 'transparent' }"
+                :style="{
+                    backgroundColor: footer.darkmode.enabled
+                        ? footer.darkmode.backgroundColor
+                        : 'transparent'
+                }"
             >
                 <div class="darkmode-toggle">
                     <input
@@ -210,7 +216,7 @@
 export default {
     name: "ZekSidebar",
     props: {
-        title: { type: [String, Object]  },
+        title: { type: [String, Object] },
         expandIcon: {
             type: Object,
             default: () => {
@@ -319,7 +325,7 @@ export default {
     text-align: left;
     width: 100%;
     &.expand-icon {
-        .icon{
+        .icon {
             :hover {
                 color: v-bind(activeColor);
             }

@@ -109,7 +109,7 @@ export default {
                 let obj = {};
                 this.inputs.forEach(
                     (input) => {
-                        obj[input.name] = input.initialValue || '';
+                        obj[input.name] = input.initialValue || input.value || '';
                     }
                 )
                 return {...obj}
@@ -121,7 +121,7 @@ export default {
             let obj = {};
             this.inputs.forEach(
                 (input) => {
-                    obj[input.name] = input.initialValue || '';
+                    obj[input.name] = input.initialValue || input.value || '';
                 }
             )
             return {...obj}
@@ -138,7 +138,7 @@ export default {
                     columns.push({
                         columnWidth: input.columnWidth || 12,
                         content: {
-                            component: input.type == 'long-text' ? 'textarea' : input.type == 'captcha'? 'captcha' : input.type === 'radio' ? 'radio-button' : input.type === 'dropdown' ? 'dropdown' : 'input',
+                            component: input.type == 'long-text' ? 'textarea' : input.type == 'captcha'? 'captcha' : input.type === 'radio' ? 'radio-button' : input.type === 'toggle-button' ? 'toggle-button' : input.type === 'dropdown' ? 'dropdown' : 'input',
                             data: input,
                             events: input.type == 'long-text' ?  {
                                 onChange: (e) => {
@@ -153,6 +153,12 @@ export default {
                             input.type == 'dropdown' ? {
                                 onSelect: e => {
                                     this.formData[input.name] = input.selectType && input.selectType.toLowerCase()!='single'? e : e[0];
+                                    this.emitLatestData(input.name);
+                                }
+                            } :
+                            input.type == 'toggle-button' ? {
+                                onToggle: e => {
+                                    this.formData[input.name] = e.selected;
                                     this.emitLatestData(input.name);
                                 }
                             } :

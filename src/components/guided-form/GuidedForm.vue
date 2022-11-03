@@ -86,24 +86,7 @@ export default {
         steps: {
             type: Array,
             required: true
-         }, /* [
-            {
-                type: String [(all html input types),longText,URL,dropdown,multipleChoice,OpinionScale,IconRate],
-                id: String (unique id to be used as question identifier as well as form data identifier),
-                name: String
-                label: String,Object {text,html,style}
-                title: String, Object {text,html,style}
-                multiple: Boolean (allow selection of multiple values),
-                required: Boolean,
-                description: String (text below question),
-                value: String,Number,Boolean, Array in case of multiple true(Prefilled value of question. Also used to receive value),
-                options:  Array (used only with Dropdown, {text,value}),
-                placeholder: String,
-                min: Number,
-                max: number, also works as max length
-                accept: (used with type = file to define what file types should be accepted)
-            }
-        ] */
+         },
         // showProgress: Boolean,
         allowNavigate: Boolean,
         customClass: String,
@@ -118,7 +101,7 @@ export default {
                 return {
                     columnWidth: step.columnWidth || 12,
                     content: {
-                        component: step.type == 'long-text' ? 'textarea' : step.type === 'radio' ? 'radio-button' : step.type === 'dropdown' ? 'dropdown' : 'input',
+                        component: step.type == 'long-text' ? 'textarea' : step.type === 'radio' ? 'radio-button' : step.type === 'toggle-button' ? 'toggle-button' : step.type === 'dropdown' ? 'dropdown' : 'input',
                         data: step,
                         events: step.type == 'long-text' ?  {
                             onChange: (e) => {
@@ -136,7 +119,16 @@ export default {
                                 this.formSteps[this.stepNumber].initialValue = value;
                                 this.emitLatestData(step.name);
                             }
-                        } : {
+                        } :
+                        step.type == 'toggle-button' ? {
+                            onToggle: e => {
+                                this.formData[step.name] = e.selected;
+                                this.formSteps[this.stepNumber].value = e.selected;
+                                this.formSteps[this.stepNumber].initialValue = e.selected;
+                                this.emitLatestData(step.name);
+                            }
+                        } :
+                        {
                             onInput: (e) => {
                                 if ( step.inputType === 'checkbox' ) {
                                     this.formData[step.name] = e.target.checked;
@@ -226,7 +218,7 @@ export default {
         },
         changeStep(number) {
             if(this.currentStep) {
-                this.formData[this.currentStep.name || this.currentStep.id] = this.formSteps[this.stepNumber].value;
+                this.formData[this.currentStep.name || this.currentStep.id] = this.formSteps[this.stepNumber].value || this.formSteps[this.stepNumber].initialValue;
             }
             this.stepNumber = number;
             this.currentStep = { ...{}, ...this.formSteps[this.stepNumber] };

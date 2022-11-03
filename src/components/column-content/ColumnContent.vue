@@ -90,6 +90,11 @@
         v-bind="column.content.data"
         v-on="column.content.events"
     ></zek-table>
+    <zek-toggle-button
+        v-else-if="column && column.content && column.content.component == 'toggle-button'"
+        v-bind="column.content.data"
+        v-on="column.content.events"
+    ></zek-toggle-button>
     <component 
         v-else-if="column && column.content && column.content.type == 'custom'" 
         :is="column.content.component"

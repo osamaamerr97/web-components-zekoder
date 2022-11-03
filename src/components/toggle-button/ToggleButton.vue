@@ -32,7 +32,7 @@ export default {
     computed: {
         toggleButtons: {
             get() {
-                return {...{}, ...this.buttons};
+                return [...[], ...this.buttons];
             },
             set() {}
         }
@@ -43,10 +43,18 @@ export default {
             this.buttonToggled(button);
         },
         buttonToggled(button) {
+            let selected = [];
+            this.toggleButtons.forEach(btn => {
+                if(btn.active) {
+                    selected.push(btn.name);
+                }
+            });
+
             let data = {
                 buttonName: button.name,
                 active: button.active || false,
-                buttons: this.toggleButtons
+                buttons: this.toggleButtons,
+                selected
             }
             this.$emit('onToggle', data );
         }

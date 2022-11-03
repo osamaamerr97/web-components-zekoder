@@ -351,8 +351,9 @@ export default {
 .sidebar-footer {
     display: flex;
     align-items: center;
-    padding: 20px 0;
+    padding: 10px 0;
     justify-content: space-between;
+    border-top: 1px solid #EFEFEF;
     .footer-darkmode {
         background: #43a8d2;
         box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.25);

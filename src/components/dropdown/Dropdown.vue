@@ -9,11 +9,12 @@
         <div v-if="theme == 'Bootstrap'" :class="'dropdown '+cssClass" :style="styleObj">
         <button
             class="btn btn-secondary"
-            :class="showIcon ? 'dropdown-toggle' : 'dropdown-toggle no-caret'"
+            :class="(showIcon ? 'dropdown-toggle' : 'dropdown-toggle no-caret')+(disabled? ' disabled':'')"
             @click="onToggle($event)"
             type="button"
             :style="buttonStyle"
             @blur="onToggle($event)"
+            :disabled="disabled"
         >
             {{ selected.length? selectedText : placeholder||label }}
             <i v-if="customIcon" :class="customIcon"></i>
@@ -75,7 +76,14 @@
         </div>
         <!-- Custom -->
         <div :class="cssClass" :style="styleObj" v-else>
-            <button style="display: flex; align-items: center; position: relative" :style="buttonStyle" @click="onToggle($event)">
+            <button 
+                style="display: flex; align-items: center; position: relative"
+                :style="buttonStyle"
+                @click="onToggle($event)"
+                :disabled="disabled"
+                type="button"
+                :class="disabled? 'disabled':''"
+            >
             <span>
                 {{ selected.length? selectedText : placeholder||label }}
                 <i v-if="showIcon" class="fa fa-angle-down" :style="iconStyle"></i>
@@ -150,7 +158,8 @@
       },
       placeholder: String,
       showLabel: Boolean, //to be removed later
-      required: Boolean
+      required: Boolean,
+      disabled: Boolean
     },
     data() {
       return {
@@ -192,7 +201,7 @@
       onToggle(event) {
         setTimeout(()=> {
             this.toggle = !this.toggle;
-        },300)
+        },30)
         this.$emit("onToggle", event);
       },
     },

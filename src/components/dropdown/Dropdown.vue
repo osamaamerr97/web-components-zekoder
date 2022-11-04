@@ -10,10 +10,10 @@
         <button
             class="btn btn-secondary"
             :class="(showIcon ? 'dropdown-toggle' : 'dropdown-toggle no-caret')+(disabled? ' disabled':'')"
-            @click="onToggle($event)"
+            @click="onToggle()"
             type="button"
             :style="buttonStyle"
-            @blur="onToggle($event)"
+            @blur="toggle=true; onToggle();"
             :disabled="disabled"
         >
             {{ selected.length? selectedText : placeholder||label }}
@@ -79,7 +79,7 @@
             <button 
                 style="display: flex; align-items: center; position: relative"
                 :style="buttonStyle"
-                @click="onToggle($event)"
+                @click="onToggle()"
                 :disabled="disabled"
                 type="button"
                 :class="disabled? 'disabled':''"
@@ -198,11 +198,15 @@
         }
         this.$emit("onSelect", this.selected);
       },
-      onToggle(event) {
-        setTimeout(()=> {
-            this.toggle = !this.toggle;
-        },30)
-        this.$emit("onToggle", event);
+      onToggle() {
+        if(this.toggle) {
+            setTimeout(() => {
+                this.toggle = false;
+            },300)
+        } else {
+            this.toggle = true;
+        }
+        this.$emit("onToggle", this.toggle);
       },
     },
   };

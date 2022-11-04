@@ -67,6 +67,77 @@ Primary.args = {
         placeholder: 'Enter last name',
         label: 'Last Name',
     },
+    {
+        name: 'dd',
+        type: 'dropdown',
+        showIcon: true,
+        items: ['A','B','C'],
+        disabled: true,
+        theme: 'Bootstrap',
+        label: 'My dropdown'
+    },
+    {
+        name: 'toggle',
+        type: 'toggle-button',
+        buttons: [
+            {
+                name:'fb',
+                id: 'fb-0',
+                class: "facebook-provider",
+                label: "Facebook",
+                style: {
+                    width: "100px",
+                    borderRadius: "10px",
+                    background: "red"
+                },
+                icon: {
+                    class: 'fab fa-facebook',
+                    style: {
+                        color: 'blue',
+                        marginRight: '10px'
+                    }
+                }
+            },
+            {
+                name:'google',
+                id: 'goo-0',
+                class: "google-provider",
+                label: "",
+                style: {
+                    width: "100px",
+                    borderRadius: "10px",
+                    background: "blue"
+                },
+                disabled:true,
+                image: {
+                    src: "https://cdn.iconscout.com/icon/free/png-256/google-2981831-2476479.png",
+                    width: "50px"
+                },
+                label: "google"
+            },
+            {
+                name:'tw',
+                id: 'tw-0',
+                class: "twitter-provider",
+                label: "Twitter",
+                style: {
+                    width: "100px",
+                    borderRadius: "10px",
+                    border: "2px solid green"
+                },
+                active: true,
+                icon: {
+                    class: 'fab fa-twitter',
+                    style: {
+                        color: 'blue',
+                        marginLeft: '10px'
+                    }
+                },
+                textPosition: "left"
+            },
+        ]
+        
+    }
   ],
   submitButton: 'Proceed', //for string it is button label, for object it should be {show:true, label:'Submit', styleObj: {}}
   cancelButton: {

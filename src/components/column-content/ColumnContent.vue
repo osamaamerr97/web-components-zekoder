@@ -127,6 +127,7 @@ import ZekTextarea from "../textarea/Textarea.vue";
 import ZekCard from "../card/Card.vue";
 import ZekCollapsibleContainer from "../collapsible-container/CollapsibleContainer.vue";
 import ZekTable from "../table/Table.vue";
+import ZekToggleButton from "../toggle-button/ToggleButton.vue"
 import VueRecaptcha from '../../../node_modules/vue-recaptcha/dist/vue-recaptcha.es';
 
 export default {
@@ -146,6 +147,7 @@ export default {
         ZekCard,
         ZekCollapsibleContainer,
         ZekTable,
+        ZekToggleButton,
         VueRecaptcha
     },
     name: "ZekColumnContent",

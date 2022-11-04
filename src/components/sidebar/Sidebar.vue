@@ -97,9 +97,7 @@
                         class="link-container"
                         @mouseover="link.isHovering = true"
                         @mouseout="link.isHovering = false"
-                        @click="
-                            (link.isActive = true), $emit('linkClicked', link)
-                        "
+                        @click="linkClicked(link)"
                         :style="
                             (link.isActive || link.isHovering) && activeColor
                                 ? { color: activeColor }
@@ -287,6 +285,8 @@ export default {
                 links: this.links
             });
         }
+        // Check if any link is active
+        this.checkActiveLink();
     },
     methods: {
         onCollapse(event) {
@@ -295,6 +295,24 @@ export default {
                 ? this.collapsedWidth
                 : this.width || this.styleObj.width || "";
             this.$emit("onExpandCollapse", this.isCollapsed);
+        },
+        linkClicked(link) {
+            this.sections.forEach(section => {
+                section.links.forEach(l => {
+                    l.isActive = false;
+                });
+            });
+            link.isActive = true;
+            this.$emit("linkClicked", link);
+        },
+        checkActiveLink(path) {
+            this.sections.forEach(sec => {
+                sec.links.forEach(link => {
+                    if (window.location.pathname === link.url) {
+                        link.isActive = true;
+                    }
+                });
+            });
         }
     }
 };

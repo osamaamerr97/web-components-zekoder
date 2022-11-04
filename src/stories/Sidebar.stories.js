@@ -97,7 +97,7 @@ Primary.args = {
     links: [
         {
             label: 'Home',
-            link: '#',
+            url: '/iframe.html',
             tooltip: 'Home',
             icon: 'fa fa-home',
             isActive: true,
@@ -105,7 +105,7 @@ Primary.args = {
         },
         {
             label: 'About',
-            link: '#',
+            url: '#',
             tooltip: 'About',
             icon: 'fa fa-info',
             isActive: false,
@@ -113,7 +113,7 @@ Primary.args = {
         },
         {
             label: 'Contact',
-            link: '#',
+            url: '#',
             tooltip: 'Contact',
             icon: 'fa fa-phone',
             isActive: false,
@@ -140,7 +140,7 @@ Primary.args = {
     //         links: [
     //             {
     //                 label: 'Home',
-    //                 url: '#',
+    //                 url: '/iframe.html',
     //                 tooltip: 'Home',
     //                 icon: 'fa fa-home',
     //                 isActive: false,

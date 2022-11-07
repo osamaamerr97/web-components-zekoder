@@ -9,9 +9,9 @@
                     :title="isCollapsed ? 'Collapse' : 'Expand'"
                     class="link sidebar-title-link"
                 >
-                    <a :to="title.url" v-show="title && !isCollapsed" class="sidebar-title" :style="title ? title.style : null">
+                    <RouterLink :to="title.url" v-show="title && !isCollapsed" class="sidebar-title" :style="title ? title.style : null">
                         {{ title.label ? title.label : title }}
-                    </a>
+                    </RouterLink>
                     <i
                         v-if="
                             expandIcon.icon && expandIcon.iconType !== 'custom'
@@ -50,6 +50,7 @@
                         :to="sec.title.url"
                         :title="sec.title.tooltip"
                         class="link title"
+                        @click="section.title.isExpanded = !section.title.isExpanded"
                         :style="
                             (sec.title.isActive || sec.title.isHovering) &&
                             activeColor
@@ -79,7 +80,7 @@
                         <i
                             class="icon section-expand fa"
                             :class="
-                                sec.title.isActive
+                                sec.title.isExpanded
                                     ? 'fa-chevron-up'
                                     : 'fa-chevron-down'
                             "
@@ -88,7 +89,7 @@
                     </RouterLink>
                 </li>
                 <section
-                    v-show="sec.title ? sec.title.isActive : true"
+                    v-show="sec.title ? sec.title.isExpanded : true"
                     :class="!isCollapsed && sec.title ? 'nested' : ''"
                     :style="isCollapsed ? '' : sec.style"
                 >
@@ -99,7 +100,7 @@
                         :class="link.isHovering ? 'hovering' : link.isActive ? 'active-link' : ''"
                         @mouseover="link.isHovering = true"
                         @mouseout="link.isHovering = false"
-                        @click="linkClicked(link)"
+                        @click="linkClicked(sec, link)"
                         :style="
                             (link.isActive || link.isHovering) && activeColor
                                 ? { color: activeColor }
@@ -276,7 +277,6 @@ export default {
         };
     },
     created() {
-        console.log(this.sections);
         this.styleObject = {
             ...this.styleObj,
             width: this.collapsed
@@ -299,7 +299,18 @@ export default {
                 : this.width || this.styleObj.width || "";
             this.$emit("onExpandCollapse", this.isCollapsed);
         },
-        linkClicked(link) {
+        linkClicked(sec, link) {
+            this.sections.forEach(section => {
+                section.isExpanded = false;
+                if ( section.links && sections.links.length ) {
+                    section.links.forEach(l => {
+                        l.isActive = false;
+                    });
+                }
+            });
+            sec.isExpanded = sec.isActive = true;
+            link.isActive = true;
+
             this.$emit("linkClicked", link);
         },
         checkActiveLink() {
@@ -397,6 +408,7 @@ export default {
     transition: all 0.2s ease-in-out;
     width: 100%;
     height: 100%;
+    display: inline-block;
     &.title {
         .icon {
             &.section-expand {

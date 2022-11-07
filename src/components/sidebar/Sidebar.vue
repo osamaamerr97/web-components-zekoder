@@ -9,10 +9,10 @@
                     :title="isCollapsed ? 'Collapse' : 'Expand'"
                     class="link sidebar-title-link"
                 >
-                    <RouterLink :to="title.url" v-show="title && (title.url || title.url !== '#') && !isCollapsed" class="sidebar-title" :style="title ? title.style : null">
+                    <RouterLink :to="title.url" v-show="title && (title.url && title.url !== '#') && !isCollapsed" class="sidebar-title" :style="title ? title.style : null">
                         {{ title.label ? title.label : title }}
                     </RouterLink>
-                    <a :to="title.url" v-show="title && (title.url || title.url === '#') && !isCollapsed" class="sidebar-title" :style="title ? title.style : null">
+                    <a :to="title.url" v-show="title && (title.url && title.url === '#') && !isCollapsed" class="sidebar-title" :style="title ? title.style : null">
                         {{ title.label ? title.label : title }}
                     </a>
                     <i

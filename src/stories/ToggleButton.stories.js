@@ -6,6 +6,7 @@ export default {
     component: ZekToggleButton,
     argTypes: {
         disabled: { type: 'boolean' },
+        showEnableDisableCheckbox: { type: 'boolean' },
         customClass: { type: 'text' },
         styleObj: { type: 'object' }
     }
@@ -25,6 +26,7 @@ Primary.args = {
     styleObj: {
         width: "400px"
     },
+    showEnableDisableCheckbox: false,
     customClass: 'd-flex justify-content-between',
     buttons: [
         {
@@ -82,7 +84,8 @@ Primary.args = {
             },
             textPosition: "left"
         },
-    ]
+    ],
+    label: "Social Login"
     
 };
 

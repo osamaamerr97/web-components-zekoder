@@ -1,5 +1,9 @@
 <template>
     <div id="toggle-button-container" :class="customClass" :style="styleObj">
+        <span v-if="label" :style="label.style">
+            <span v-html="label.html || label.text || label" ></span>
+            <span class="required-asterik" v-if="required">*</span>
+        </span>
         <button type="button" class="btn zek-toggle-btn" data-bs-toggle="button"
             v-for="(btn,i) in toggleButtons"
             :key="i"
@@ -16,16 +20,28 @@
             <i v-else-if="btn.icon" :class="btn.icon.class || btn.icon" :style="btn.icon.style"></i>
             <span v-if="btn.label && !(btn.textPosition && btn.textPosition.toLowerCase()=='left')"> {{btn.label}} </span>
         </button>
+        <ZekInput
+            v-if="showEnableDisableCheckbox"
+            class="enable-disable-checkbox"
+            :inputType="'checkbox'"
+            :initialValue="!disabled"
+            :inputStyle="{ width: '20px', height: '20px' }"
+            @onInput="onCheckboxChange($event)"
+        ></ZekInput>
     </div>
 </template>
 
 <script>
+import ZekInput from "../input-field/InputField.vue";
 export default {
     name: "ZekToggleButton",
+    components: { ZekInput }, 
     props: {
         buttons: Array, // [{class, styleObj, label, icon, active, disabled, name, id, image, textPosition },...]
         theme: String,
         customClass: String,
+        showEnableDisableCheckbox: Boolean,
+        label: { type: [Object, String] },
         styleObj: Object,
         disabled: Boolean
     },
@@ -57,10 +73,16 @@ export default {
                 selected
             }
             this.$emit('onToggle', data );
+        },
+        onCheckboxChange(event) {
+            this.disabled = !event.target.checked;
         }
     }
 }
 </script>
 
 <style lang="scss" scoped>
+.enable-disable-checkbox {
+    margin-left: 30px;
+}
 </style>

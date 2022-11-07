@@ -304,7 +304,7 @@ export default {
         checkActiveLink() {
             const path = window.location.pathname;
             this.sections.forEach(sec => {
-                if ( path === link.url ) {
+                if ( path === sec.url ) {
                     sec.isActive = true;
                 }
                 if ( sec.links && sec.links.length ) {

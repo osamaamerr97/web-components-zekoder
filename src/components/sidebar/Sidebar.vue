@@ -1,18 +1,17 @@
 <template>
-    <div class="zek-sidebar" :style="styleObject">
+    <div class="zek-sidebar" :class="isCollapsed ? 'collapsed' : ''" :style="styleObject">
         <div class="zek-sidebar-links">
             <li
                 v-if="allowExpandCollapse"
                 class="link-container sidebar-title"
-                @click="onCollapse"
             >
                 <a
                     :title="isCollapsed ? 'Collapse' : 'Expand'"
-                    class="link"
+                    class="link sidebar-title-link"
                 >
-                    <span v-show="title && !isCollapsed" class="sidebar-title" :style="title.style">
+                    <a :to="title.url" v-show="title && !isCollapsed" class="sidebar-title" :style="title ? title.style : null">
                         {{ title.label ? title.label : title }}
-                    </span>
+                    </a>
                     <i
                         v-if="
                             expandIcon.icon && expandIcon.iconType !== 'custom'
@@ -20,6 +19,7 @@
                         class="icon"
                         :class="expandIcon.icon"
                         :style="expandIcon.iconStyle"
+                        @click="onCollapse"
                     ></i>
                     <img
                         v-else-if="
@@ -28,6 +28,7 @@
                         class="icon"
                         :src="expandIcon.icon"
                         :style="expandIcon.iconStyle"
+                        @click="onCollapse"
                     />
                 </a>
             </li>
@@ -35,6 +36,7 @@
                 <li
                     v-if="sec.title"
                     class="link-container"
+                    :class="sec.title.isHovering ? 'hovering' : sec.title.isActive ? 'active-link' : ''"
                     @mouseover="sec.title.isHovering = true"
                     @mouseout="sec.title.isHovering = false"
                     @click="sec.title.isActive = !sec.title.isActive"
@@ -94,7 +96,8 @@
                     <li
                         v-for="(link, i) in sec.links"
                         :key="i"
-                        class="link-container"
+                        class="link-container link-container-child"
+                        :class="link.isHovering ? 'hovering' : link.isActive ? 'active-link' : ''"
                         @mouseover="link.isHovering = true"
                         @mouseout="link.isHovering = false"
                         @click="linkClicked(link)"
@@ -298,20 +301,24 @@ export default {
         },
         linkClicked(link) {
             this.sections.forEach(section => {
-                section.links.forEach(l => {
-                    l.isActive = false;
-                });
+                if( section.links && section.links.length ) {
+                    section.links.forEach(l => {
+                        l.isActive = false;
+                    });
+                }
             });
             link.isActive = true;
             this.$emit("linkClicked", link);
         },
         checkActiveLink(path) {
             this.sections.forEach(sec => {
-                sec.links.forEach(link => {
-                    if (window.location.pathname === link.url) {
-                        link.isActive = true;
-                    }
-                });
+                if ( sec.links && sec.links.length ) {
+                    sec.links.forEach(link => {
+                        if (window.location.pathname === link.url) {
+                            link.isActive = true;
+                        }
+                    });
+                }
             });
         }
     }
@@ -326,6 +333,17 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    -webkit-transition: width 0.3s;
+    &.collapsed {
+        .link-container {
+            text-align: center;
+            &.sidebar-title {
+                .icon {
+                    margin-left: initial;
+                }
+            }
+        }
+    }
 }
 .zek-sidebar-links {
     max-width: v-bind(width);
@@ -342,27 +360,37 @@ export default {
     list-style: none;
     margin-bottom: 15px;
     padding: 7px 0;
-    border-radius: 15px;
     text-align: left;
     width: 100%;
+    padding: 5px 10px;
     &.sidebar-title {
+        text-decoration: none;
+        border-bottom: solid 1px #eee;
+        border-radius: inherit;
+        padding: 20px 10px;
         min-height: 50px;
         .icon {
             object-fit: contain;
-            height: 100%;
-            float:right;
-            vertical-align: bottom;
+            margin-left: auto;
             :hover {
                 color: v-bind(activeColor);
             }
         }
-        .sidebar-title {
-            margin-left: 8px;
+        .sidebar-title-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            a { 
+                color: #cccccc;
+                text-decoration: none;
+            }
         }
     }
 }
 .nested {
-    padding-left: 20px;
+    .link-container {
+        padding-left: 20px;
+    }
 }
 .link {
     cursor: pointer;
@@ -377,8 +405,7 @@ export default {
         .icon {
             &.section-expand {
                 float: right;
-                margin-right: 0.5rem;
-                margin-top: 0.75rem;
+                margin-top: 0.3rem;
             }
         }
     }

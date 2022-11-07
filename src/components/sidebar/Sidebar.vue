@@ -9,9 +9,9 @@
                     :title="isCollapsed ? 'Collapse' : 'Expand'"
                     class="link sidebar-title-link"
                 >
-                    <a :to="title.url" v-show="title && !isCollapsed" class="sidebar-title" :style="title ? title.style : null">
+                    <RouterLink :to="title.url" v-show="title && !isCollapsed" class="sidebar-title" :style="title ? title.style : null">
                         {{ title.label ? title.label : title }}
-                    </a>
+                    </RouterLink>
                     <i
                         v-if="
                             expandIcon.icon && expandIcon.iconType !== 'custom'
@@ -39,7 +39,6 @@
                     :class="sec.title.isHovering ? 'hovering' : sec.title.isActive ? 'active-link' : ''"
                     @mouseover="sec.title.isHovering = true"
                     @mouseout="sec.title.isHovering = false"
-                    @click="sec.title.isActive = !sec.title.isActive"
                     :style="
                         (sec.title.isActive || sec.title.isHovering) &&
                         activeColor
@@ -300,21 +299,17 @@ export default {
             this.$emit("onExpandCollapse", this.isCollapsed);
         },
         linkClicked(link) {
-            this.sections.forEach(section => {
-                if( section.links && section.links.length ) {
-                    section.links.forEach(l => {
-                        l.isActive = false;
-                    });
-                }
-            });
-            link.isActive = true;
             this.$emit("linkClicked", link);
         },
-        checkActiveLink(path) {
+        checkActiveLink() {
+            const path = window.location.pathname;
             this.sections.forEach(sec => {
+                if ( path === link.url ) {
+                    sec.isActive = true;
+                }
                 if ( sec.links && sec.links.length ) {
                     sec.links.forEach(link => {
-                        if (window.location.pathname === link.url) {
+                        if ( path === link.url ) {
                             link.isActive = true;
                         }
                     });

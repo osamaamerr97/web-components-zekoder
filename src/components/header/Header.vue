@@ -34,13 +34,13 @@
                     :selectType="`Single`"
                     @select="onSelect"
                     :showIcon="true"
-                    v-bind="dropdownProps"
+                    v-bind="menu.dropdownProps || dropdownProps"
                 />
-                <RouterLink v-else :to="menu.url"></RouterLink>
+                <RouterLink v-else :to="menu.url">{{menu.label}}</RouterLink>
             </div>
         </div>
-        <ZekDropdown v-if="showLangDropdown" v-bind="langDropdown.props" v-on="langDropdown.events" />
-        <ZekUserInfo v-if="showUserInfo" v-bind="userInfoDropdown.props" v-on="userInfoDropdown.events"/>
+        <ZekDropdown v-if="langDropdown" v-bind="langDropdown.props" v-on="langDropdown.events" />
+        <ZekUserInfo v-if="userInfo" v-bind="userInfo.props" v-on="userInfo.events"/>
     </header>
 </template>
 
@@ -115,15 +115,7 @@ export default {
                 }
             })
         },
-        showUserInfo: {
-            type: Boolean,
-            default: false
-        },
-        showLangDropdown: {
-            type: Boolean,
-            default: false
-        },
-        userInfoDropdown: {
+        userInfo: {
             type: Object
         },
         langDropdown: {

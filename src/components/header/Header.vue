@@ -1,136 +1,167 @@
 <template>
-  <header class="wrapper" :style="styleObj">
-    <i v-if="sidebarButton && sidebarButtonProperties.position =='left'" class="fa fa-bars sidebar" />
-    <a v-if="logoProperties.position != 'right'" :href="logoProperties.url ? logoProperties.url : 'javascript:void(0)'" class="logo" :style="{cursor: logoProperties.url ? 'pointer' : 'default',...logoProperties.style}">
-      <img :src="logo" :style="logoProperties.logoStyle"/>
-      <span v-if="text" :style="logoProperties.textStyle">{{ text }}</span>
-    </a>
-    <div class="menus">
-      <zek-dropdown
-        v-for="(menu, i) in menus"
-        :key="i"
-        :label="menu.label"
-        :theme="`Custom`"
-        :items="menu.links"
-        :selectType="`Single`"
-        @select="onSelect"
-        :showIcon="true"
-        v-bind="dropdownProps"
-      />
-    </div>
-    <i v-if="sidebarButton && sidebarButtonProperties.position !='left'" class="fa fa-bars sidebar" />
-    <a v-if="logoProperties.position == 'right'" :href="logoProperties.url ? logoProperties.url : 'javascript:void(0)'" class="logo" :style="{cursor: logoProperties.url ? 'pointer' : 'default',...logoProperties.style}">
-      <img :src="logo" :style="logoProperties.logoStyle"/>
-      <span v-if="text" :style="logoProperties.textStyle">{{ text }}</span>
-    </a>
-  </header>
+    <header id="zek-header" class="zek-header-wrapper" :style="styleObj">
+        <i
+            v-if="sidebarButton"
+            class="fa fa-bars sidebar"
+        />
+        <a
+            v-if="logo"
+            :href="logo.url ? logo.url : 'javascript:void(0)'"
+            class="logo"
+            :style="{ cursor: logo.url ? 'pointer' : 'default', ...logo.style }"
+        >
+            <img :src="logo.src" :style="logo.logoStyle" />
+            <span v-if="logo.logoText" class="zek-logo-text-container">
+                <span class="logo-main-text" :class="logo.logoText.mainTextClass" :style="logo.logoText.mainTextStyleObj">
+                    {{ logo.logoText.mainText }}
+                </span>
+                <span v-if="logo.logoText.subText" class="logo-sub-text" :class="logo.logoText.subTextClass" :style="logo.logoText.subTextStyleObj">
+                    {{ logo.logoText.subText }}
+                </span>
+            </span>
+        </a>
+        <div class="zek-header-menu">
+            <div 
+                class="zek-header-menu-item" 
+                v-for="(menu, i) in menus" 
+                :key="i"
+            >
+                <zek-dropdown
+                    v-if="menu.links && menu.links.length"
+                    :label="menu.label"
+                    :theme="`Custom`"
+                    :items="menu.links"
+                    :selectType="`Single`"
+                    @select="onSelect"
+                    :showIcon="true"
+                    v-bind="dropdownProps"
+                />
+                <RouterLink v-else :to="menu.url"></RouterLink>
+            </div>
+        </div>
+        <ZekDropdown v-if="showLangDropdown" v-bind="langDropdown.props" v-on="langDropdown.events" />
+        <ZekUserInfo v-if="showUserInfo" v-bind="userInfoDropdown.props" v-on="userInfoDropdown.events"/>
+    </header>
 </template>
 
 <script>
 import ZekDropdown from "../dropdown/Dropdown.vue";
+import ZekUserInfo from "../dropdown/Dropdown.vue";
 export default {
-  name: "ZekHeader",
-  components: {
-    ZekDropdown,
-  },
-  props: {
-    logo: {
-      type: String,
+    name: "ZekHeader",
+    components: {
+        ZekDropdown,
+        ZekUserInfo
     },
-    logoProperties: {
-      type: Object,
-      default: () => ({
-        position: "left",
-        url: "",
-        style: {
-          width: "50px",
-          height: "50px",
-          textDecoration: "none",
+    props: {
+        logo: {
+            type: Object,
+            default: () => ({
+                position: "left",
+                url: "",
+                style: {
+                    width: "50px",
+                    height: "50px",
+                    textDecoration: "none"
+                },
+                logoStyle: {
+                    width: "70%"
+                },
+                textStyle: {
+                    fontWeight: "bold",
+                    color: "black"
+                }
+            })
         },
-        logoStyle: {
-          width: "70%",
+        text: {
+            type: String, Object
         },
-        textStyle: {
-          fontWeight: "bold",
-          color: "black",
+        sidebarButton: {
+            type: Boolean,
+            default: false
         },
-      }),
-    },
-    text: {
-      type: String,
-    },
-    sidebarButton: {
-      type: Boolean,
-      default: false,
-    },
-    sidebarButtonProperties: {
-      type: Object,
-      default: () => ({
-        position: "right",
-        target: "",
-      }),
-    },
-    menus: {
-      type: Array,
-    },
-    styleObj: {
-      type: Object,
-    },
-    dropdownProps: {
-      type: Object,
-      default: () => ({
-        listStyle: {
-          position: "absolute",
-          background: "white",
-          border: "1px solid #ccc",
-          borderRadius: "5px",
-          boxShadow: "0px 0px 5px #ccc",
-          zIndex: "1",
-          padding: "10px",
-          margin: "0",
+        sidebarButtonProperties: {
+            type: Object,
+            default: () => ({
+                position: "right",
+                target: ""
+            })
         },
-        buttonStyle: {
-          color: "black",
+        menus: {
+            type: Array
         },
-        iconStyle: {
-          position: "relative",
-          marginLeft: "10px",
+        styleObj: {
+            type: Object
         },
-      }),
+        dropdownProps: {
+            type: Object,
+            default: () => ({
+                listStyle: {
+                    position: "absolute",
+                    background: "white",
+                    border: "1px solid #ccc",
+                    borderRadius: "5px",
+                    boxShadow: "0px 0px 5px #ccc",
+                    zIndex: "1",
+                    padding: "10px",
+                    margin: "0"
+                },
+                buttonStyle: {
+                    color: "black"
+                },
+                iconStyle: {
+                    position: "relative",
+                    marginLeft: "10px"
+                }
+            })
+        },
+        showUserInfo: {
+            type: Boolean,
+            default: false
+        },
+        showLangDropdown: {
+            type: Boolean,
+            default: false
+        },
+        userInfoDropdown: {
+            type: Object
+        },
+        langDropdown: {
+            type: Object
+        }
     },
-  },
 
-  methods: {
-    onSelect(selected) {
-      console.log(selected);
-      window.location.href = selected;
-    },
-  },
+    methods: {
+        onSelect(selected) {
+            console.log(selected);
+            window.location.href = selected;
+        }
+    }
 };
 </script>
 <style scoped lang="scss">
-.wrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.zek-header-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 .logo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  width: 100%;
-  margin: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    margin: 0 10px;
 }
-.menus{
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  height: 100%;
-  width: 100%;
+.zek-header-menu {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 100%;
+    width: 100%;
 }
 .sidebar {
-  cursor: pointer;
-  padding: 0 10px;
+    cursor: pointer;
+    padding: 0 10px;
 }
 </style>

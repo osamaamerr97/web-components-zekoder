@@ -12,6 +12,7 @@ import ZekText from './components/text-block/TextBlock.vue';
 import ZekVideo from './components/video/Video.vue';
 import ZekLogin from './components/login/Login.vue';
 import ZekForm from './components/form/Form.vue';
+import ZekHeader from './components/header/Header.vue';
 import ZekSidebar from './components/sidebar/Sidebar.vue';
 import ZekInitials from './components/initials/Initials.vue';
 import ZekCollapsibleContainer from './components/collapsible-container/CollapsibleContainer.vue';
@@ -40,6 +41,7 @@ export {
     ZekVideo,
     ZekLogin,
     ZekForm,
+    ZekHeader,
     ZekSidebar,
     ZekInitials,
     ZekCollapsibleContainer,

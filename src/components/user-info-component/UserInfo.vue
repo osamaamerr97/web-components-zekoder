@@ -9,12 +9,13 @@
       <div
         v-else
         class="user-info-avatar"
-        alt="avater"
+        alt="avatar"
+        @click="toggle = !toggle"
         :style="{
-          backgroundColor: getRandomColor(),
+          backgroundColor: backgroundColor,
         }"
       >
-        <span>{{ firstName[0] }}. {{ lastName[0] }}.</span>
+        <span>{{ firstName[0] }} {{ lastName[0] }}</span>
       </div>
     </a>
     <div v-if="showName && namePosition == 'right'" class="user-info-details">
@@ -22,7 +23,7 @@
       <span v-if="status" class="user-info-status"> {{ status }} </span>
     </div>
     <i
-      v-if="dropdownLinks.length > 0"
+      v-if="showAvatarArrow && dropdownLinks.length > 0"
       @click="toggle = !toggle"
       :class="toggle ? 'fa fa-angle-up' : 'fa fa-angle-down'"
       style="cursor: pointer"
@@ -48,6 +49,10 @@ export default {
     },
     lastName: {
       type: String,
+    },
+    showAvatarArrow: {
+        type: Boolean,
+        default: true
     },
     showName: {
       type: Boolean,
@@ -76,6 +81,7 @@ export default {
   data() {
     return {
       toggle: false,
+      backgroundColor: this.getRandomColor()
     };
   },
   computed: {

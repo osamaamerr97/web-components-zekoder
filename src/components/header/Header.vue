@@ -20,7 +20,7 @@
                 </span>
             </span>
         </a>
-        <div class="zek-header-menu">
+        <div class="zek-header-menu" v-if="menus && menus.length">
             <div 
                 class="zek-header-menu-item" 
                 v-for="(menu, i) in menus" 
@@ -46,7 +46,7 @@
 
 <script>
 import ZekDropdown from "../dropdown/Dropdown.vue";
-import ZekUserInfo from "../dropdown/Dropdown.vue";
+import ZekUserInfo from "../user-info-component/UserInfo.vue";
 export default {
     name: "ZekHeader",
     components: {
@@ -122,7 +122,6 @@ export default {
             type: Object
         }
     },
-
     methods: {
         onSelect(selected) {
             console.log(selected);

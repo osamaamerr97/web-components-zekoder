@@ -3,8 +3,16 @@
         <div class="col">
             <template v-if="socialIcons && socialIcons.length">
                 <div class="social-login">
-                    <div class="social-icon" :class="social.label" v-for="(social, i) in socialIcons" :key="i" :title="social.label" :style="social.styleObj">
-                        <i v-if="social.icon" :class="social.icon" @click.prevent="$emit('socialIconClicked',social.label)"></i>
+                    <div 
+                        class="social-icon" 
+                        :class="social.label" 
+                        v-for="(social, i) in socialIcons" 
+                        :key="i" 
+                        :title="social.label" 
+                        :style="social.styleObj"
+                        @click.prevent="$emit('socialIconClicked',social.label)"
+                    >
+                        <i v-if="social.icon" :class="social.icon"></i>
                         <img v-else-if="social.image" :src="social.image" :alt="social.label">
                     </div>
                 </div>

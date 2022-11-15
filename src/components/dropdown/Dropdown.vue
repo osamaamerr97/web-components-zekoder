@@ -54,7 +54,7 @@
         >
             <template v-slot:activator="{ on, attrs }">
             <v-btn v-bind="attrs" v-on="on">
-                {{ selected.length? selectedText : placeholder||label }}
+                {{ selected.length ? selectedText : placeholder||label }}
             </v-btn>
             </template>
             <v-list>
@@ -76,7 +76,7 @@
         </div>
         <!-- Custom -->
         <div :class="cssClass" :style="styleObj" v-else>
-            <button 
+            <button
                 style="display: flex; align-items: center; position: relative"
                 :style="buttonStyle"
                 @click="onToggle()"
@@ -102,15 +102,15 @@
                 type="checkbox"
                 :id="i"
                 v-model="selected"
-                :value="item"
+                :value="item.value ? item.value : item"
                 />
-                {{ item }}
+                {{ item.text || item }}
             </div>
             </div>
         </div>
     </div>
   </template>
-  
+
   <script>
   export default {
     name: "ZekDropdown",
@@ -159,19 +159,20 @@
       placeholder: String,
       showLabel: Boolean, //to be removed later
       required: Boolean,
-      disabled: Boolean
+      disabled: Boolean,
+      toggleOnSelect: Boolean,
     },
     data() {
       return {
         toggle: false,
-        selected: [], //selected 
+        selected: [], //selected
       };
     },
     created() {
       if(this.value) {
           this.selected  = typeof this.value == 'object'? this.value : [this.value];
       }
-  
+
     },
     computed: {
       styleObject() {
@@ -181,7 +182,8 @@
       },
       selectedText() {
         return this.selected.map(value => {
-            return this.items.find(item => {return item == value || item.value==value}).text;
+            let selected = this.items.find(item => {return item == value || item.value==value});
+            return selected.text ? selected.text : selected;
         }).join(", ");
       }
     },
@@ -195,6 +197,9 @@
           } else {
             this.selected.push(item);
           }
+        }
+        if(this.toggleOnSelect) {
+            this.onToggle();
         }
         this.$emit("onSelect", this.selected);
       },
@@ -211,7 +216,7 @@
     },
   };
   </script>
-  
+
   <style scoped lang="scss">
   .no-caret:after{
       content: none;

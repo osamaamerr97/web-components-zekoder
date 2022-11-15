@@ -37,6 +37,9 @@ export default {
         iconStyle: {
             control: { type: 'object' },
         },
+        toggleOnSelect: {
+            control: { type: 'boolean' },
+        }
     },
 };
 
@@ -72,7 +75,8 @@ Primary.args = {
         backgroundColor: '#f5f5f5',
     },
     iconStyle: {
-    }
+    },
+    toggleOnSelect: true,
 
 };
 

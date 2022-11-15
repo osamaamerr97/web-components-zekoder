@@ -25,6 +25,7 @@ import ZekTable from './components/table/Table.vue';
 import ZekRightPanel from './components/right-panel/RightPanel.vue';
 import ZekSignup from './components/signup/Signup.vue';
 import ZekGuidedForm from './components/guided-form/GuidedForm.vue';
+import ZekXYChart from './components/charts/XYChart.vue';
 
 export {
     ZekButton,
@@ -53,5 +54,6 @@ export {
     ZekTable,
     ZekRightPanel,
     ZekSignup,
-    ZekGuidedForm
+    ZekGuidedForm,
+    ZekXYChart
 }

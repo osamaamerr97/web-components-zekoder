@@ -16,7 +16,8 @@
       :maxlength="minMaxValue.max"
       @change="onChange"
       :form="form"
-      v-model="value"
+      :value="value"
+      :style="inputStyle"
     />
     <span v-if="showLimitIndicator" class="limit" :style="limitIndicatorStyle">
       {{ value.length }}/{{ minMaxValue.max }}
@@ -28,6 +29,10 @@
 export default {
   name: "ZekTextarea",
   props: {
+    inputStyle: {
+        type: Object,
+        default: () => {}
+    },
     label: {
       type: [Object, String],
     },
@@ -94,7 +99,8 @@ export default {
   },
   methods: {
     onChange(event) {
-      this.$emit("onChange", this.value);
+        // ! this is only for possible previous use cases should be changed
+      this.$emit("onChange", event.target.value);
     },
   },
   watch: {

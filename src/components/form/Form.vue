@@ -109,7 +109,7 @@ export default {
                 let obj = {};
                 this.inputs.forEach(
                     (input) => {
-                        obj[input.name] = input.initialValue || input.value || '';
+                        obj[input.name] = input.initialValue || input.value || input.inputType == 'checkbox' ? false : '';
                     }
                 )
                 return {...obj}
@@ -121,7 +121,7 @@ export default {
             let obj = {};
             this.inputs.forEach(
                 (input) => {
-                    obj[input.name] = input.initialValue || input.value || '';
+                    obj[input.name] = input.initialValue || input.value || input.inputType == 'checkbox' ? false : '';
                 }
             )
             return {...obj}

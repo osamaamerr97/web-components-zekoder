@@ -13,7 +13,17 @@
           <span v-html="label.html || label.text || label" ></span>
           <span class="required-asterik" v-if="required">*</span>
       </span>
+      <b-form-datepicker v-if="inputType === 'datepicker'" 
+        v-model="value"
+        v-bind="$props"
+        :min="minMaxValue.min"
+        :max="minMaxValue.max"
+        :class="customClass"
+        :button-only="false"
+        @input="onInput"
+      ></b-form-datepicker>
       <input
+        v-else
         :class="customClass"
         :type="actualType"
         :name="name"
@@ -175,7 +185,7 @@
     },
     methods: {
       onInput(event) {
-        this.$emit("onInput", event);
+        this.$emit("onInput", this.inputType === 'datepicker'? {target: {value: event}} : event);
       },
       iconClicked(event) {
         this.iconSettings.clickable ? this.$emit("iconClicked", event) : "";

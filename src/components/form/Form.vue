@@ -109,7 +109,7 @@ export default {
                 let obj = {};
                 this.inputs.forEach(
                     (input) => {
-                        obj[input.name] = input.initialValue || input.value || input.inputType == 'checkbox' ? false : '';
+                        obj[input.name] = input.initialValue || input.value || (input.inputType == 'checkbox' ? false : '');
                     }
                 )
                 return {...obj}
@@ -138,8 +138,8 @@ export default {
                     columns.push({
                         columnWidth: input.columnWidth || 12,
                         content: {
-                            component: input.type == 'long-text' ? 'textarea' : input.type == 'captcha'? 'captcha' : input.type === 'radio' ? 'radio-button' : input.type === 'toggle-button' ? 'toggle-button' : input.type === 'dropdown' ? 'dropdown' : 'input',
-                            data: input,
+                            component: input.type == 'long-text' ? 'textarea' : input.type == 'captcha'? 'captcha' : input.type === 'radio' ? 'radio-button' : input.type === 'toggle-button' ? 'toggle-button' : input.type === 'dropdown' ? 'dropdown' : input.type === 'countries-list' ? 'countries-list' : 'input',
+                            data: input.type=='countries-list'? {dropdownProps:input} :input,
                             events: input.type == 'long-text' ?  {
                                 onChange: (e) => {
                                     this.formData[input.name] = e;
@@ -150,7 +150,7 @@ export default {
                                 onVerify: () => {this.captchaVerified = true;},
                                 onExpired: () => {this.captchaVerified = false;}
                             } :
-                            input.type == 'dropdown' ? {
+                            (input.type == 'dropdown' || input.type == 'countries-list') ? {
                                 onSelect: e => {
                                     this.formData[input.name] = input.selectType && input.selectType.toLowerCase()!='single'? e : e[0];
                                     this.emitLatestData(input.name);

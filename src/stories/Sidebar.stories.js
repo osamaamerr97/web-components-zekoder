@@ -94,106 +94,106 @@ Primary.args = {
     collapsedWidth: '60px',
     allowExpandCollapse: true,
     // ! Old way of passing sections
-    links: [
-        {
-            label: 'Home',
-            url: '/iframe.html',
-            tooltip: 'Home',
-            icon: 'fa fa-home',
-            isActive: true,
-            isHovering: false,
-        },
-        {
-            label: 'About',
-            url: '#',
-            tooltip: 'About',
-            icon: 'fa fa-info',
-            isActive: false,
-            isHovering: false,
-        },
-        {
-            label: 'Contact',
-            url: '#',
-            tooltip: 'Contact',
-            icon: 'fa fa-phone',
-            isActive: false,
-            isHovering: false,
-        },
-    ],
-    // ! New way of passing sections
-    // sections: [
+    // links: [
     //     {
-    //         style: {
-    //             marginLeft: '30px',
-    //             borderLeft: '2px solid #fff',
-    //         },
-    //         title: {
-    //             label: 'Dashboard',
-    //             icon: 'fa fa-home',
-    //             url: '#',
-    //             tooltip: 'Home',
-    //             icon: 'fa fa-home',
-    //             isActive: true,
-    //             isHovering: false,
-    //             showArrow: true,
-    //         },
-    //         links: [
-    //             {
-    //                 label: 'Home',
-    //                 url: '/iframe.html',
-    //                 tooltip: 'Home',
-    //                 icon: 'fa fa-home',
-    //                 isActive: false,
-    //                 isHovering: false,
-    //             },
-    //             {
-    //                 label: 'About',
-    //                 url: '#',
-    //                 tooltip: 'About',
-    //                 icon: 'fa fa-info',
-    //                 isActive: false,
-    //                 isHovering: false,
-    //             },
-    //             {
-    //                 label: 'Contact',
-    //                 url: '#',
-    //                 tooltip: 'Contact',
-    //                 icon: 'fa fa-phone',
-    //                 isActive: false,
-    //                 isHovering: false,
-    //             },
-    //         ]
+    //         label: 'Home',
+    //         url: '/iframe.html',
+    //         tooltip: 'Home',
+    //         icon: 'fa fa-home',
+    //         isActive: true,
+    //         isHovering: false,
     //     },
     //     {
-    //         title: {
-    //             label: 'Utils',
-    //             url: '#',
-    //             tooltip: 'Settings',
-    //             icon: 'fa fa-cog',
-    //             isActive: false,
-    //             isHovering: false,
-    //             showArrow: true,
-    //         },
-    //         links: [
-    //             {
-    //                 label: 'Settings',
-    //                 url: '#',
-    //                 tooltip: 'Settings',
-    //                 icon: 'fa fa-cog',
-    //                 isActive: false,
-    //                 isHovering: false,
-    //             },
-    //             {
-    //                 label: 'Logout',
-    //                 url: '#',
-    //                 tooltip: 'Logout',
-    //                 icon: 'fa fa-arrow-left',
-    //                 isActive: false,
-    //                 isHovering: false,
-    //             },
-    //         ],
-    //     }
+    //         label: 'About',
+    //         url: '#',
+    //         tooltip: 'About',
+    //         icon: 'fa fa-info',
+    //         isActive: false,
+    //         isHovering: false,
+    //     },
+    //     {
+    //         label: 'Contact',
+    //         url: '#',
+    //         tooltip: 'Contact',
+    //         icon: 'fa fa-phone',
+    //         isActive: false,
+    //         isHovering: false,
+    //     },
     // ],
+    // ! New way of passing sections
+    sections: [
+        {
+            style: {
+                marginLeft: '30px',
+                borderLeft: '2px solid #fff',
+            },
+            title: {
+                label: 'Dashboard',
+                icon: 'fa fa-home',
+                url: '#',
+                tooltip: 'Home',
+                icon: 'fa fa-home',
+                isActive: true,
+                isHovering: false,
+                showArrow: true,
+            },
+            links: [
+                {
+                    label: 'Home',
+                    url: '/iframe.html',
+                    tooltip: 'Home',
+                    icon: 'fa fa-home',
+                    isActive: false,
+                    isHovering: false,
+                },
+                {
+                    label: 'About',
+                    url: '#',
+                    tooltip: 'About',
+                    icon: 'fa fa-info',
+                    isActive: false,
+                    isHovering: false,
+                },
+                {
+                    label: 'Contact',
+                    url: '#',
+                    tooltip: 'Contact',
+                    icon: 'fa fa-phone',
+                    isActive: false,
+                    isHovering: false,
+                },
+            ]
+        },
+        {
+            title: {
+                label: 'Utils',
+                url: '#',
+                tooltip: 'Settings',
+                icon: 'fa fa-cog',
+                isActive: false,
+                isHovering: false,
+                showArrow: true,
+            },
+            links: [
+                {
+                    label: 'Settings',
+                    url: '#',
+                    tooltip: 'Settings',
+                    icon: 'fa fa-cog',
+                    isActive: false,
+                    isHovering: false,
+                },
+                {
+                    label: 'Logout',
+                    url: '#',
+                    tooltip: 'Logout',
+                    icon: 'fa fa-arrow-left',
+                    isActive: false,
+                    isHovering: false,
+                },
+            ],
+        }
+    ],
     activeColor: '#000',
     styleObj: {
         "color": "red",

@@ -63,6 +63,12 @@
         v-bind="column.content.data"
         v-on="column.content.events"
     ></zek-dropdown>
+    <zek-countries-list
+        @click="stopPropagation($event)"
+        v-else-if="column && column.content && column.content.component == 'countries-list'"
+        v-bind="column.content.data"
+        v-on="column.content.events"
+    ></zek-countries-list>
     <zek-input
         @click="stopPropagation($event)"
         v-else-if="column && column.content && column.content.component == 'input'"
@@ -129,6 +135,7 @@ import ZekCollapsibleContainer from "../collapsible-container/CollapsibleContain
 import ZekTable from "../table/Table.vue";
 import ZekToggleButton from "../toggle-button/ToggleButton.vue"
 import VueRecaptcha from '../../../node_modules/vue-recaptcha/dist/vue-recaptcha.es';
+import ZekCountriesList from "../countries-list/CountriesList.vue";
 
 export default {
     components: {
@@ -148,6 +155,7 @@ export default {
         ZekCollapsibleContainer,
         ZekTable,
         ZekToggleButton,
+        ZekCountriesList,
         VueRecaptcha
     },
     name: "ZekColumnContent",

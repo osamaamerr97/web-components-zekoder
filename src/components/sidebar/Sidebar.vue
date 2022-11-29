@@ -50,7 +50,7 @@
                         :to="sec.title.url"
                         :title="sec.title.tooltip"
                         class="link title"
-                        @click="section.title.isExpanded = !section.title.isExpanded"
+                        @click="sec.title.isExpanded = !sec.title.isExpanded"
                         :style="
                             (sec.title.isActive || sec.title.isHovering) &&
                             activeColor

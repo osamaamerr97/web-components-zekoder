@@ -46,7 +46,50 @@
                             : ''
                     "
                 >
+                    <a
+                        v-if="sec.links && sec.links.length"
+                        href="javascript:"
+                        :title="sec.title.tooltip"
+                        class="link title"
+                        @click="sec.title.isExpanded = !sec.title.isExpanded"
+                        :style="
+                            (sec.title.isActive || sec.title.isHovering) &&
+                            activeColor
+                                ? { color: activeColor }
+                                : ''
+                        "
+                    >
+                        <i
+                            v-if="
+                                sec.title.icon &&
+                                    sec.title.iconType !== 'custom'
+                            "
+                            class="icon"
+                            :class="sec.title.icon"
+                        ></i>
+                        <img
+                            v-else-if="
+                                sec.title.icon &&
+                                    sec.title.iconType === 'custom'
+                            "
+                            class="icon"
+                            :src="sec.title.icon"
+                        />
+                        <span v-show="sec.title.label && !isCollapsed">
+                            {{ sec.title.label }}
+                        </span>
+                        <i
+                            class="icon section-expand fa"
+                            :class="
+                                sec.title.isExpanded
+                                    ? 'fa-chevron-up'
+                                    : 'fa-chevron-down'
+                            "
+                            v-if="sec.title.showArrow && !isCollapsed"
+                        />
+                    </a>
                     <RouterLink
+                        v-else
                         :to="sec.title.url"
                         :title="sec.title.tooltip"
                         class="link title"

@@ -1,5 +1,5 @@
 <template>
-  <div class="user-info-container" :style="styleObject">
+  <div class="user-info-container" v-click-outside="close" :style="styleObject">
     <div v-if="showName && namePosition != 'right'" class="user-info-details">
       <span class="user-info-username">{{ firstName }} {{ lastName }}</span>
       <span v-if="status" class="user-info-status"> {{ status }} </span>
@@ -39,6 +39,7 @@
 </template>
 
 <script>
+import ClickOutside from 'vue-click-outside'
 export default {
   name: "ZekUserInfo",
   props: {
@@ -96,7 +97,13 @@ export default {
     getRandomColor() {
       return "#" + Math.floor(Math.random() * 16777215).toString(16);
     },
+    close() {
+        this.toggle = false;
+    }
   },
+  directives: {
+    ClickOutside
+  }
 };
 </script>
 

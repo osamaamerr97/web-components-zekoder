@@ -25,6 +25,7 @@
     <i
       v-if="showAvatarArrow && dropdownLinks.length > 0"
       @click="toggle = !toggle"
+      @blur="toggle = false;"
       :class="toggle ? 'fa fa-angle-up' : 'fa fa-angle-down'"
       style="cursor: pointer"
     />

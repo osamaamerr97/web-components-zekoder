@@ -84,8 +84,7 @@ export default {
       default: false,
     },
     form: {
-      type: String,
-      default: "",
+      type: String
     },
     limitIndicatorStyle: {
       type: Object,

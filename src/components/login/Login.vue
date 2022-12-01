@@ -1,18 +1,44 @@
 <template>
     <div class="row" :style="styleObj">
-        <zek-form
-            class="col-12"
-            :class="customClass"
-            :theme="theme"
-            :inputs="inputs"
-            :submitButton="submitButton"
-            :cancelButton="{show:false}"
-            :errorMessage="error"
-            :forgotPassword="showForgotLink"
-            :rememberMe="showRememberMe"
-            @submit="login($event)"
-            @cancel="cancel()"
-        ></zek-form>
+        <div class="col">
+            <template v-if="socialIcons && socialIcons.length">
+                <div class="social-login">
+                    <div 
+                        class="social-icon" 
+                        :class="social.label" 
+                        v-for="(social, i) in socialIcons" 
+                        :key="i" 
+                        :title="social.label" 
+                        :style="social.styleObj"
+                        @click.prevent="onSocialClick(social)"
+                    >
+                        <i v-if="social.icon" :class="social.icon"></i>
+                        <img v-else-if="social.image" :src="social.image" :alt="social.label">
+                    </div>
+                </div>
+                <div class="row or">
+                    <div class="col-8 col-offset-2">
+                        <p>or</p>
+                        <div class="line"></div> 
+                    </div>
+                </div>
+            </template>
+            <div class="row">
+                <zek-form
+                    class="col-12"
+                    :class="customClass"
+                    :theme="theme"
+                    :inputs="inputs"
+                    :submitButton="submitButton"
+                    :cancelButton="{show:false}"
+                    :errorMessage="error"
+                    :forgotPassword="showForgotLink"
+                    :rememberMe="showRememberMe"
+                    @submit="login($event)"
+                    @cancel="cancel()"
+                ></zek-form>
+            </div>
+        </div>
     </div>
 </template>
 <script>
@@ -32,6 +58,7 @@
         showForgotLink: Boolean,
         showRememberMe: Boolean,
         loginButton: [String, Object],
+        socialIcons: Array, // [{icon: '', image:'', label:''}]
         image: Object,
         webAuthConfig: Object,
         firebaseConfig: Object,
@@ -163,8 +190,42 @@
         },
         cancel() {
             this.error = '';
+        },
+        onSocialClick(socialIcon) {
+            if ( socialIcon.url ) {
+                location.replace(socialIcon.url);
+            }
+            this.$emit('socialIconClicked', socialIcon.label)
         }
     }
   }
 </script>
-<style></style>
+<style lang="scss">
+.social-icon {
+    cursor: pointer;
+    &:hover {
+        cursor: pointer;
+    }
+}
+.or {
+    margin-top: -17px;
+    margin-bottom: 5px;
+    text-align: center;
+    justify-content: center;
+    .line {
+        height: 2px;
+        background: #CBCBD4;
+        margin-bottom: 20px;
+    }
+    p {
+        position: relative;
+        top: 30px;
+        background: #fff;
+        display: inline-block;
+        padding: 0 10px;
+        width: initial;
+        font-size: 22px;
+        font-weight: 500;
+    }
+}
+</style>

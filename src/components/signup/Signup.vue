@@ -10,7 +10,7 @@
                         :key="i" 
                         :title="social.label" 
                         :style="social.styleObj"
-                        @click.prevent="$emit('socialIconClicked',social.label)"
+                        @click.prevent="onSocialClick(social)"
                     >
                         <i v-if="social.icon" :class="social.icon"></i>
                         <img v-else-if="social.image" :src="social.image" :alt="social.label">
@@ -169,6 +169,12 @@
             });
            
         },
+        onSocialClick(socialIcon) {
+            if ( socialIcon.url ) {
+                location.replace(socialIcon.url);
+            }
+            this.$emit('socialIconClicked', socialIcon.label)
+        },
         cancel() {
             this.error = '';
         }
@@ -178,6 +184,7 @@
 
 <style lang="scss">
 .social-icon {
+    cursor: pointer;
     &:hover {
         cursor: pointer;
     }
@@ -200,7 +207,7 @@
         padding: 0 10px;
         width: initial;
         font-size: 22px;
-        font-weight: 700;
+        font-weight: 500;
     }
 }
 </style>

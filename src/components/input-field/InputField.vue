@@ -24,12 +24,12 @@
       ></b-form-datepicker>
       <input
         v-else
+        v-model="value"
         :class="customClass"
         :type="actualType"
         :name="name"
         :id="id"
         :placeholder="placeholder"
-        v-model="value"
         :readonly="readonly"
         :required="required"
         :disabled="disabled"
@@ -40,8 +40,9 @@
         :max="actualType == 'number' ? minMaxValue.max : null"
         :pattern="pattern ? pattern : null"
         :title="title"
-        @change="onInput"
         :style="inputStyle"
+        v-on="preventSpaces ? { keypress: onKeyPress } : {}"
+        @change="onInput"
       />
       <i
         v-if="showPasswordButton && showPasswordButton.type == 'icon'"
@@ -161,7 +162,8 @@
         type: String,
         default: "on",
       },
-      title: String
+      title: String,
+      preventSpaces: Boolean
     },
     data() {
       return {
@@ -186,6 +188,11 @@
     methods: {
       onInput(event) {
         this.$emit("onInput", this.inputType === 'datepicker'? {target: {value: event}} : event);
+      },
+      onKeyPress(event) {
+        if(event.keyCode == 32) {
+            event.preventDefault();
+        }
       },
       iconClicked(event) {
         this.iconSettings.clickable ? this.$emit("iconClicked", event) : "";

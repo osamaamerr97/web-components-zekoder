@@ -40,6 +40,7 @@ export default {
         buttons: Array, // [{class, styleObj, label, icon, active, disabled, name, id, image, textPosition },...]
         theme: String,
         customClass: String,
+        required: Boolean,
         showEnableDisableCheckbox: Boolean,
         label: { type: [Object, String] },
         styleObj: Object,

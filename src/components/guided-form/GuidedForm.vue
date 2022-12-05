@@ -2,39 +2,18 @@
     <div id="guided-form-container" :class="customClass" :style="styleObj">
         <div v-if="currentStep" class="row question">
             <div class="col">
-                <div class="row title">
+                <div class="row design">
                     <div class="col">
-                        <span v-if="currentStep.title" :style="currentStep.title.style">
-                            <span v-html="currentStep.title.html || currentStep.title.text || currentStep.title" ></span>
-                        </span>
+                        <slot name="stepDesign">
+                        </slot>
                     </div>
                 </div>
+                
                 <div class="row input">
                     <div class="col">
                         <form @submit.prevent="changeStep(stepNumber+1)">
                             <zek-column-content :column="content()" />
-                            <!-- <ZekDropdown 
-                                v-if="currentStep.type=='dropdown'"
-                                v-bind="currentStep"
-                                :selectType="currentStep.multiple?'Multi':'single'"
-                                :items="currentStep.options"
-                                @onSelect="onAnswer"
-                            />
-                            <ZekTextarea
-                                v-else-if="currentStep.type=='longText'"
-                                v-bind="currentStep"
-                                :initialValue="currentStep.value||''"
-                                :minMaxValue="{min:currentStep.min, max:currentStep.max}"
-                                @onChange="onAnswer"
-                            />
-                            <ZekInput
-                                v-else
-                                v-bind="currentStep"
-                                :inputType="currentStep.type||'text'"
-                                :initialValue="currentStep.value||''"
-                                :minMaxValue="{min:currentStep.min, max:currentStep.max}"
-                                @onInput="onAnswer"
-                            /> -->
+                            
                             <span class="desc" v-if="currentStep.description">{{currentStep.description}}</span>
                             <div class="row justify-content-center buttons">
                                 <div class="col-auto back-button" v-if="allowNavigate">

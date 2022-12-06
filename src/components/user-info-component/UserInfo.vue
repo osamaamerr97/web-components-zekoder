@@ -5,7 +5,7 @@
       <span v-if="status" class="user-info-status"> {{ status }} </span>
     </div>
     <a :title="`${firstName} ${lastName}`">
-      <img v-if="avatar" class="user-info-avatar" :src="avatar" alt="avater" />
+      <img v-if="avatar" @click="toggle = !toggle" class="user-info-avatar" :src="avatar" alt="User Avatar" />
       <div
         v-else
         class="user-info-avatar"
@@ -25,7 +25,6 @@
     <i
       v-if="showAvatarArrow && dropdownLinks.length > 0"
       @click="toggle = !toggle"
-      @blur="toggle = false;"
       :class="toggle ? 'fa fa-angle-up' : 'fa fa-angle-down'"
       style="cursor: pointer"
     />

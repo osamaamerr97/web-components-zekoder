@@ -27,6 +27,7 @@ import ZekSignup from './components/signup/Signup.vue';
 import ZekGuidedForm from './components/guided-form/GuidedForm.vue';
 import ZekXYChart from './components/charts/XYChart.vue';
 import ZekCountriesList from './components/countries-list/CountriesList.vue';
+import ZekFileUpload from './components/file-upload/FileUpload.vue';
 
 export {
     ZekButton,
@@ -57,5 +58,6 @@ export {
     ZekSignup,
     ZekGuidedForm,
     ZekXYChart,
-    ZekCountriesList
+    ZekCountriesList,
+    ZekFileUpload
 }

@@ -25,8 +25,11 @@ import ZekUpload from './components/upload-component/Upload.vue';
 import ZekTable from './components/table/Table.vue';
 import ZekRightPanel from './components/right-panel/RightPanel.vue';
 import ZekSignup from './components/signup/Signup.vue';
+import ZekGuidedForm from './components/guided-form/GuidedForm.vue';
+import ZekXYChart from './components/charts/XYChart.vue';
+import ZekCountriesList from './components/countries-list/CountriesList.vue';
+import ZekFileUpload from './components/file-upload/FileUpload.vue';
 
-// export default ZekButton;
 export {
     ZekButton,
     ZekCard,
@@ -53,5 +56,9 @@ export {
     ZekUpload,
     ZekTable,
     ZekRightPanel,
-    ZekSignup
+    ZekSignup,
+    ZekGuidedForm,
+    ZekXYChart,
+    ZekCountriesList,
+    ZekFileUpload
 }

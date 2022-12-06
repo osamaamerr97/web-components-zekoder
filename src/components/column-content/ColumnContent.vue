@@ -96,6 +96,11 @@
         v-bind="column.content.data"
         v-on="column.content.events"
     ></zek-table>
+    <zek-file-upload
+        v-else-if="column && column.content && column.content.component == 'file-upload'"
+        v-bind="column.content.data"
+        v-on="column.content.events"
+    ></zek-file-upload>
     <zek-toggle-button
         v-else-if="column && column.content && column.content.component == 'toggle-button'"
         v-bind="column.content.data"
@@ -136,6 +141,7 @@ import ZekTable from "../table/Table.vue";
 import ZekToggleButton from "../toggle-button/ToggleButton.vue"
 import VueRecaptcha from '../../../node_modules/vue-recaptcha/dist/vue-recaptcha.es';
 import ZekCountriesList from "../countries-list/CountriesList.vue";
+import ZekFileUpload from '../file-upload/FileUpload.vue';
 
 export default {
     components: {
@@ -156,7 +162,8 @@ export default {
         ZekTable,
         ZekToggleButton,
         ZekCountriesList,
-        VueRecaptcha
+        VueRecaptcha,
+        ZekFileUpload
     },
     name: "ZekColumnContent",
     props: {

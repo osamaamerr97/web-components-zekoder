@@ -138,9 +138,9 @@ export default {
                     columns.push({
                         columnWidth: input.columnWidth || 12,
                         content: {
-                            component: input.type == 'long-text' ? 'textarea' : input.type == 'captcha'? 'captcha' : input.type === 'radio' ? 'radio-button' : input.type === 'toggle-button' ? 'toggle-button' : input.type === 'dropdown' ? 'dropdown' : input.type === 'countries-list' ? 'countries-list' : 'input',
+                            component: input.type == 'long-text' ? 'textarea' : input.type == 'captcha'? 'captcha' : input.type === 'radio' ? 'radio-button' : input.type === 'toggle-button' ? 'toggle-button' : input.type === 'dropdown' ? 'dropdown' : input.type === 'countries-list' ? 'countries-list' : input.type === 'file-upload' ? 'file-upload' : 'input',
                             data: input.type=='countries-list'? {dropdownProps:input} :input,
-                            events: input.type == 'long-text' ?  {
+                            events: (input.type == 'long-text' || input.type == 'file-upload') ?  {
                                 onChange: (e) => {
                                     this.formData[input.name] = e;
                                     this.emitLatestData(input.name);

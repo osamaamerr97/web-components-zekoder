@@ -11,7 +11,7 @@
                 
                 <div class="row input">
                     <div class="col">
-                        <form @submit.prevent="changeStep(stepNumber+1)">
+                        <form @submit.prevent="changeStep(stepNumber+1)" :key="stepNumber">
                             <zek-column-content :column="content()" />
                             
                             <span class="desc" v-if="currentStep.description">{{currentStep.description}}</span>

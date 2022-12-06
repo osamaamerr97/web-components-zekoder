@@ -183,7 +183,7 @@
       selectedText() {
         return this.selected.map(value => {
             let selected = this.items.find(item => {return item == value || item.value==value});
-            return selected.text ? selected.text : selected;
+            return (selected && selected.text) ? selected.text : selected;
         }).join(", ");
       }
     },

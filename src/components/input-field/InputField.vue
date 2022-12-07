@@ -1,5 +1,5 @@
 <template>
-    <div :style="styleObject">
+    <div :class="error ? 'zek-invalid-field': ''" :style="styleObject">
       <i
         v-if="icon && iconSettings.position == 'left'"
         :class="icon"
@@ -70,6 +70,7 @@
           cursor: iconSettings.clickable ? 'pointer' : 'default',
         }"
       />
+      <div class="field-error" v-if="error">{{error}}</div>
     </div>
   </template>
   
@@ -102,6 +103,10 @@
       disabled: {
         type: Boolean,
         default: false,
+      },
+      error: {
+        type: String,
+        default: ''
       },
       icon: {
         type: String,
@@ -227,4 +232,11 @@
       color: red;
   }
   
+  .field-error {
+      font-size: 12px;
+      color: #dc3545;
+  }
+  .zek-invalid-field > input {
+    border: solid 2px #dc354550;
+  }
   </style>

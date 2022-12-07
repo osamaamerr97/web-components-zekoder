@@ -15,6 +15,10 @@
                             <zek-column-content :column="content()" />
                             
                             <span class="desc" v-if="currentStep.description">{{currentStep.description}}</span>
+                            <div class="row text-center message">
+                                <zek-text v-if="successMessage" :text="successMessage" class="text-success"></zek-text>
+                                <zek-text v-if="errorMessage" :text="errorMessage" class="text-danger login-error-message"></zek-text>
+                            </div>
                             <div class="row justify-content-center buttons">
                                 <div class="col-auto back-button" v-if="allowNavigate">
                                     <ZekButton
@@ -56,11 +60,11 @@
 </template>
 
 <script>
-import { ZekButton, ZekColumnContent } from "../../main";
+import { ZekButton, ZekColumnContent, ZekText } from "../../main";
 
 export default {
     name: "ZekGuidedForm",
-    components: {ZekButton, ZekColumnContent },
+    components: {ZekButton, ZekColumnContent, ZekText },
     props: {
         steps: {
             type: Array,
@@ -72,6 +76,12 @@ export default {
         styleObj: Object,
         backButton: [String, Object], //for string it is button label, for object it should be button component props
         nextButton: [String, Object],
+        successMessage: String,
+        errorMessage: String,
+        step: {
+            type: Number,
+            default: 0
+        }
     },
     data() {
         return {
@@ -80,9 +90,9 @@ export default {
                 return {
                     columnWidth: step.columnWidth || 12,
                     content: {
-                        component: step.type == 'long-text' ? 'textarea' : step.type === 'radio' ? 'radio-button' : step.type === 'toggle-button' ? 'toggle-button' : step.type === 'dropdown' ? 'dropdown' : 'input',
+                        component: step.type == 'long-text' ? 'textarea' : step.type === 'radio' ? 'radio-button' : step.type === 'toggle-button' ? 'toggle-button' : step.type === 'dropdown' ? 'dropdown' : step.type === 'file-upload' ? 'file-upload' : 'input',
                         data: step,
-                        events: step.type == 'long-text' ?  {
+                        events: (step.type == 'long-text' || step.type == 'file-upload') ?  {
                             onChange: (e) => {
                                 this.formData[step.name] = e;
                                 this.formSteps[this.stepNumber].value = e;

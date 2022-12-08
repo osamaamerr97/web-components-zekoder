@@ -5,6 +5,9 @@ export default {
     title: 'Zekoder/Dropdown',
     component: Dropdown,
     argTypes: {
+        showSeleceted: {
+            control: { type: 'boolean' },
+        },
         label: {
             control: { type: 'text' },
         },
@@ -52,6 +55,7 @@ const Template = (args, { argTypes }) => ({
 
 export const Primary = Template.bind({});
 Primary.args = {
+    showSelected: true,
     label: 'Dropdown',
     items: ['1', '2', '3'],
     selectType: 'Single',

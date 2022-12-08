@@ -19,7 +19,7 @@
                 "
                 :disabled="disabled"
             >
-                {{ selected.length ? selectedText : placeholder || label }}
+                {{ selected.length && showSelected ? selectedText : placeholder || label }}
                 <i v-if="customIcon" :class="customIcon"></i>
             </button>
             <ul v-if="toggle" class="dropdown-menu show" style="padding: 0" :style="listStyle">
@@ -53,7 +53,7 @@
             <v-menu offset-y :style="styleObj" :close-on-content-click="selectType.toLowerCase() == 'single'">
                 <template v-slot:activator="{ on, attrs }">
                     <v-btn v-bind="attrs" v-on="on">
-                        {{ selected.length ? selectedText : placeholder || label }}
+                        {{ selected.length && showSelected ? selectedText : placeholder || label }}
                     </v-btn>
                 </template>
                 <v-list>
@@ -80,7 +80,7 @@
                 :class="disabled ? 'disabled' : ''"
             >
                 <span>
-                    {{ selected.length ? selectedText : placeholder || label }}
+                    {{ selected.length && showSelected ? selectedText : placeholder || label }}
                     <i v-if="showIcon" class="fa fa-angle-down" :style="iconStyle"></i>
                 </span>
             </button>
@@ -113,6 +113,10 @@ export default {
     name: "ZekDropdown",
     props: {
         customIcon: String,
+        showSelected: {
+            type: Boolean,
+            default: true
+        },
         label: {
             type: [String, Object]
         },

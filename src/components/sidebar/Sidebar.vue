@@ -9,7 +9,7 @@
                     :title="isCollapsed ? 'Collapse' : 'Expand'"
                     class="link sidebar-title-link"
                 >
-                    <RouterLink :to="title.url" v-show="title && !isCollapsed" class="sidebar-title" :style="title ? title.style : null">
+                    <RouterLink :to="title.url ? title.url : ''" v-show="title && !isCollapsed" class="sidebar-title" :style="title.style ? title.style : {cursor: 'default'}">
                         {{ title.label ? title.label : title }}
                     </RouterLink>
                     <i
@@ -384,9 +384,11 @@ export default {
     flex-direction: column;
     justify-content: space-between;
     -webkit-transition: width 0.3s;
+    overflow-x: hidden;
     &.collapsed {
         .link-container {
             text-align: center;
+            padding: 0;
             &.sidebar-title {
                 .icon {
                     margin-left: initial;
@@ -430,7 +432,7 @@ export default {
             display: flex;
             align-items: center;
             justify-content: center;
-            a { 
+            a {
                 color: #cccccc;
                 text-decoration: none;
             }

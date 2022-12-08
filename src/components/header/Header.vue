@@ -21,9 +21,9 @@
             </span>
         </a>
         <div class="zek-header-menu" v-if="menus && menus.length">
-            <div 
-                class="zek-header-menu-item" 
-                v-for="(menu, i) in menus" 
+            <div
+                class="zek-header-menu-item"
+                v-for="(menu, i) in menus"
                 :key="i"
             >
                 <zek-dropdown
@@ -33,7 +33,6 @@
                     :items="menu.links"
                     :selectType="`Single`"
                     @select="onSelect"
-                    :showIcon="true"
                     v-bind="menu.dropdownProps || dropdownProps"
                 />
                 <RouterLink v-else :to="menu.url">{{menu.label}}</RouterLink>

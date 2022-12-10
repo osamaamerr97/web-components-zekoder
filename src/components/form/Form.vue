@@ -128,6 +128,15 @@ export default {
         },
     },
     data() {
+        const inputTypes = {
+            'long-text': 'textarea',
+            'captcha': 'captcha',
+            'radio': 'radio-button',
+            'toggle-button': 'toggle-button',
+            'dropdown': 'dropdown',
+            'countries-list': 'countries-list',
+            'file-upload': 'file-upload'
+        }
         return {
             content: () => {
                 let columns = []
@@ -138,8 +147,8 @@ export default {
                     columns.push({
                         columnWidth: input.columnWidth || 12,
                         content: {
-                            component: input.type == 'long-text' ? 'textarea' : input.type == 'captcha'? 'captcha' : input.type === 'radio' ? 'radio-button' : input.type === 'toggle-button' ? 'toggle-button' : input.type === 'dropdown' ? 'dropdown' : input.type === 'countries-list' ? 'countries-list' : input.type === 'file-upload' ? 'file-upload' : 'input',
-                            data: input.type=='countries-list'? {dropdownProps:input} :input,
+                            component: inputTypes[input.type] || 'input',
+                            data: input.type == 'countries-list' ? { dropdownProps: input } : input,
                             events: (input.type == 'long-text' || input.type == 'file-upload') ?  {
                                 onChange: (e) => {
                                     this.formData[input.name] = e;
@@ -202,7 +211,7 @@ export default {
                             }
                         })
                     }
-                })
+                });
                 return {
                     rows: [{
                         columns: columns

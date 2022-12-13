@@ -3,12 +3,12 @@
         <div class="col">
             <template v-if="socialIcons && socialIcons.length">
                 <div class="social-login">
-                    <div 
-                        class="social-icon" 
-                        :class="social.label" 
-                        v-for="(social, i) in socialIcons" 
-                        :key="i" 
-                        :title="social.label" 
+                    <div
+                        class="social-icon"
+                        :class="social.label"
+                        v-for="(social, i) in socialIcons"
+                        :key="i"
+                        :title="social.label"
                         :style="social.styleObj"
                         @click.prevent="onSocialClick(social)"
                     >
@@ -19,7 +19,7 @@
                 <div class="row or">
                     <div class="col-8 col-offset-2">
                         <p>or</p>
-                        <div class="line"></div> 
+                        <div class="line"></div>
                     </div>
                 </div>
             </template>
@@ -33,6 +33,7 @@
                     :inputs="inputs"
                     :submitButton="submitButton"
                     :cancelButton="{show:false}"
+                    :terms="showTerms"
                     :errorMessage="error"
                     :successMessage="success"
                     @submit="signup($event)"
@@ -120,7 +121,8 @@
         socialIcons: Array, // [{icon: '', image:'', label:''}]
         styleObj: Object,
         error: String,
-        success: String
+        success: String,
+        showTerms: Boolean
     },
     data() {
         return {
@@ -135,13 +137,13 @@
                 show: true
             };
             if(typeof(this.signupButton)=='string'){
-                props = { 
+                props = {
                     ...props,
                     label: this.signupButton,
                     show: this.signupButton
                 }
             } else {
-                props = { 
+                props = {
                     ...props,
                     ...this.signupButton
                 }
@@ -167,7 +169,7 @@
             .catch((error) => {
                 this.$emit('onSignupError', error);
             });
-           
+
         },
         onSocialClick(socialIcon) {
             if ( socialIcon.url ) {

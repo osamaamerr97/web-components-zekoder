@@ -13,7 +13,7 @@
           <span v-html="label.html || label.text || label" ></span>
           <span class="required-asterik" v-if="required">*</span>
       </span>
-      <b-form-datepicker v-if="inputType === 'datepicker'" 
+      <b-form-datepicker v-if="inputType === 'datepicker'"
         v-model="value"
         v-bind="$props"
         :min="minMaxValue.min"
@@ -45,8 +45,8 @@
         @change="onInput"
       />
       <i
-        v-if="showPasswordButton && showPasswordButton.type == 'icon'"
-        :class="actualType == 'password' ? 'fa fa-eye-slash' : 'fa fa-eye'"
+        v-if="showPasswordButton && showPasswordButton == 'icon'"
+        :class="actualType == 'password' ? 'fa fa-eye' : 'fa fa-eye-slash'"
         @click.prevent="
           actualType == 'password' ? (actualType = 'text') : (actualType = 'password')
         "
@@ -56,7 +56,7 @@
         }"
       />
       <a
-        v-if="showPasswordButton"
+        v-else-if="showPasswordButton"
         class="show-hide-password"
         href="javascript:"
         @click="actualType == 'password' ? (actualType = 'text') : (actualType = 'password')"
@@ -73,7 +73,7 @@
       <div class="field-error" v-if="error">{{error}}</div>
     </div>
   </template>
-  
+
   <script>
   export default {
     name: "ZekInput",
@@ -123,8 +123,8 @@
         }),
       },
       showPasswordButton: {
-        type: Boolean,
-        default: false,
+        type: String,
+        default: '',
       },
       pattern: {
         type: String,
@@ -173,16 +173,10 @@
     data() {
       return {
       //   value: this.initialValue,
-        // actualType: this.inputType,
+        actualType: this.inputType,
       }
     },
     computed: {
-        actualType: {
-            get() {
-                return this.inputType;
-            },
-            set(newVal) {}
-        },
         value: {
             get() {
                 return this.initialValue;
@@ -210,17 +204,17 @@
     }
   }
   </script>
-  
+
   <style scoped>
   input[type="number"]::-webkit-inner-spin-button,
   input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
   }
-  
+
   input[type="number"] {
     -moz-appearance: textfield;
   }
-  
+
   .show-hide-password {
       text-transform: uppercase;
       position: absolute;
@@ -231,7 +225,7 @@
   .required-asterik {
       color: red;
   }
-  
+
   .field-error {
       font-size: 12px;
       color: #dc3545;

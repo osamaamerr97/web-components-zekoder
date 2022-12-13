@@ -63,7 +63,7 @@ const Template = (args, { argTypes }) => ({
     components: { 'zek-input': ZekInput },
     props: Object.keys(argTypes),
     methods: { action },
-    template: '<zek-input v-bind="$props" @onInput="action(`input`)()" @iconClicked="action(`iconClicked`)()" />',
+    template: '<zek-input v-bind="$props" @onInput="action(`input`)($event)" @iconClicked="action(`iconClicked`)($event)" />',
 });
 
 export const Primary = Template.bind({});

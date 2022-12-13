@@ -172,17 +172,9 @@
     },
     data() {
       return {
-      //   value: this.initialValue,
+        value: this.initialValue,
         actualType: this.inputType,
       }
-    },
-    computed: {
-        value: {
-            get() {
-                return this.initialValue;
-            },
-            set(newVal) {}
-        }
     },
     methods: {
       onInput(event) {

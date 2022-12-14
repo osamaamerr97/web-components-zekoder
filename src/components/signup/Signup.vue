@@ -17,7 +17,8 @@
                     </div>
                 </div>
                 <div class="row or">
-                    <div class="col-8 col-offset-2">
+                    <span v-if="orText" class="custom-or">{{orText}}</span>
+                    <div v-else class="col-8 col-offset-2">
                         <p>or</p>
                         <div class="line"></div>
                     </div>
@@ -122,6 +123,7 @@
         styleObj: Object,
         error: String,
         success: String,
+        orText: String,
         showTerms: Boolean
     },
     data() {

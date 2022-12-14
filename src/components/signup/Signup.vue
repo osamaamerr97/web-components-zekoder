@@ -34,7 +34,7 @@
                     :inputs="inputs"
                     :submitButton="submitButton"
                     :cancelButton="{show:false}"
-                    :terms="showTerms"
+                    :showTerms="showTerms"
                     :errorMessage="error"
                     :successMessage="success"
                     @submit="signup($event)"

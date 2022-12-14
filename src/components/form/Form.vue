@@ -16,6 +16,13 @@
                     paddingLeft:'5px'
                 }}"></ZekInput>
                 </div>
+                <div v-if="showTerms" class="remember-me">
+                    <ZekInput class="remember-input" :inputType="'checkbox'" :inputStyle="{width:'18px',height:'18px'}" :label="{text:'Accept terms and conditions',
+                style:{
+                    fontSize:'initial',
+                    paddingLeft:'5px'
+                }}"></ZekInput>
+                </div>
             </div>
             <zek-text v-if="successMessage" :text="successMessage" class="text-success"></zek-text>
             <zek-text v-if="errorMessage || internalError" :text="errorMessage||internalError" class="text-danger login-error-message"></zek-text>
@@ -50,6 +57,7 @@ export default {
         errorMessage: String,
         forgotPassword: Boolean,
         rememberMe: Boolean,
+        showTerms: Boolean,
         styleObj: Object,
     },
     computed: {

@@ -6,7 +6,11 @@ export default {
     argTypes: {
         type: {
             control: { type: 'select' },
-            options: ['text', 'number', 'password', 'email', 'checkbox', 'date'],
+            options: ['short-text', 'long-text', 'number', 'email', 'password', 'date', 'time', 'datetime-local', 'month', 'week', 'url', 'tel', 'color', 'range', 'file'],
+        },
+        inputType: {
+            control: { type: 'select' },
+            options: ['text', 'password', 'email', 'number', 'date', 'time', 'datetime-local', 'month', 'week', 'url', 'tel', 'color', 'range', 'file'],
         },
         label: {
             control: { type: 'object' },
@@ -26,7 +30,7 @@ export default {
             control: { type: 'object' },
         },
         showPasswordButton: {
-            control: { type: 'boolean' },
+            control: { type: 'text' },
         },
         pattern: {
             control: { type: 'text' },
@@ -69,6 +73,7 @@ Primary.args = {
         text: "Label",
         style: { padding: '0 10px' }
     },
+    inputType: "text",
     customClass: '',
     inputStyle: {},
     required: true,
@@ -81,7 +86,7 @@ Primary.args = {
             margin: "0 0.5rem",
         },
     },
-    showPasswordButton: true,
+    showPasswordButton: 'icon',
     pattern: "",
     initialValue: "",
     minMaxValue: {

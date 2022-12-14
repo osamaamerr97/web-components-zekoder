@@ -3,12 +3,12 @@
         <div class="col">
             <template v-if="socialIcons && socialIcons.length">
                 <div class="social-login">
-                    <div 
-                        class="social-icon" 
-                        :class="social.label" 
-                        v-for="(social, i) in socialIcons" 
-                        :key="i" 
-                        :title="social.label" 
+                    <div
+                        class="social-icon"
+                        :class="social.label"
+                        v-for="(social, i) in socialIcons"
+                        :key="i"
+                        :title="social.label"
                         :style="social.styleObj"
                         @click.prevent="onSocialClick(social)"
                     >
@@ -17,9 +17,10 @@
                     </div>
                 </div>
                 <div class="row or">
-                    <div class="col-8 col-offset-2">
+                    <span v-if="orText" class="custom-or">{{orText}}</span>
+                    <div v-else class="col-8 col-offset-2">
                         <p>or</p>
-                        <div class="line"></div> 
+                        <div class="line"></div>
                     </div>
                 </div>
             </template>
@@ -63,6 +64,7 @@
         webAuthConfig: Object,
         firebaseConfig: Object,
         url: String,
+        orText: String,
         styleObj: Object
     },
     data() {

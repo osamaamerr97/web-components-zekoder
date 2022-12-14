@@ -345,7 +345,7 @@ export default {
         linkClicked(sec, link) {
             this.sections.forEach(section => {
                 section.isExpanded = false;
-                if ( section.links && sections.links.length ) {
+                if ( section.links && section.links.length ) {
                     section.links.forEach(l => {
                         l.isActive = false;
                     });

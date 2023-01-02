@@ -10,6 +10,7 @@
         :height="height"
         @input="onChange"
         :style="styleObject"
+        v-bind="extraProps"
     />
 </template>
 
@@ -57,6 +58,10 @@ export default {
             default: ''
         },
         styleObject: {
+            type: Object,
+            required: false,
+        },
+        extraProps: {
             type: Object,
             required: false,
         }

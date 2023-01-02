@@ -41,7 +41,7 @@ export default {
         flipContent: Object,
         flipOn: String, //hover, click
         id: {
-            type: Number,
+            type: [Number, String],
             default: 0
         },
         styleObj: Object,

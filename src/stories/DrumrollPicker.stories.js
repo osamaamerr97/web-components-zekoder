@@ -1,8 +1,8 @@
-import ZekDrumroll from '../components/drumroll-picker/DrumrollPicker.vue';
+import ZekDrumrollPicker from '../components/drumroll-picker/DrumrollPicker.vue';
 import { action } from "@storybook/addon-actions"
 export default {
     title: 'Zekoder/Drumroll Picker',
-    component: ZekDrumroll,
+    component: ZekDrumrollPicker,
     argTypes: {
         type: {
             control: {
@@ -17,10 +17,10 @@ export default {
     };
 
     const Template = (args, { argTypes }) => ({
-        components: { ZekDrumroll },
+        components: { ZekDrumrollPicker },
         props: Object.keys(argTypes),
         methods: { action },
-        template: '<ZekDrumroll v-bind="$props" @onChange="action(`onChange`)($event)" />',
+        template: '<ZekDrumrollPicker v-bind="$props" @onChange="action(`onChange`)($event)" />',
     });
 
     export const Primary = Template.bind({});

@@ -20,7 +20,7 @@ import DateTimePicker from "vue-drumroll-datetime-picker"; // https://www.plus-o
 import "./style.css";
 
 export default {
-    name: "ZekDrumroll",
+    name: "ZekDrumrollPicker",
     components: {
         DateTimePicker
     },

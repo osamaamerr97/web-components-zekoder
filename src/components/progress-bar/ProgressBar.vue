@@ -1,5 +1,5 @@
 <template>
-  <div :class="customClass">
+  <div class="zek-progress-bar" :class="customClass">
     <span v-if="label" :style="label.style">{{ label.text | label }}</span>
     <b-progress
       :value="value"

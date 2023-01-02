@@ -34,6 +34,14 @@ export default {
       type: Array,
       required: false,
     },
+    extraProps: {
+      type: Object,
+      required: false,
+    },
+    extraEvents: {
+      type: Object,
+      required: false,
+    },
   },
   data() {
     return {

@@ -152,7 +152,4 @@ export default {
 </script>
 
 <style>
-.zek-scheduler {
-    border-radius: 1rem;
-}
 </style>

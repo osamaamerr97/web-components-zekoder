@@ -54,6 +54,8 @@
             @click:event="showEvent"
             @click:more="viewDay"
             @click:date="viewDay"
+            v-bind="extraProps"
+            v-on="extraEvents"
         />
         <slot :name="targetContainer" :events="events"/>
     </div>
@@ -114,6 +116,14 @@ export default {
         targetContainer: {
             type: String,
             default: ""
+        },
+        extraProps: {
+            type: Object,
+            default: () => ({})
+        },
+        extraEvents: {
+            type: Object,
+            default: () => ({})
         }
     },
     mounted() {

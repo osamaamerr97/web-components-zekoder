@@ -30,6 +30,7 @@ import ZekXYChart from './components/charts/XYChart.vue';
 import ZekCountriesList from './components/countries-list/CountriesList.vue';
 import ZekFileUpload from './components/file-upload/FileUpload.vue';
 import ZekImageGallery from './components/image-gallery/ImageGallery.vue';
+import ZekScheduler from './components/scheduler/Scheduler.vue';
 
 export {
     ZekButton,
@@ -62,5 +63,6 @@ export {
     ZekXYChart,
     ZekCountriesList,
     ZekFileUpload,
-    ZekImageGallery
+    ZekImageGallery,
+    ZekScheduler
 }

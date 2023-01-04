@@ -30,6 +30,10 @@ import ZekCountriesList from './components/countries-list/CountriesList.vue';
 import ZekFileUpload from './components/file-upload/FileUpload.vue';
 import ZekImageGallery from './components/image-gallery/ImageGallery.vue';
 import ZekScheduler from './components/scheduler/Scheduler.vue';
+import ZekProgressBar from './components/progress-bar/ProgressBar.vue';
+import ZekRichTextEditor from './components/rich-text-editor/RichTextEditor.vue';
+import ZekDrumrollPicker from './components/drumroll-picker/DrumrollPicker.vue';
+
 
 export {
     ZekButton,
@@ -64,4 +68,7 @@ export {
     ZekFileUpload,
     ZekImageGallery,
     ZekScheduler
+    ZekProgressBar,
+    ZekRichTextEditor,
+    ZekDrumrollPicker
 }

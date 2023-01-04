@@ -67,7 +67,7 @@ export {
     ZekCountriesList,
     ZekFileUpload,
     ZekImageGallery,
-    ZekScheduler
+    ZekScheduler,
     ZekProgressBar,
     ZekRichTextEditor,
     ZekDrumrollPicker

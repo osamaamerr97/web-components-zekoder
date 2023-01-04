@@ -68,7 +68,7 @@ export default {
 </script>
 
 <style scoped>
-::v-deep [role=progressbar]{
+:deep([role=progressbar]){
     background-color: v-bind(backgroundColor);
 }
 </style>

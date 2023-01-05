@@ -2,7 +2,7 @@
     <transition>
         <div v-if="showForm" class="zek-popup-container" :style="getPositionStyle()">
             <div :class="`zek-popup p-4 ${customClass}`" :style="styleObj">
-                <div v-if="showCloseIcon" class="zek-popup-close-button" @click="$emit('cancel')">
+                <div v-if="showCloseIcon" class="zek-popup-close-button" :class="closeIconPosition == 'left' ? 'left' : ''" @click="$emit('cancel')">
                     <i class="fas fa-times"></i>
                 </div>
                 <template>
@@ -53,6 +53,10 @@ export default {
         showCloseIcon: {
             type: Boolean,
             default: true
+        },
+        closeIconPosition: {
+            type: String,
+            default: "right"
         }
     },
     data() {
@@ -148,6 +152,10 @@ export default {
         font-size: 20px;
         &:hover {
             color: #666;
+        }
+        &.left {
+            left: 0;
+            right: unset;
         }
     }
 }

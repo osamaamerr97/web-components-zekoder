@@ -1,7 +1,7 @@
 <template>
     <transition>
-        <div v-if="showForm" class="popup-container" :style="getPositionStyle()">
-            <div :class="`popup p-4 ${customClass}`" :style="styleObj">
+        <div v-if="showForm" class="zek-popup-container" :style="getPositionStyle()">
+            <div :class="`zek-popup p-4 ${customClass}`" :style="styleObj">
                 <template>
                     <ZekForm
                         v-if="formProps"
@@ -12,7 +12,7 @@
                     <component v-else :is="content.component" v-bind="content.props" v-on="content.events"></component>
                 </template>
             </div>
-            <div v-if="showForm && dimBackground" class="popup-background" @click="$emit('cancel')"></div>
+            <div v-if="showForm && dimBackground" class="zek-popup-background" @click="$emit('cancel')"></div>
         </div>
     </transition>
 </template>
@@ -107,13 +107,13 @@ export default {
     opacity: 1;
 }
 
-.popup-container {
+.zek-popup-container {
     z-index: 1000;
     width: 100vw;
     height: 100vh;
     display: flex;
     transition: opacity 0.7s ease;
-    .popup {
+    .zek-popup {
         position: absolute;
         display: flex;
         width: v-bind(width);
@@ -122,7 +122,7 @@ export default {
         z-index: 1;
         overflow: hidden;
     }
-    .popup-background {
+    .zek-popup-background {
         position: fixed;
         top: 0;
         left: 0;

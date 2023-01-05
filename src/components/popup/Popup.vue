@@ -2,6 +2,9 @@
     <transition>
         <div v-if="showForm" class="zek-popup-container" :style="getPositionStyle()">
             <div :class="`zek-popup p-4 ${customClass}`" :style="styleObj">
+                <div v-if="showCloseIcon" class="zek-popup-close-button" @click="$emit('cancel')">
+                    <i class="fas fa-times"></i>
+                </div>
                 <template>
                     <ZekForm
                         v-if="formProps"
@@ -44,6 +47,10 @@ export default {
         styleObj: Object,
         content: Object,
         dimBackground: {
+            type: Boolean,
+            default: true
+        },
+        showCloseIcon: {
             type: Boolean,
             default: true
         }
@@ -130,6 +137,18 @@ export default {
         height: 100%;
         background: rgba(0, 0, 0, 0.5);
         z-index: 0;
+    }
+    .zek-popup-close-button {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 10px 15px;
+        cursor: pointer;
+        color: #333;
+        font-size: 20px;
+        &:hover {
+            color: #666;
+        }
     }
 }
 </style>

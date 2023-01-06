@@ -8,12 +8,18 @@
         <file-pond
             name="file-upload"
             ref="pond"
-            label-idle="Drop files here or <span class='filepond--label-action'>Browse</span>"
+            :label-idle="placeholder"
             :allowMultiple="multiple"
             accepted-file-types="image/jpeg, image/png"
             v-bind:files="files"
             :credits="null"
             @addfile="uploadFiles"
+            :required="required"
+            :disabled="disabled"
+            :className="`zek-pond ${customClass}`"
+            :stylePanelLayout="stylePanelLayout"
+            v-bind="extraProps"
+            :style="{ width, height, ...inputStyle }"
         />
     </div>
 </template>
@@ -38,6 +44,14 @@ export default {
         FilePond
     },
     props: {
+        width: {
+            type: String,
+            default: "100%"
+        },
+        height: {
+            type: String,
+            default: "100%"
+        },
         label: {
             type: [String, Object]
         },
@@ -51,7 +65,7 @@ export default {
         },
         dataKey: {
             type: String,
-            default: 'id'
+            default: "id"
         },
         showLoader: Boolean,
         customClass: {
@@ -78,7 +92,16 @@ export default {
             type: String,
             default: "",
         },
-        readonly: Boolean
+        readonly: Boolean,
+        stylePanelLayout: {
+            //https://pqina.nl/filepond/docs/api/instance/properties/#styles
+            type: String,
+            default: "compact circle"
+        },
+        extraProps: {
+            type: Object,
+            default: () => ({})
+        }
     },
     data() {
         return {
@@ -123,5 +146,19 @@ export default {
             }
         }
     }
-}
+};
 </script>
+<style lang="scss" scoped>
+::v-deep(.zek-pond) {
+    height: 100%;
+    * {
+        cursor: pointer;
+    }
+    .filepond--drop-label {
+        height: 100%;
+    }
+    .filepond--panel-root {
+        background: transparent;
+    }
+}
+</style>

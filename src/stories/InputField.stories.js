@@ -6,11 +6,11 @@ export default {
     argTypes: {
         type: {
             control: { type: 'select' },
-            options: ['short-text', 'long-text', 'number', 'email', 'password', 'date', 'time', 'datetime-local', 'month', 'week', 'url', 'tel', 'color', 'range', 'file'],
+            options: ['short-text', 'long-text', 'number', 'email', 'password', 'date', 'time', 'datepicker', 'month', 'week', 'url', 'tel', 'color', 'range', 'file'],
         },
         inputType: {
             control: { type: 'select' },
-            options: ['text', 'password', 'email', 'number', 'date', 'time', 'datetime-local', 'month', 'week', 'url', 'tel', 'color', 'range', 'file'],
+            options: ['text', 'password', 'email', 'number', 'date', 'time', 'datepicker', 'month', 'week', 'url', 'tel', 'color', 'range', 'file'],
         },
         label: {
             control: { type: 'object' },

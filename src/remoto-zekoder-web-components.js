@@ -33,7 +33,8 @@ import ZekImageGallery from './components/image-gallery/ImageGallery.vue';
 import ZekProgressBar from './components/progress-bar/ProgressBar.vue';
 import ZekRichTextEditor from './components/rich-text-editor/RichTextEditor.vue';
 import ZekDrumrollPicker from './components/drumroll-picker/DrumrollPicker.vue';
-import ZekPopup from '../components/popup/Popup.vue';
+import ZekPopup from './components/popup/Popup.vue';
+import ZekCalendar from './components/calendar/Calendar.vue';
 
 export {
     ZekButton,
@@ -70,5 +71,6 @@ export {
     ZekProgressBar,
     ZekRichTextEditor,
     ZekDrumrollPicker,
-    ZekPopup
+    ZekPopup,
+    ZekCalendar
 }

@@ -25,7 +25,7 @@ Primary.args = {
     placeholder: "<span class='p-2'>Upload</span><i class='fa fa-upload'></i>",
     width: "100px",
     height: "100px",
-    stylePanelLayout: "compact circle",
+    stylePanelLayout: "compact circle", // using inputStyle give more control
     extraProps: {
         stylePanelShowRemoveButton: false,
         stylePanelShowProgress: true,
@@ -34,9 +34,26 @@ Primary.args = {
         stylePanelShowFiletypeIcon: true,
         stylePanelShowUploadedIcon: true,
     },
+    styleObject: {
+        display: "flex",
+        alignItems: "center",
+    },
     inputStyle: {
         "background-color": "red",
         "border": "1px solid black",
         "border-radius": "50%",
+        "margin": "0 10px",
     },
+    deleteButton: { // ZekButton props
+        label: "Delete",
+        styleObj: {
+            "background-color": "red",
+            "color": "white",
+            "border": "1px solid black",
+            "border-radius": "10px",
+            "padding": "5px 10px",
+            "margin": "10px",
+            height: "30px",
+        },
+    }
 };

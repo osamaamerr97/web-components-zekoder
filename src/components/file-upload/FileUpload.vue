@@ -21,6 +21,11 @@
             v-bind="extraProps"
             :style="{ width, height, ...inputStyle }"
         />
+        <ZekButton
+            v-if="deleteButton"
+            v-bind="deleteButton"
+            @onClick="removeFile"
+        />
     </div>
 </template>
 
@@ -32,6 +37,7 @@ import 'filepond/dist/filepond.min.css';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
+import ZekButton from "../action-button/ActionButton.vue";
 
 // Create component
 const FilePond = vueFilePond(
@@ -41,9 +47,11 @@ const FilePond = vueFilePond(
 export default {
     name: "ZekFileUpload",
     components: {
-        FilePond
+        FilePond,
+        ZekButton
     },
     props: {
+        deleteButton: Object,
         width: {
             type: String,
             default: "100%"
@@ -142,7 +150,15 @@ export default {
                 }).catch(err => {
                     console.log(err);
                 });
-                
+
+            }
+        },
+        removeFile(item) {
+            if ( this.multiple ) {
+                this.fileIds = this.fileIds.filter(id => id !== item.serverId)
+                this.$emit('onChange', this.fileIds)
+            } else {
+                this.$emit('onChange', null)
             }
         }
     }

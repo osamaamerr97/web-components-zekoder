@@ -1,5 +1,6 @@
 <template>
-    <date-time-picker
+    <div></div>
+    <!-- <date-time-picker
         :class="customClass"
         v-model="now"
         :type="type"
@@ -11,18 +12,17 @@
         @input="onChange"
         :style="styleObject"
         v-bind="extraProps"
-    />
+    /> -->
 </template>
 
 <script>
-import DateTimePicker from "vue-drumroll-datetime-picker"; // https://www.plus-one.tech/vue-drumroll-datetime-picker/
+// import DateTimePicker from "vue-drumroll-datetime-picker"; // https://www.plus-one.tech/vue-drumroll-datetime-picker/
 
 import "./style.css";
 
 export default {
     name: "ZekDrumrollPicker",
     components: {
-        DateTimePicker
     },
     props: {
         type: {

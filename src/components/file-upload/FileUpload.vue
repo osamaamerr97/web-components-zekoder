@@ -165,7 +165,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-::v-deep(.zek-pond) {
+:deep(.zek-pond) {
     height: 100%;
     * {
         cursor: pointer;

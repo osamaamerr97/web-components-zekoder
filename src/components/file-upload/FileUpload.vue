@@ -8,12 +8,23 @@
         <file-pond
             name="file-upload"
             ref="pond"
-            label-idle="Drop files here or <span class='filepond--label-action'>Browse</span>"
+            :label-idle="placeholder"
             :allowMultiple="multiple"
             accepted-file-types="image/jpeg, image/png"
             v-bind:files="files"
             :credits="null"
             @addfile="uploadFiles"
+            :required="required"
+            :disabled="disabled"
+            :className="`zek-pond ${customClass}`"
+            :stylePanelLayout="stylePanelLayout"
+            v-bind="extraProps"
+            :style="{ width, height, ...inputStyle }"
+        />
+        <ZekButton
+            v-if="deleteButton"
+            v-bind="deleteButton"
+            @onClick="removeFile"
         />
     </div>
 </template>
@@ -26,6 +37,7 @@ import 'filepond/dist/filepond.min.css';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
+import ZekButton from "../action-button/ActionButton.vue";
 
 // Create component
 const FilePond = vueFilePond(
@@ -35,9 +47,19 @@ const FilePond = vueFilePond(
 export default {
     name: "ZekFileUpload",
     components: {
-        FilePond
+        FilePond,
+        ZekButton
     },
     props: {
+        deleteButton: Object,
+        width: {
+            type: String,
+            default: "100%"
+        },
+        height: {
+            type: String,
+            default: "100%"
+        },
         label: {
             type: [String, Object]
         },
@@ -51,7 +73,7 @@ export default {
         },
         dataKey: {
             type: String,
-            default: 'id'
+            default: "id"
         },
         showLoader: Boolean,
         customClass: {
@@ -78,7 +100,16 @@ export default {
             type: String,
             default: "",
         },
-        readonly: Boolean
+        readonly: Boolean,
+        stylePanelLayout: {
+            //https://pqina.nl/filepond/docs/api/instance/properties/#styles
+            type: String,
+            default: "compact circle"
+        },
+        extraProps: {
+            type: Object,
+            default: () => ({})
+        }
     },
     data() {
         return {
@@ -119,9 +150,31 @@ export default {
                 }).catch(err => {
                     console.log(err);
                 });
-                
+
+            }
+        },
+        removeFile(item) {
+            if ( this.multiple ) {
+                this.fileIds = this.fileIds.filter(id => id !== item.serverId)
+                this.$emit('onChange', this.fileIds)
+            } else {
+                this.$emit('onChange', null)
             }
         }
     }
-}
+};
 </script>
+<style lang="scss" scoped>
+:deep(.zek-pond) {
+    height: 100%;
+    * {
+        cursor: pointer;
+    }
+    .filepond--drop-label {
+        height: 100%;
+    }
+    .filepond--panel-root {
+        background: transparent;
+    }
+}
+</style>

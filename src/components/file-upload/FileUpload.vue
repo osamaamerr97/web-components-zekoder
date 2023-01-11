@@ -8,18 +8,18 @@
         <file-pond
             name="file-upload"
             ref="pond"
+            accepted-file-types="image/jpeg, image/png, image/jpg"
             :label-idle="placeholder"
             :allowMultiple="multiple"
-            accepted-file-types="image/jpeg, image/png"
-            v-bind:files="files"
+            :files="files"
             :credits="null"
-            @addfile="uploadFiles"
             :required="required"
             :disabled="disabled"
             :className="`zek-pond ${customClass}`"
             :stylePanelLayout="stylePanelLayout"
-            v-bind="extraProps"
             :style="{ width, height, ...inputStyle }"
+            v-bind="extraProps"
+            @addfile="uploadFiles"
         />
         <ZekButton
             v-if="deleteButton"
@@ -109,36 +109,43 @@ export default {
         extraProps: {
             type: Object,
             default: () => ({})
+        },
+        files: {
+            type: Array,
+            default: () => []
         }
     },
     data() {
         return {
             loading: false,
-            files: [],
             fileIds: []
         }
     },
     methods: {
         uploadFiles(error, fileObject) {
-            // return console.log(files);
             if ( error ) {
                 return;
             }
 
             const file = fileObject.file;
-            if(!this.uploadUrl || !file) {
+            
+            // this check will only work if files are being uploaded using zecommons
+            if ( '.'+file.type.split('/')[1] === file.name ) {
+                this.$emit("onChange", null);
+                return;
+            }
+
+            if (!this.uploadUrl || !file) {
                 this.$emit("onChange",this.multiple ? files : (file || null))
                 return;
             } else {
                 let formData = new FormData();
                 formData.append('file', file);
-                // document.getElementById(this.id).setCustomValidity('uploading file...')
                 axios({
                     method: 'post',
                     url: this.uploadUrl,
                     data: formData
                 }).then(res => {
-                    // document.getElementById(this.id).setCustomValidity('');
                     if ( res && res.data && res.data[this.dataKey] ) {
                         if ( this.multiple ) {
                             this.fileIds.push(this.fetchUrl+res.data[this.dataKey])

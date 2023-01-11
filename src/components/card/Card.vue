@@ -2,6 +2,7 @@
     <div class="zek-card"
         :style="styleObject"
         :id="'card'+id"
+        :class="customClass"
         @click="cardClicked($event)"
         @mouseenter="cardHovered($event)"
         @mouseleave="onHoverOut()"
@@ -38,6 +39,7 @@ export default {
             type: Object,
             required: true
         },
+        customClass: String,
         flipContent: Object,
         flipOn: String, //hover, click
         id: {

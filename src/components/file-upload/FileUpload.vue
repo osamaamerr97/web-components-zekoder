@@ -11,15 +11,16 @@
             accepted-file-types="image/jpeg, image/png, image/jpg"
             :label-idle="placeholder"
             :allowMultiple="multiple"
-            :files="files"
+            :files="preloadedFiles"
             :credits="null"
             :required="required"
             :disabled="disabled"
-            :className="`zek-pond ${customClass}`"
+            :className="'zek-pond' + customClass"
             :stylePanelLayout="stylePanelLayout"
             :style="{ width, height, ...inputStyle }"
             v-bind="extraProps"
             @addfile="uploadFiles"
+            @removefile="deleteFile"
         />
         <ZekButton
             v-if="deleteButton"
@@ -113,12 +114,17 @@ export default {
         files: {
             type: Array,
             default: () => []
+        },
+        existingIds: {
+            type: Array,
+            default: () => []
         }
     },
     data() {
         return {
             loading: false,
-            fileIds: []
+            preloadedFiles: this.files,
+            fileIds: this.existingIds
         }
     },
     methods: {
@@ -131,7 +137,7 @@ export default {
             
             // this check will only work if files are being uploaded using zecommons
             if ( '.'+file.type.split('/')[1] === file.name ) {
-                this.$emit("onChange", null);
+                if ( !this.multiple ) { this.$emit("onChange", null) }
                 return;
             }
 
@@ -160,6 +166,18 @@ export default {
 
             }
         },
+        deleteFile(error, file) {
+            if ( error ) { return; }
+            
+            if ( this.multiple ) {
+                const fileId = (file.source.split('=')[1]).split('&')[0];
+                this.fileIds.splice(this.fileIds.indexOf(fileId), 1);
+                this.$emit('onChange', this.fileIds);
+            } else {
+                this.$emit('onChange', null)
+            }
+
+        },  
         removeFile(item) {
             if ( this.multiple ) {
                 this.fileIds = this.fileIds.filter(id => id !== item.serverId)

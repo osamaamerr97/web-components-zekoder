@@ -47,8 +47,10 @@ export default {
         show: function(newVal) {
             if(newVal) {
                 this.showForm = true;
+                document.body.classList.add('right-panel-open');
             } else {
                 setTimeout(() => {
+                    document.body.classList.remove('right-panel-open');
                     this.showForm = false;
                 }, 700);
             }

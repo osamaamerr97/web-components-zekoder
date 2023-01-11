@@ -1,6 +1,15 @@
 <template>
-    <div class="cards-list" :style="listStyle">
-        <zek-card v-for="(card,i) in cards" :key="i" :id="i" :content="card.content" :flipContent="card.flipContent" :flipOn="flipOn" :styleObj="styleObject"></zek-card>
+    <div 
+        class="cards-list" 
+        :class="customClass" 
+        :style="listStyle" 
+    >
+        <zek-card 
+            v-for="(card,i) in cards" 
+            :key="i" 
+            :id="i" 
+            v-bind="card"
+        ></zek-card>
     </div>
 </template>
 
@@ -10,14 +19,9 @@ export default {
     components: { ZekCard },
     name: "ZekCardsList",
     props: {
-        cardsHeight: {
-            type: Number,
-            required: true
-        },
-        cardsWidth: {
-            type: Number,
-            required: true
-        },
+        cardsHeight: String,
+        cardsWidth: String,
+        customClass: String,
         cards: Array,
         rows: {
             type: Number,
@@ -27,9 +31,7 @@ export default {
             type: Number,
             default: 1
         },
-        flipOn: String,  //hover, click,
         styleObj: Object,
-        cardStyle: Object,
         direction: String, //top-down, down-top, left-right, right-left
         cardsGap: {
             type: [Number,String],
@@ -39,12 +41,12 @@ export default {
     computed: {
         styleObject() {
             return {
-                ...this.cardStyle,
                 width: isNaN(+this.cardsWidth) ? this.cardsWidth : this.cardsWidth+'px',
                 height: isNaN(+this.cardsHeight) ? this.cardsHeight : this.cardsHeight+'px',
                 overflow: 'auto',
                 flexShrink: 0,
                 flexBias: isNaN(+this.cardsWidth) ? this.cardsWidth : this.cardsWidth+'px',
+                ...this.cardStyle,
             };
         },
         listStyle() {

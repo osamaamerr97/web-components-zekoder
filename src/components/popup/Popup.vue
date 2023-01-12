@@ -97,6 +97,11 @@ export default {
     watch: {
         show: function(newVal) {
             this.showForm = newVal;
+            if (newVal) {
+                document.body.classList.add('popup-open');
+            } else {
+                document.body.classList.remove('popup-open');
+            }
         }
     }
 };
@@ -119,6 +124,9 @@ export default {
 }
 
 .zek-popup-container {
+    position: fixed;
+    top: 0;
+    left: 0;
     z-index: 1000;
     width: 100vw;
     height: 100vh;

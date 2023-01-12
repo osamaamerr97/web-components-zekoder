@@ -32,6 +32,12 @@
                     />
                 </a>
             </li>
+            <div class="sidebar-logo-container" v-if="logo && logo.src">
+                <img
+                    v-bind="logo"
+                    class="sidebar-logo"
+                />
+            </div>
             <div v-for="(sec, i) in sections" :key="i">
                 <li
                     v-if="sec.title"
@@ -309,6 +315,9 @@ export default {
         },
         footer: {
             type: Object
+        },
+        logo: {
+            type: Object //provide all the props that need to be bound to the img tag
         }
     },
     data() {

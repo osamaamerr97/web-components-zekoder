@@ -48,6 +48,11 @@ export default {
             control: {
                 type: 'object',
             }
+        },
+        logo: {
+            control: {
+                type: 'object',
+            }
         }
     }
 };
@@ -200,6 +205,13 @@ Primary.args = {
         "fontSize": "24px",
         "textTransform": "capitalize",
         "height": "500px"
+    },
+    logo: {
+        src: 'https://www.pngfind.com/pngs/m/9-95287_double-left-chevron-svg-png-icon-free-download.png',
+        style: {
+            height: '50px',
+            width: '50px',
+        }
     }
 
 };

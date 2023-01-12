@@ -32,7 +32,8 @@ export default {
             type: Number,
             default: 1
         },
-        styleObj: Object,
+        styleObj: Object, //for parent container
+        cardStyle: Object, //for cards
         direction: String, //top-down, down-top, left-right, right-left
         cardsGap: {
             type: [Number,String],

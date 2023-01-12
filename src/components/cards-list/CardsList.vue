@@ -1,13 +1,14 @@
 <template>
-    <div 
-        class="cards-list" 
-        :class="customClass" 
-        :style="listStyle" 
+    <div
+        class="cards-list"
+        :class="customClass"
+        :style="listStyle"
     >
-        <zek-card 
-            v-for="(card,i) in cards" 
-            :key="i" 
-            :id="i" 
+        <zek-card
+            v-for="(card,i) in cards"
+            :key="i"
+            :id="i"
+            :styleObj="{...styleObject, ...card.styleObj}"
             v-bind="card"
         ></zek-card>
     </div>
@@ -65,12 +66,12 @@ export default {
             let listHeight= this.rows * (+this.styleObject.height.match(/(\d+)/)[0]+gap);
             let listWidth= this.columns * (+this.styleObject.width.match(/(\d+)/)[0]+gap);
             return {
-                ...this.styleObj,
                 flexDirection: dir,
                 gap: isNaN(+this.cardsGap) ? this.cardsGap : this.cardsGap+'px',
                 height: listHeight+20+'px',
                 width: listWidth+gap+'px',
-                flexWrap: this.rows==1 || this.columns==1 ? 'nowrap' : 'wrap'
+                flexWrap: this.rows==1 || this.columns==1 ? 'nowrap' : 'wrap',
+                ...this.styleObj
             };
         }
     },

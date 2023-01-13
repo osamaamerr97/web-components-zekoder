@@ -54,6 +54,7 @@
     "vue-geo-heat-maps": "^0.2.13",
     "vue-recaptcha": "1.3.0",
     "vue-router": "^3.5.3",
+    "vue-scroll-picker": "^0.8.2",
     "vue-slick-carousel": "^1.0.6",
     "vue2-editor": "^2.10.3"
   },

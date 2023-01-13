@@ -132,7 +132,11 @@ export default {
         },
         fontSize: {
             type: String,
-        }
+        },
+        border: {
+            type: String,
+            default: "1px solid #ccc"
+        },
     },
     data() {
         return {
@@ -145,7 +149,7 @@ export default {
             },
             minutes: new Array(60).fill(0).map((_, i) => {
                 return { name: i + 1 < 10 ? `0${i + 1}` : `${i + 1}`, value: i + 1 };
-            })
+            }),
         };
     },
     created() {
@@ -220,10 +224,10 @@ export default {
     width: v-bind(width);
 }
 :deep .top {
-    border: none;
+    border-bottom: v-bind(border);
 }
 :deep .bottom {
-    border: none;
+    border-top: v-bind(border);
 }
 :deep .-selected {
     color: v-bind(activeColor);

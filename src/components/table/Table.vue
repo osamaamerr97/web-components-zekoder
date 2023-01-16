@@ -17,6 +17,8 @@
                 </template>
                 <template v-if="allowSelection" #cell(selected)="data">
                     <b-form-checkbox v-model="data.rowSelected"></b-form-checkbox>
+                    <!-- Delete Item Slot, TODO: What will this bind to in the generator? -->
+                    <slot name="delete" @onClick="deleteData(data.item.id)"></slot>
                 </template>
                 <!-- Show row index -->
                 <template v-if="showRowIndex" #cell(index)="data"> {{ data.index + 1 }} </template>
@@ -87,7 +89,11 @@ export default {
         mapping: {
             type: Object,
             required: false
-        }
+        },
+        deleteParams: {
+            type: [String, Array],
+            required: false
+        },
     },
     data() {
         return {
@@ -167,6 +173,18 @@ export default {
         emitTableEvent(data){
             this.$emit('tableRowEvent',data);
         },
+        deleteData(id){
+            // TODO: Make sure this formate will not change
+            axios.delete(`${this.dataSource}?id=${id}`)
+                .then(response => {
+                    this.tableData = this.tableData.filter (item => {
+                        return item.id != response.data.data.id;
+                    })
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        },
         processDataSource(){
             if(this.dataSource) {
                 if(typeof this.dataSource == 'string') {
@@ -195,7 +213,10 @@ export default {
         mapDataSource(data){
             if(this.mapping) {
                 this.tableData = data.map (item => {
-                    let mappedItem = {};
+                    // TODO: Make sure the id will always be there or make go by index as well.
+                    let mappedItem = {
+                        id: item.id
+                    };
                     for(let key in this.mapping) {
                         mappedItem[key] = item[this.mapping[key]];
                     }

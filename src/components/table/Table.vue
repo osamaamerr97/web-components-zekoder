@@ -213,7 +213,7 @@ export default {
         mapDataSource(data){
             if(this.mapping) {
                 this.tableData = data.map (item => {
-                    // TODO: Make sure the id will always be there or make go by index as well.
+                    // TODO: Make sure the id will always be there or maybe given in the params or make go by index as well.
                     let mappedItem = {
                         id: item.id
                     };

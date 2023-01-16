@@ -19,6 +19,8 @@
                     <b-form-checkbox v-model="data.rowSelected"></b-form-checkbox>
                     <!-- Delete Item Slot, TODO: What will this bind to in the generator? -->
                     <slot name="delete" @onClick="deleteData(data.item.id)"></slot>
+                    <!-- Update Item -->
+                    <slot name="update" @onClick="updateData(data.item.id)"></slot>
                 </template>
                 <!-- Show row index -->
                 <template v-if="showRowIndex" #cell(index)="data"> {{ data.index + 1 }} </template>
@@ -94,6 +96,17 @@ export default {
             type: [String, Array],
             required: false
         },
+        updateSource: {
+            type: Object,
+            default: () => {
+                return {
+                    url: this.dataSource,
+                    method: 'PATCH',
+                    payload: ['id', 'selected'],
+                    queryParams: []
+                }
+            }
+        }
     },
     data() {
         return {
@@ -172,6 +185,30 @@ export default {
         },
         emitTableEvent(data){
             this.$emit('tableRowEvent',data);
+        },
+        updateSourceData(id, selected) {
+            if(this.updateSource) {
+                let payload = {};
+                this.updateSource.payload.forEach ( (key) => {
+                    payload[key] = this[key];
+                });
+                let queryParams = {};
+                this.updateSource.queryParams.forEach ( (key) => {
+                    queryParams[key] = this[key];
+                });
+                axios({
+                    method: this.updateSource.method,
+                    url: this.updateSource.url,
+                    data: payload,
+                    params: queryParams
+                })
+                .then(response => {
+                    this.$emit('updateSuccess', response.data.data);
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+            }
         },
         deleteData(id){
             // TODO: Make sure this formate will not change

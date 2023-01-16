@@ -14,7 +14,7 @@ export default {
           control: 'multi-select' ,
           options: ['dark', 'striped', 'hover', 'bordered', 'small', 'borderless']
         }
-        
+
       },
   };
 
@@ -37,8 +37,8 @@ export default {
 Primary.args = {
     columns: [
         {
-            label: 'First Name',
-            dataField: 'fname',
+            label: 'Author',
+            dataField: 'lauthor',
             component: {
                 props: ['row'],
                 template: "<div class='text-success'> <h1> {{row.fname}} </h1> <br> <h3> {{row.lname}} </h3> </div>",
@@ -48,15 +48,15 @@ Primary.args = {
             }
         },
         {
-            label: 'Last Name',
-            dataField: 'lname',
+            label: 'Date',
+            dataField: 'ldate',
             styleObj: {
                 width: '150px'
             }
         },
         {
-            label: 'Email',
-            dataField: 'email',
+            label: 'Source',
+            dataField: 'lsource',
             sortable: true,
             styleObj: {
             }
@@ -66,31 +66,6 @@ Primary.args = {
     type: ['dark', 'hover', 'striped'], // one or multiple of: dark, hover, striped, bordered, borderless, small
     caption: 'user info table',
     data: [
-        {
-            fname: 'nida',
-            lname: 'awais',
-            email: 'supercoolemail@gmail.com'
-        },
-        {
-            fname: 'awais',
-            lname: 'ashraf',
-            email: 'supercoolemailawais@gmail.com'
-        },
-        {
-            fname: 'saim bin',
-            lname: 'awais',
-            email: 'supercoolemailsaim@gmail.com'
-        },
-        {
-            fname: 'nida',
-            lname: 'usmani',
-            email: 'supercoolemailnida@gmail.com'
-        },
-        {
-            fname: 'nida',
-            lname: 'awais',
-            email: 'supercoolemail@gmail.com'
-        },
     ],
     showRowIndex: true,
     allowSelection: true,
@@ -101,5 +76,11 @@ Primary.args = {
         "textTransform": "capitalize",
         "textAlign": "center",
         "width": "100%"
-    }
+    },
+    dataSource: "https://api.newspaper.cloudai.network/documents/",
+    mapping: {
+        lauthor: 'author',
+        ldate: 'date',
+        lsource: 'source'
+    },
 };

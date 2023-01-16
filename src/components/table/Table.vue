@@ -1,8 +1,16 @@
 <template>
     <div :class="'row' + customClass">
         <div class="col">
-            <b-table :items="data" v-bind="tableProps" :style="styleObj" :fields="fields" ref="bTable" @row-selected="rowSelected" :current-page="currentPage">
-                <template v-if="caption" #table-caption>{{caption}}</template>
+            <b-table
+                :items="tableData"
+                v-bind="tableProps"
+                :style="styleObj"
+                :fields="fields"
+                ref="bTable"
+                @row-selected="rowSelected"
+                :current-page="currentPage"
+            >
+                <template v-if="caption" #table-caption>{{ caption }}</template>
                 <!-- Show select column with select header -->
                 <template v-if="allowSelection" #head(selected)="">
                     <b-form-checkbox @change="toggleAllRows"></b-form-checkbox>
@@ -11,17 +19,27 @@
                     <b-form-checkbox v-model="data.rowSelected"></b-form-checkbox>
                 </template>
                 <!-- Show row index -->
-                <template v-if="showRowIndex" #cell(index)="data"> {{data.index + 1}} </template>    
+                <template v-if="showRowIndex" #cell(index)="data"> {{ data.index + 1 }} </template>
                 <!-- Show custom column content if component property exists-->
                 <template #cell()="data">
-                    <component v-if="data.field.component" :is="data.field.component" :row="data.item" @customEvent="emitTableEvent($event)"></component>
-                    <span v-else> {{data.value}}</span>
+                    <component
+                        v-if="data.field.component"
+                        :is="data.field.component"
+                        :row="data.item"
+                        @customEvent="emitTableEvent($event)"
+                    ></component>
+                    <span v-else> {{ data.value }}</span>
                 </template>
             </b-table>
             <!-- Pagination -->
             <div v-if="pagination" class="align-items-right ">
-                <p> Showing {{start}} to {{end}} of {{data.length}} items</p>
-                <b-pagination v-model="currentPage" :total-rows="data.length" :per-page="pagination.itemsPerPage" align="right"></b-pagination>
+                <p>Showing {{ start }} to {{ end }} of {{ tableData.length }} items</p>
+                <b-pagination
+                    v-model="currentPage"
+                    :total-rows="tableData.length"
+                    :per-page="pagination.itemsPerPage"
+                    align="right"
+                ></b-pagination>
             </div>
         </div>
     </div>
@@ -31,6 +49,7 @@
 // import Vue from 'vue'
 // import { BootstrapVue } from 'bootstrap-vue'
 // Vue.use(BootstrapVue)
+import axios from 'axios';
 export default {
     name: "ZekTable",
     props: {
@@ -46,15 +65,39 @@ export default {
             type: String,
             default: ''
         },
-        styleObj: Object
+        styleObj: Object,
+        dataSource: {
+            type: [String, Array, Object],
+            required: false,
+            validator: (value) => {
+                if (value === null || value === undefined) {
+                    return true;
+                } else if (typeof value == 'string') {
+                    try {
+                        return Boolean(new URL(value));
+                    }
+                    catch(e){
+                        return false;
+                    }
+                } else if (typeof value == 'object') {
+                    return value.url != '' && value.method != '' && value.requestBody != ''
+                }
+            }
+        },
+        mapping: {
+            type: Object,
+            required: false
+        }
     },
     data() {
         return {
             fields: [],
             currentPage: 1,
+            tableData: []
         }
     },
     created() {
+        this.processDataSource();
         if(this.pagination && this.pagination.currentPage) {
             this.currentPage = this.pagination.currentPage;
         }
@@ -106,12 +149,12 @@ export default {
             return (this.pagination&&this.pagination.itemsPerPage) ? ((this.currentPage-1)*this.pagination.itemsPerPage)+1 : 1;
         },
         end() {
-            const end = (this.pagination&&this.pagination.itemsPerPage) ? this.start-1+this.pagination.itemsPerPage : this.data.length;
-            return end <= this.data.length ? end : this.data.length;
+            const end = (this.pagination&&this.pagination.itemsPerPage) ? this.start-1+this.pagination.itemsPerPage : this.tableData.length;
+            return end <= this.tableData.length ? end : this.tableData.length;
         }
     },
     methods: {
-        rowSelected(rows) {            
+        rowSelected(rows) {
             this.$emit('rowsSelected',rows);
         },
         toggleAllRows(selected) {
@@ -123,6 +166,44 @@ export default {
         },
         emitTableEvent(data){
             this.$emit('tableRowEvent',data);
+        },
+        processDataSource(){
+            if(this.dataSource) {
+                if(typeof this.dataSource == 'string') {
+                    axios.get(this.dataSource)
+                        .then(response => {
+                            this.mapDataSource(response.data.data)
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        })
+                } else if (typeof this.dataSource == 'object') {
+                    axios({
+                        method: this.dataSource.method,
+                        url: this.dataSource.url,
+                        data: this.dataSource.requestBody
+                    })
+                        .then(response => {
+                            this.mapDataSource(response.data.data)
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        })
+                }
+            }
+        },
+        mapDataSource(data){
+            if(this.mapping) {
+                this.tableData = data.map (item => {
+                    let mappedItem = {};
+                    for(let key in this.mapping) {
+                        mappedItem[key] = item[this.mapping[key]];
+                    }
+                    return mappedItem;
+                })
+            } else {
+                this.tableData = data;
+            }
         }
     },
 }

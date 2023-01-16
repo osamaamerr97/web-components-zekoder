@@ -208,7 +208,7 @@ export default {
                     return { name: i + 1 < 10 ? `0${i + 1}` : `${i + 1}`, value: i + 1 };
                 });
             } else {
-                return new Array(24).fill(0).map((_, i) => {
+                return new Array(12).fill(0).map((_, i) => {
                     return { name: i + 1 < 10 ? `0${i + 1}` : `${i + 1}`, value: i + 1 };
                 });
             }

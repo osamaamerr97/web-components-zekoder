@@ -66,6 +66,16 @@ Primary.args = {
     type: ['dark', 'hover', 'striped'], // one or multiple of: dark, hover, striped, bordered, borderless, small
     caption: 'user info table',
     data: [
+        {
+            lauthor: 'John Doe',
+            ldate: '2020-01-01',
+            lsource: 'https://www.google.com'
+        },
+        {
+            lauthor: 'Jane Doe',
+            ldate: '2020-01-01',
+            lsource: 'https://www.google.com'
+        },
     ],
     showRowIndex: true,
     allowSelection: true,

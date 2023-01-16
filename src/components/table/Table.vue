@@ -93,7 +93,7 @@ export default {
         return {
             fields: [],
             currentPage: 1,
-            tableData: []
+            tableData: this.data || []
         }
     },
     created() {

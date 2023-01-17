@@ -41,7 +41,8 @@
         :pattern="pattern ? pattern : null"
         :title="title"
         :style="inputStyle"
-        v-on="preventSpaces ? { keypress: onKeyPress } : {}"
+        v-on="preventSpaces ? { keypress: preventSpaceKey } : {}"
+        @keyup="onKeyUp"
         @change="onInput"
       />
       <i
@@ -172,7 +173,6 @@
     },
     data() {
       return {
-      //   value: this.initialValue,
         actualType: this.inputType,
       }
     },
@@ -188,10 +188,13 @@
       onInput(event) {
         this.$emit("onInput", this.inputType === 'datepicker'? {target: {value: event}} : event);
       },
-      onKeyPress(event) {
+      preventSpaceKey(event) {
         if(event.keyCode == 32) {
             event.preventDefault();
         }
+      },
+      onKeyUp(event) {
+        this.$emit("onKeyUp", event);
       },
       iconClicked(event) {
         this.iconSettings.clickable ? this.$emit("iconClicked", event) : "";
@@ -199,8 +202,8 @@
     },
     watch: {
         value(newValue) {
-        this.$emit("input", { id: this.id, value: newValue, name: this.name })
-      }
+            this.$emit("input", { id: this.id, value: newValue, name: this.name })
+        }
     }
   }
   </script>

@@ -19,11 +19,9 @@
                     <b-form-checkbox v-model="data.rowSelected"></b-form-checkbox>
                     <!-- Delete Item Slot, TODO: What will this bind to in the generator? -->
                     <slot name="delete" @onClick="deleteData(data.item.id)"></slot>
-                    <!-- Update Item -->
-                    <slot name="update" @onClick="updateData(data.item.id)"></slot>
+                        <!-- Update Item -->
+                        <slot name="update" @onClick="updateData(data.item.id)"></slot>
                 </template>
-                <!-- Show row index -->
-                <template v-if="showRowIndex" #cell(index)="data"> {{ data.index + 1 }} </template>
                 <!-- Show custom column content if component property exists-->
                 <template #cell()="data">
                     <component
@@ -33,6 +31,16 @@
                         @customEvent="emitTableEvent($event)"
                     ></component>
                     <span v-else> {{ data.value }}</span>
+                </template>
+                <!-- show delete button -->
+                <template #cell(delete_button)="data">
+                    <ZekButton :label="``" :icon="'fa fa-trash'" :styleObj="{
+                        color: 'red',
+                        background: 'transparent',
+                        border: 'none',
+                        verticalAlign: 'middle',
+                        height: '100%'
+                    }" @onClick="deleteRow(data.item)" />
                 </template>
             </b-table>
             <!-- Pagination -->
@@ -53,9 +61,11 @@
 // import Vue from 'vue'
 // import { BootstrapVue } from 'bootstrap-vue'
 // Vue.use(BootstrapVue)
-import axios from 'axios';
+import ZekButton from "../action-button/ActionButton.vue";
+import axios from "axios";
 export default {
     name: "ZekTable",
+    components: { ZekButton },
     props: {
         columns: Array, //array of object of type {Label, dataField, styleObj}
         headerType: String, //light or dark,
@@ -67,24 +77,23 @@ export default {
         pagination: Object, //{itemsPerPage, currentPage}
         customClass: {
             type: String,
-            default: ''
+            default: ""
         },
         styleObj: Object,
         dataSource: {
             type: [String, Array, Object],
             required: false,
-            validator: (value) => {
+            validator: value => {
                 if (value === null || value === undefined) {
                     return true;
-                } else if (typeof value == 'string') {
+                } else if (typeof value == "string") {
                     try {
                         return Boolean(new URL(value));
-                    }
-                    catch(e){
+                    } catch (e) {
                         return false;
                     }
-                } else if (typeof value == 'object') {
-                    return value.url != '' && value.method != '' && value.requestBody != ''
+                } else if (typeof value == "object") {
+                    return value.url != "" && value.method != "" && value.requestBody != "";
                 }
             }
         },
@@ -92,35 +101,39 @@ export default {
             type: Object,
             required: false
         },
+        showDeleteButton: {
+            type: Boolean,
+            default: false
+        },
         deleteParams: {
             type: [String, Array],
             required: false
         },
-        updateSource: {
-            type: Object,
-            default: () => {
-                return {
-                    url: this.dataSource,
-                    method: 'PATCH',
-                    payload: ['id', 'selected'],
-                    queryParams: []
-                }
-            }
-        }
+        // updateSource: {
+        //     type: Object,
+        //     default: () => {
+        //         return {
+        //             url: "",
+        //             method: "PATCH",
+        //             payload: ["id", "selected"],
+        //             queryParams: []
+        //         };
+        //     }
+        // }
     },
     data() {
         return {
             fields: [],
             currentPage: 1,
             tableData: this.data || []
-        }
+        };
     },
     created() {
         this.processDataSource();
-        if(this.pagination && this.pagination.currentPage) {
+        if (this.pagination && this.pagination.currentPage) {
             this.currentPage = this.pagination.currentPage;
         }
-        this.fields = this.columns.map (col => {
+        this.fields = this.columns.map(col => {
             return {
                 key: col.dataField,
                 label: col.label,
@@ -128,141 +141,170 @@ export default {
                 thStyle: col.styleObj,
                 tdClass: col.class,
                 component: col.component || null
-            }
+            };
         });
-        if(this.showRowIndex) {
+        if (this.showRowIndex) {
             this.fields.unshift({
-                label: '#',
-                key: 'index',
+                label: "#",
+                key: "index",
                 sortable: false,
                 isRowHeader: true
-            })
+            });
         }
-        if(this.allowSelection) {
+        if (this.allowSelection) {
             this.fields.unshift({
-                key: 'selected',
+                key: "selected",
                 sortable: false,
                 isRowHeader: true
-            })
+            });
+        }
+        if (this.showDeleteButton) {
+            this.fields.push({
+                key: "delete_button",
+                sortable: false,
+                isRowHeader: false,
+            });
         }
     },
     computed: {
         tableProps() {
             let tableClass = {};
-            if( this.type && typeof(this.type) == 'string') {
+            if (this.type && typeof this.type == "string") {
                 tableClass[this.type] = true;
             } else if (this.type) {
-                this.type.forEach ( (type) => {
+                this.type.forEach(type => {
                     tableClass[type] = true;
                 });
             }
-            if(this.allowSelection) {
-                tableClass['selectable'] = true;
+            if (this.allowSelection) {
+                tableClass["selectable"] = true;
             }
-            if(this.pagination && this.pagination.itemsPerPage) {
-                tableClass['per-page'] = this.pagination.itemsPerPage;
+            if (this.pagination && this.pagination.itemsPerPage) {
+                tableClass["per-page"] = this.pagination.itemsPerPage;
             }
             return tableClass;
         },
-        start(){
-            return (this.pagination&&this.pagination.itemsPerPage) ? ((this.currentPage-1)*this.pagination.itemsPerPage)+1 : 1;
+        start() {
+            return this.pagination && this.pagination.itemsPerPage
+                ? (this.currentPage - 1) * this.pagination.itemsPerPage + 1
+                : 1;
         },
         end() {
-            const end = (this.pagination&&this.pagination.itemsPerPage) ? this.start-1+this.pagination.itemsPerPage : this.tableData.length;
+            const end =
+                this.pagination && this.pagination.itemsPerPage
+                    ? this.start - 1 + this.pagination.itemsPerPage
+                    : this.tableData.length;
             return end <= this.tableData.length ? end : this.tableData.length;
         }
     },
     methods: {
         rowSelected(rows) {
-            this.$emit('rowsSelected',rows);
+            this.$emit("rowsSelected", rows);
         },
         toggleAllRows(selected) {
-            if(selected) {
+            if (selected) {
                 this.$refs.bTable.selectAllRows();
             } else {
                 this.$refs.bTable.clearSelected();
             }
         },
-        emitTableEvent(data){
-            this.$emit('tableRowEvent',data);
+        emitTableEvent(data) {
+            this.$emit("tableRowEvent", data);
         },
-        updateSourceData(id, selected) {
-            if(this.updateSource) {
-                let payload = {};
-                this.updateSource.payload.forEach ( (key) => {
-                    payload[key] = this[key];
-                });
-                let queryParams = {};
-                this.updateSource.queryParams.forEach ( (key) => {
-                    queryParams[key] = this[key];
-                });
+        // updateSourceData(id, selected) {
+        //     if (this.updateSource) {
+        //         let payload = {};
+        //         this.updateSource.payload.forEach(key => {
+        //             payload[key] = this[key];
+        //         });
+        //         let queryParams = {};
+        //         this.updateSource.queryParams.forEach(key => {
+        //             queryParams[key] = this[key];
+        //         });
+        //         axios({
+        //             method: this.updateSource.method,
+        //             url: this.updateSource.url,
+        //             data: payload,
+        //             params: queryParams
+        //         })
+        //             .then(response => {
+        //                 this.$emit("updateSuccess", response.data.data);
+        //             })
+        //             .catch(error => {
+        //                 console.log(error);
+        //             });
+        //     }
+        // },
+        deleteRow(item) {
+            if (this.deleteParams) {
+                let params = {};
+                let deleteUrl = ''
+                if (typeof this.deleteParams == "string") {
+                    params[this.deleteParams] = item[this.deleteParams];
+                    deleteUrl = `${this.dataSource.url}/${this.deleteParams}?${this.deleteParams}=${item.id}`;
+                } else if (Array.isArray(this.deleteParams)) {
+                    this.deleteParams.forEach(key => {
+                        params[key] = item[key];
+                        // ! Delete URL not Handled
+                    });
+                }
                 axios({
-                    method: this.updateSource.method,
-                    url: this.updateSource.url,
-                    data: payload,
-                    params: queryParams
+                    method: "DELETE",
+                    url: deleteUrl,
+                    headers: this.dataSource.headers
                 })
-                .then(response => {
-                    this.$emit('updateSuccess', response.data.data);
-                })
-                .catch(error => {
-                    console.log(error);
-                })
+                    .then(response => {
+                        this.$emit("deleteSuccess", response.data.data);
+                        this.processDataSource();
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
             }
         },
-        deleteData(id){
-            // TODO: Make sure this formate will not change
-            axios.delete(`${this.dataSource}?id=${id}`)
-                .then(response => {
-                    this.tableData = this.tableData.filter (item => {
-                        return item.id != response.data.data.id;
-                    })
-                })
-                .catch(error => {
-                    console.log(error);
-                })
-        },
-        processDataSource(){
-            if(this.dataSource) {
-                if(typeof this.dataSource == 'string') {
-                    axios.get(this.dataSource)
+        processDataSource() {
+            if (this.dataSource) {
+                if (typeof this.dataSource == "string") {
+                    axios
+                        .post(this.dataSource)
                         .then(response => {
-                            this.mapDataSource(response.data.data)
+                            this.mapDataSource(response.data.data);
                         })
                         .catch(error => {
                             console.log(error);
-                        })
-                } else if (typeof this.dataSource == 'object') {
+                        });
+                } else if (typeof this.dataSource == "object") {
                     axios({
                         method: this.dataSource.method,
-                        url: this.dataSource.url,
-                        data: this.dataSource.requestBody
+                        url: `${this.dataSource.url}/q`,
+                        data: this.dataSource.requestBody,
+                        headers: this.dataSource.headers
                     })
                         .then(response => {
-                            this.mapDataSource(response.data.data)
+                            this.mapDataSource(response.data.data);
                         })
                         .catch(error => {
                             console.log(error);
-                        })
+                        });
                 }
             }
         },
-        mapDataSource(data){
-            if(this.mapping) {
-                this.tableData = data.map (item => {
+        mapDataSource(data) {
+            if (this.mapping) {
+                this.tableData = data.map(item => {
                     // TODO: Make sure the id will always be there or maybe given in the params or make go by index as well.
                     let mappedItem = {
                         id: item.id
                     };
-                    for(let key in this.mapping) {
+                    for (let key in this.mapping) {
                         mappedItem[key] = item[this.mapping[key]];
                     }
                     return mappedItem;
-                })
+                });
             } else {
                 this.tableData = data;
             }
         }
-    },
-}
+    }
+};
 </script>

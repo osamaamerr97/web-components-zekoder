@@ -89,20 +89,7 @@ export default {
         styleObj: Object,
         dataSource: {
             type: [String, Array, Object],
-            required: false,
-            validator: value => {
-                if (value === null || value === undefined) {
-                    return true;
-                } else if (typeof value == "string") {
-                    try {
-                        return Boolean(new URL(value));
-                    } catch (e) {
-                        return false;
-                    }
-                } else if (typeof value == "object") {
-                    return value.url != "" && value.method != "" && value.requestBody != "";
-                }
-            }
+            required: false
         },
         mapping: {
             type: Object,

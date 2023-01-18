@@ -34,7 +34,7 @@
                 </template>
                 <!-- show delete button -->
                 <template v-if="allowDelete" #cell(delete_button)="data">
-                    <ZekButton v-bind="deleteSettings.deleteButton" @onClick="deleteRow(data.item)" />
+                    <ZekButton v-bind="deleteSettings.deleteButton" @onClick="deleteSettings.showConfirmation ? showDeleteModal(data.item) : deleteRow(data.item)" />
                 </template>
             </b-table>
             <!-- Pagination -->
@@ -48,6 +48,19 @@
                 ></b-pagination>
             </div>
         </div>
+        <b-modal
+            ref="delete-item"
+            title="Are you sure you want to delete this item?"
+            :ok-title="'Delete'"
+            :hide-header-close="true"
+            :header-class="'border-bottom-0 text-center p-5 pb-3'"
+            :title-class="'fs-2'"
+            :body-class="'d-none'"
+            :footer-class="'border-top-0 align-items-center justify-content-center d-flex h-25'"
+            :cancel-variant="'outline-secondary'"
+            @ok="deleteRow"
+        >
+        </b-modal>
     </div>
 </template>
 
@@ -108,7 +121,8 @@ export default {
         return {
             fields: [],
             currentPage: 1,
-            tableData: this.data || []
+            tableData: this.data || [],
+            currentRow: null,
         };
     },
     created() {
@@ -194,8 +208,13 @@ export default {
         emitTableEvent(data) {
             this.$emit("tableRowEvent", data);
         },
+        showDeleteModal(row) {
+            this.currentRow = row;
+            this.$refs['delete-item'].show()
+        },
         deleteRow(item) {
             if (this.deleteSettings) {
+                item.id ?? (item = this.currentRow);
                 let deleteUrl = `${this.dataSource.url}${this.deleteSettings.url}=${item.id}`;
                 // -----------------------------
                 // TODO: Handle array of params

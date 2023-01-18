@@ -102,6 +102,7 @@ Primary.args = {
     deleteSettings: {
         url: '/environment_id?environment_id',
         deleteParams: 'environment_id',
+        showConfirmation: true,
         deleteButton: {
             label: '',
             icon: 'fa fa-trash',

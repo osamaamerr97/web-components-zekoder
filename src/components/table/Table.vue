@@ -33,14 +33,8 @@
                     <span v-else> {{ data.value }}</span>
                 </template>
                 <!-- show delete button -->
-                <template #cell(delete_button)="data">
-                    <ZekButton :label="``" :icon="'fa fa-trash'" :styleObj="{
-                        color: 'red',
-                        background: 'transparent',
-                        border: 'none',
-                        verticalAlign: 'middle',
-                        height: '100%'
-                    }" @onClick="deleteRow(data.item)" />
+                <template v-if="allowDelete" #cell(delete_button)="data">
+                    <ZekButton v-bind="deleteSettings.deleteButton" @onClick="deleteRow(data.item)" />
                 </template>
             </b-table>
             <!-- Pagination -->
@@ -101,25 +95,14 @@ export default {
             type: Object,
             required: false
         },
-        showDeleteButton: {
+        allowDelete: {
             type: Boolean,
             default: false
         },
-        deleteParams: {
-            type: [String, Array],
+        deleteSettings: {
+            type: Object,
             required: false
         },
-        // updateSource: {
-        //     type: Object,
-        //     default: () => {
-        //         return {
-        //             url: "",
-        //             method: "PATCH",
-        //             payload: ["id", "selected"],
-        //             queryParams: []
-        //         };
-        //     }
-        // }
     },
     data() {
         return {
@@ -158,7 +141,7 @@ export default {
                 isRowHeader: true
             });
         }
-        if (this.showDeleteButton) {
+        if (this.allowDelete) {
             this.fields.push({
                 key: "delete_button",
                 sortable: false,
@@ -211,43 +194,12 @@ export default {
         emitTableEvent(data) {
             this.$emit("tableRowEvent", data);
         },
-        // updateSourceData(id, selected) {
-        //     if (this.updateSource) {
-        //         let payload = {};
-        //         this.updateSource.payload.forEach(key => {
-        //             payload[key] = this[key];
-        //         });
-        //         let queryParams = {};
-        //         this.updateSource.queryParams.forEach(key => {
-        //             queryParams[key] = this[key];
-        //         });
-        //         axios({
-        //             method: this.updateSource.method,
-        //             url: this.updateSource.url,
-        //             data: payload,
-        //             params: queryParams
-        //         })
-        //             .then(response => {
-        //                 this.$emit("updateSuccess", response.data.data);
-        //             })
-        //             .catch(error => {
-        //                 console.log(error);
-        //             });
-        //     }
-        // },
         deleteRow(item) {
-            if (this.deleteParams) {
-                let params = {};
-                let deleteUrl = ''
-                if (typeof this.deleteParams == "string") {
-                    params[this.deleteParams] = item[this.deleteParams];
-                    deleteUrl = `${this.dataSource.url}/${this.deleteParams}?${this.deleteParams}=${item.id}`;
-                } else if (Array.isArray(this.deleteParams)) {
-                    this.deleteParams.forEach(key => {
-                        params[key] = item[key];
-                        // ! Delete URL not Handled
-                    });
-                }
+            if (this.deleteSettings) {
+                let deleteUrl = `${this.dataSource.url}${this.deleteSettings.url}=${item.id}`;
+                // -----------------------------
+                // TODO: Handle array of params
+                // -----------------------------
                 axios({
                     method: "DELETE",
                     url: deleteUrl,
@@ -266,7 +218,7 @@ export default {
             if (this.dataSource) {
                 if (typeof this.dataSource == "string") {
                     axios
-                        .post(this.dataSource)
+                        .get(this.dataSource)
                         .then(response => {
                             this.mapDataSource(response.data.data);
                         })

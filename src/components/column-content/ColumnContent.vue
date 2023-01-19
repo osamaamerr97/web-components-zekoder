@@ -1,9 +1,14 @@
 <template>
     <div class="column-content-wrapper">
         <div v-if="column && column.rows && column.rows.length" class="">
-            <div v-for="(row,i) in column.rows" :key="'row'+i" class="row" :id="row.id" :class="row.class">
-                <div v-for="(col,i) in row.columns" :key="'col'+i" :class="(col.columnWidth ? 'col-'+col.columnWidth : 'col')+' '+(col.class || '')" :id="col.id">
-                    <zek-column-content :column="col"></zek-column-content>
+            <div v-for="(row, i) in column.rows" :key="'row' + i" class="row" :id="row.id" :class="row.class">
+                <div
+                    v-for="(col, j) in row.columns"
+                    :key="'col' + j"
+                    :class="(col.columnWidth ? 'col-' + col.columnWidth : 'col') + ' ' + (col.class || '')"
+                    :id="col.id"
+                >
+                    <zek-column-content :column="col" :index="i"></zek-column-content>
                 </div>
             </div>
         </div>
@@ -35,11 +40,13 @@
         ></i>
         <zek-list
             v-else-if="column && column.content && column.content.component == 'list'"
-            v-bind="column.content.data" v-on="column.content.events"
+            v-bind="column.content.data"
+            v-on="column.content.events"
         ></zek-list>
         <zek-text
             v-else-if="column && column.content && column.content.component == 'text'"
             class="card-text"
+            :map="apiData[index] ? apiData[index][column.content.map] : ''"
             v-bind="column.content.data"
             v-on="column.content.events"
         ></zek-text>
@@ -106,8 +113,8 @@
             v-bind="column.content.data"
             v-on="column.content.events"
         ></zek-toggle-button>
-        <component 
-            v-else-if="column && column.content && column.content.type == 'custom'" 
+        <component
+            v-else-if="column && column.content && column.content.type == 'custom'"
             :is="column.content.component"
             v-bind="column.content.data"
             v-on="column.content.events"
@@ -117,7 +124,13 @@
             v-bind="column.content.data"
             v-on="column.content.events"
         >
-            <vue-recaptcha ref="recaptcha" @verify="column.content.events.onVerify" @expired="column.content.events.onExpired" :loadRecaptchaScript="true" :sitekey="column.content.data.siteKey"></vue-recaptcha>
+            <vue-recaptcha
+                ref="recaptcha"
+                @verify="column.content.events.onVerify"
+                @expired="column.content.events.onExpired"
+                :loadRecaptchaScript="true"
+                :sitekey="column.content.data.siteKey"
+            ></vue-recaptcha>
         </div>
     </div>
 </template>
@@ -138,11 +151,11 @@ import ZekTextarea from "../textarea/Textarea.vue";
 import ZekCard from "../card/Card.vue";
 import ZekCollapsibleContainer from "../collapsible-container/CollapsibleContainer.vue";
 import ZekTable from "../table/Table.vue";
-import ZekToggleButton from "../toggle-button/ToggleButton.vue"
-import VueRecaptcha from '../../../node_modules/vue-recaptcha/dist/vue-recaptcha.es';
+import ZekToggleButton from "../toggle-button/ToggleButton.vue";
+import VueRecaptcha from "../../../node_modules/vue-recaptcha/dist/vue-recaptcha.es";
 import ZekCountriesList from "../countries-list/CountriesList.vue";
-import ZekFileUpload from '../file-upload/FileUpload.vue';
-
+import ZekFileUpload from "../file-upload/FileUpload.vue";
+import axios from "axios";
 export default {
     components: {
         ZekButton,
@@ -167,15 +180,43 @@ export default {
     },
     name: "ZekColumnContent",
     props: {
-        column: Object //column can have rows or a component. Each row must have columns, columns can have more rows. Component can only be inside a column
+        column: Object, //column can have rows or a component. Each row must have columns, columns can have more rows. Component can only be inside a column
+        index: Number,
     },
-    created(){
+    data(){
+        return {
+            apiData: {}
+        }
+    },
+    created() {
+        console.log(this.index)
+        if(this.column.dataSource){
+            this.processDataSource(this.column);
+        }
     },
     methods: {
-        stopPropagation(event){
+        processDataSource(column) {
+            if (column.dataSource) {
+                if (typeof column.dataSource == "object") {
+                    axios({
+                        method: column.dataSource.method,
+                        url: `${column.dataSource.url}/q`,
+                        data: column.dataSource.requestBody,
+                        headers: column.dataSource.headers
+                    })
+                        .then(response => {
+                            console.log("APIData",response.data)
+                            this.apiData = response.data.data;
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                }
+            }
+        },
+        stopPropagation(event) {
             event.stopPropagation();
         }
     }
-
-}
+};
 </script>

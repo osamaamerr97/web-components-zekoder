@@ -8,7 +8,7 @@
                     :class="(col.columnWidth ? 'col-' + col.columnWidth : 'col') + ' ' + (col.class || '')"
                     :id="col.id"
                 >
-                    <zek-column-content :column="col" :index="i"></zek-column-content>
+                    <zek-column-content :column="col" :map="col.map" :index="i"></zek-column-content>
                 </div>
             </div>
         </div>
@@ -46,7 +46,7 @@
         <zek-text
             v-else-if="column && column.content && column.content.component == 'text'"
             class="card-text"
-            :map="apiData[index] ? apiData[index][column.content.map] : ''"
+            :map="apiData ? apiData[column.content.map] : ''"
             v-bind="column.content.data"
             v-on="column.content.events"
         ></zek-text>
@@ -181,38 +181,51 @@ export default {
     name: "ZekColumnContent",
     props: {
         column: Object, //column can have rows or a component. Each row must have columns, columns can have more rows. Component can only be inside a column
-        index: Number,
+        map: Object
     },
-    data(){
+    data() {
         return {
-            apiData: {}
-        }
+            apiData: this.map ?? undefined
+        };
     },
     created() {
-        console.log(this.index)
-        if(this.column.dataSource){
-            this.processDataSource(this.column);
+        console.log(this.map ?? {});
+        if (this.column.rows) {
+            this.processDataSourceForRow(this.column);
+        } else if (this.column.dataSource) {
+            this.processDataSourceForColumn(this.column);
         }
     },
     methods: {
-        processDataSource(column) {
-            if (column.dataSource) {
-                if (typeof column.dataSource == "object") {
-                    axios({
-                        method: column.dataSource.method,
-                        url: `${column.dataSource.url}/q`,
-                        data: column.dataSource.requestBody,
-                        headers: column.dataSource.headers
-                    })
+        processDataSourceForRow(column) {
+            if (column.rows) {
+                column.rows.forEach((row, i) => {
+                    this.processDataSource(row.dataSource)
                         .then(response => {
-                            console.log("APIData",response.data)
-                            this.apiData = response.data.data;
+                            row.columns.forEach(column => {
+                                column.map = response.data.data[i]; // ? if the call is row level then we are expecting multiple rows and we are using the index of the row to get the data
+                            });
                         })
                         .catch(error => {
                             console.log(error);
                         });
-                }
+                });
             }
+        },
+        processDataSourceForColumn(column) {
+            if (column.dataSource) {
+                this.processDataSource(column.dataSource).then(response => {
+                    this.apiData = response.data.data[0]; // ? if the call is column level then we are expecting only one row
+                });
+            }
+        },
+        async processDataSource(dataSource) {
+            return await axios({
+                method: dataSource.method,
+                url: `${dataSource.url}/q`,
+                data: dataSource.requestBody,
+                headers: dataSource.headers
+            });
         },
         stopPropagation(event) {
             event.stopPropagation();

@@ -1,5 +1,5 @@
 <template>
-    <div class="image-container">
+    <div class="image-container" @click="$emit('onClick', $event)">
         <a 
             v-if="targetUrl" 
             :href="targetUrl" 

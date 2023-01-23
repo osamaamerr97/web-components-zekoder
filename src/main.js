@@ -4,6 +4,7 @@ import ZekCardsList from './components/cards-list/CardsList.vue';
 import ZekColumnContent from './components/column-content/ColumnContent.vue';
 import ZekHeading from './components/heading-block/HeadingBlock.vue';
 import ZekHeader from './components/header/Header.vue';
+import ZekFooter from './components/footer/Footer.vue';
 import ZekHtml from './components/html-block/HtmlBlock.vue';
 import ZekImage from './components/image/Image.vue'
 import ZekList from './components/lists-block/ListsBlock.vue';
@@ -45,6 +46,7 @@ export {
     ZekHeading,
     ZekHtml,
     ZekHeader,
+    ZekFooter,
     ZekImage,
     ZekList,
     ZekSlider,

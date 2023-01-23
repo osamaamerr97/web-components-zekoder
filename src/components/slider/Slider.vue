@@ -1,6 +1,6 @@
 <template>
 
-<div class="slider-content" :style="styleObj">
+<div class="slider-content" :style="styleObj" @click="$emit('onClick', $event)">
     <VueSlickCarousel :arrows="showArrows" :infinite="isInfinite" :fade="fadeEffect" :autoplay="autoPlay" :autoplaySpeed="speed" :dots="showDots" :speed="300">
         <div v-for="(slide,i) in slides" :key="i">
             <div class="slide-content" :style="getSlideStyle(slide)" >

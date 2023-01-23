@@ -1,5 +1,5 @@
 <template>
-    <div :class="customClass" :style="styleObj">
+    <div @click="$emit('onClick', $event)" :class="customClass" :style="styleObj">
         <zek-text v-if="label" v-bind="labelProps"></zek-text>
         <div v-for="(item,i) in items" :key="item.value" :class="radioClasses">
             <input class="form-check-input" type="radio" :name="name" :id="name+'-'+i" :value="item.value" :checked="item.checked" :disabled="item.disabled" @change="onChange(item)">

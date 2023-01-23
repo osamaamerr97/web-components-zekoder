@@ -1,5 +1,5 @@
 <template>
-    <div :class="error ? 'zek-invalid-field': customClass ? customClass+'-container' : 'input-field-container'" :style="styleObject">
+    <div @click="$emit('onClick', $event)" :class="error ? 'zek-invalid-field': customClass ? customClass+'-container' : 'input-field-container'" :style="styleObject">
       <i
         v-if="icon && iconSettings.position == 'left'"
         :class="icon"

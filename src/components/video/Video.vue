@@ -1,4 +1,5 @@
 <template>
+<div class="video-container" @click="$emit('onClick', $event)">
     <video v-if="source=='local'"
         :style="styleObj"
         :src="url"
@@ -11,6 +12,7 @@
     </video>
     <div v-else-if="source=='youtube'" ref="ytplayer" id="yt" :style="styleObj" ></div>
     <iframe v-else ref="zekPlayer" id="zekPlayer" :src="videoUrl" :style="styleObj" :width="width" :height="height" allow="autoplay;" frameborder="0"></iframe>
+</div>
 </template>
 
 <script>

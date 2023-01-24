@@ -8,7 +8,7 @@
                     :class="(col.columnWidth ? 'col-' + col.columnWidth : 'col') + ' ' + (col.class || '')"
                     :id="col.id"
                 >
-                    <zek-column-content :column="col" :map="col.map" :index="i"></zek-column-content>
+                    <zek-column-content :column="col" :map="col.map"></zek-column-content>
                 </div>
             </div>
         </div>
@@ -183,32 +183,73 @@ export default {
         column: Object, //column can have rows or a component. Each row must have columns, columns can have more rows. Component can only be inside a column
         map: Object
     },
-    data() {
-        return {
-            apiData: this.map ?? undefined
-        };
+    // data() {
+    //     return {
+    //         apiData: this.map ?? undefined
+    //     };
+    // },
+    computed: {
+        apiData: {
+            get() {
+                return this.map;
+            },
+            set(value) {
+                return value;
+            }
+        },
+        isColumn() {
+            return this.column && this.column.content ? true : false;
+        },
+        isRow() {
+            return this.column && this.column.rows ? true : false;
+        }
     },
     created() {
-        console.log(this.map ?? {});
         if (this.column.rows) {
             this.processDataSourceForRow(this.column);
         } else if (this.column.dataSource) {
             this.processDataSourceForColumn(this.column);
+        } else if (this.column.map) {
+            this.processMap(this.column);
+        }
+    },
+    watch: {
+        map(val) {
+            this.apiData = val;
         }
     },
     methods: {
+        processMap(column) {
+            // For each column, if it has a map, then we are going to replace the map with the data from the api
+            if (column.map) {
+                column.map = this.apiData;
+            } else if (column.rows) { // if the column has rows, then we are going to loop through the rows and columns
+                column.rows.forEach(row => {
+                    row.columns.forEach(column => {
+                        this.processMap(column);
+                    });
+                });
+            }
+        },
         processDataSourceForRow(column) {
             if (column.rows) {
                 column.rows.forEach((row, i) => {
-                    this.processDataSource(row.dataSource)
-                        .then(response => {
-                            row.columns.forEach(column => {
-                                column.map = response.data.data[i]; // ? if the call is row level then we are expecting multiple rows and we are using the index of the row to get the data
+                    if(row.dataSource){
+                        this.processDataSource(row.dataSource)
+                            .then(response => {
+                                row.columns.forEach(column => {
+                                    column.map = response.data.data[i]; // ? if the call is row level then we are expecting multiple rows and we are using the index of the row to get the data
+                                });
+                            })
+                            .catch(error => {
+                                console.log(error);
                             });
-                        })
-                        .catch(error => {
-                            console.log(error);
+                    } else if (row.map) {
+                        console.log("Yessir")
+                        row.columns.forEach(column => {
+                            column.map = row.map;
                         });
+                    }
                 });
             }
         },

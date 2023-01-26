@@ -233,12 +233,24 @@ export default {
                 this.apiData = map;
             } else if(this.isRow){
                 this.column.rows.forEach((row, r) => {
-                    row.map = map[r];
-                    row.columns.forEach(column => {
-                        column.map = map[r]
-                    });
+                    if(row.dataSource.iter && row.dataSource.iter == 'column'){
+                        let colGroup = row.columns;
+                        row.columns = [];
+                        map.forEach(m => {
+                            row.columns = row.columns.concat(this.mapColGrouptoMap(colGroup, m));
+                        });
+                    } else {
+                        row.columns.forEach(column => {
+                            column.map = map[r]
+                        });
+                    }
                 });
             }
+        },
+        mapColGrouptoMap(colGroup, map) {
+            return colGroup.map(col => {
+                return {...col, map: map};
+            });
         },
         processDataSource(dataSource) {
             axios({

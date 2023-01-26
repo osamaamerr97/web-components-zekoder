@@ -108,8 +108,8 @@ export default {
                 this.cardContent = this.content;
                 this.cardFlipped = false;
             } else {
-                this.$emit('onClick', event);
             }
+            this.$emit('onClick', event);
 
         },
         cardHovered(event) {

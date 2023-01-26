@@ -1,6 +1,6 @@
 <template>
 
-    <p :style="styleObj"> 
+    <p @click="$emit('onClick', $event)" :style="styleObj"> 
         <span v-if="text"> {{text}} </span>
     </p>
 

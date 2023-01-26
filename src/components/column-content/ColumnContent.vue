@@ -1,17 +1,31 @@
 <template>
-    <div class="column-content-wrapper" :key="key">
-        <div v-if="column && column.rows && column.rows.length" class="">
-            <div v-for="(row, i) in column.rows" :key="'row' + i" class="row" :id="row.id" :class="row.class">
-                <div
-                    v-for="(col, j) in row.columns"
-                    :key="'col' + j"
-                    :class="(col.columnWidth ? 'col-' + col.columnWidth : 'col') + ' ' + (col.class || '')"
+    <div class="column-content-wrapper"
+        v-if="column && ((column.rows && column.rows.length) || (column.content))"
+        :class="customClass"
+        :key="key"
+    >
+        <template v-if="column && column.rows && column.rows.length">
+            <div v-for="(row,i) in column.rows" :key="'row'+i" class="row"
+                v-bind="row.props"
+                v-on="row.events"
+                :id="row.id"
+                :class="row.class"
+                @click.stop="$emit('rowClicked', {column: column, row: row, index: i})"
+            >
+                <div v-for="(col,index) in row.columns" :key="'col'+index"
+                    :class="(col.columnWidth ? 'col-'+col.columnWidth : 'col')+' '+(col.class || '')"
                     :id="col.id"
+                    v-bind="col.props"
+                    v-on="col.events"
+                    @click.stop="$emit('colClicked', {column: col, row: row, index: index})"
                 >
                     <zek-column-content :column="col"></zek-column-content>
                 </div>
             </div>
-        </div>
+        </template>
+        <template v-else-if="column && column.content && Array.isArray(column.content) && column.content.length">
+            <zek-column-content v-for="(content,i) in column.content" :key="'content'+i+key" :column="{content}"></zek-column-content>
+        </template>
         <zek-button
             @click="stopPropagation($event)"
             v-else-if="column && column.content && column.content.component == 'button'"
@@ -194,7 +208,8 @@ export default {
         },
         isRow() {
             return this.column && this.column.rows ? true : false;
-        }
+        },
+        customClass: String,
     },
     created() {
         this.init()

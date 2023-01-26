@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div @click="$emit('onClick', $event)">
         <span v-if="showLabel && label" :style="label.style">
             <span v-html="label.html || label.text || label"></span>
             <span class="required-asterik" v-if="required">*</span>

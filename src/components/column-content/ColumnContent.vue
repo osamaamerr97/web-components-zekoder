@@ -1,5 +1,5 @@
 <template>
-    <div class="column-content-wrapper">
+    <div class="column-content-wrapper" :key="key">
         <div v-if="column && column.rows && column.rows.length" class="">
             <div v-for="(row, i) in column.rows" :key="'row' + i" class="row" :id="row.id" :class="row.class">
                 <div
@@ -8,7 +8,7 @@
                     :class="(col.columnWidth ? 'col-' + col.columnWidth : 'col') + ' ' + (col.class || '')"
                     :id="col.id"
                 >
-                    <zek-column-content :column="col" :map="col.map"></zek-column-content>
+                    <zek-column-content :column="col"></zek-column-content>
                 </div>
             </div>
         </div>
@@ -46,9 +46,9 @@
         <zek-text
             v-else-if="column && column.content && column.content.component == 'text'"
             class="card-text"
-            :map="apiData ? apiData[column.content.map] : ''"
             v-bind="column.content.data"
             v-on="column.content.events"
+            :map="apiData ? apiData[column.content.map] : ''"
         ></zek-text>
         <zek-initials
             v-else-if="column && column.content && column.content.component == 'initials'"
@@ -181,22 +181,14 @@ export default {
     name: "ZekColumnContent",
     props: {
         column: Object, //column can have rows or a component. Each row must have columns, columns can have more rows. Component can only be inside a column
-        map: Object
     },
-    // data() {
-    //     return {
-    //         apiData: this.map ?? undefined
-    //     };
-    // },
+    data(){
+        return {
+            key: Math.ceil(Math.random() * 100000),
+            apiData: null
+        }
+    },
     computed: {
-        apiData: {
-            get() {
-                return this.map;
-            },
-            set(value) {
-                return value;
-            }
-        },
         isColumn() {
             return this.column && this.column.content ? true : false;
         },
@@ -205,67 +197,45 @@ export default {
         }
     },
     created() {
-        if (this.column.rows) {
-            this.processDataSourceForRow(this.column);
-        } else if (this.column.dataSource) {
-            this.processDataSourceForColumn(this.column);
-        } else if (this.column.map) {
-            this.processMap(this.column);
-        }
-    },
-    watch: {
-        map(val) {
-            this.apiData = val;
-        }
+        this.init()
     },
     methods: {
-        processMap(column) {
-            // For each column, if it has a map, then we are going to replace the map with the data from the api
-            if (column.map) {
-                column.map = this.apiData;
-            } else if (column.rows) { // if the column has rows, then we are going to loop through the rows and columns
-                column.rows.forEach(row => {
-                    row.columns.forEach(column => {
-                        this.processMap(column);
-                    });
-                });
-            }
-        },
-        processDataSourceForRow(column) {
-            if (column.rows) {
-                column.rows.forEach((row, i) => {
-                    if(row.dataSource){
-                        this.processDataSource(row.dataSource)
-                            .then(response => {
-                                row.columns.forEach(column => {
-                                    column.map = response.data.data[i]; // ? if the call is row level then we are expecting multiple rows and we are using the index of the row to get the data
-                                });
-                            })
-                            .catch(error => {
-                                console.log(error);
-                            });
-                    } else if (row.map) {
-                        console.log("Yessir")
-                        row.columns.forEach(column => {
-                            column.map = row.map;
-                        });
+        init() {
+            if(this.column.map) {
+                this.processMap(this.column.map);
+            } else if (this.column && this.column.content && this.column.content.dataSource) {
+                this.processDataSource(this.column.content.dataSource);
+            } else if (this.column && this.column.rows) {
+                this.column.rows.forEach(row => {
+                    if (row.dataSource) {
+                        this.processDataSource(row.dataSource);
                     }
                 });
             }
         },
-        processDataSourceForColumn(column) {
-            if (column.dataSource) {
-                this.processDataSource(column.dataSource).then(response => {
-                    this.apiData = response.data.data[0]; // ? if the call is column level then we are expecting only one row
+        processMap(map) {
+            if(this.isColumn){
+                this.apiData = map;
+            } else if(this.isRow){
+                this.column.rows.forEach((row, r) => {
+                    row.map = map[r];
+                    row.columns.forEach(column => {
+                        column.map = map[r]
+                    });
                 });
             }
         },
-        async processDataSource(dataSource) {
-            return await axios({
+        processDataSource(dataSource) {
+            axios({
                 method: dataSource.method,
                 url: `${dataSource.url}/q`,
                 data: dataSource.requestBody,
                 headers: dataSource.headers
+            }).then(response => {
+                this.processMap(response.data.data);
+                this.key++;
+            }).catch(error => {
+                console.log(error)
             });
         },
         stopPropagation(event) {

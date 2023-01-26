@@ -195,6 +195,7 @@ export default {
     name: "ZekColumnContent",
     props: {
         column: Object, //column can have rows or a component. Each row must have columns, columns can have more rows. Component can only be inside a column
+        customClass: String,
     },
     data(){
         return {
@@ -206,10 +207,12 @@ export default {
         isColumn() {
             return this.column && this.column.content ? true : false;
         },
+        isColumnArray() {
+            return Array.isArray(this.column.content) && this.column.content.length ? true : false;
+        },
         isRow() {
             return this.column && this.column.rows ? true : false;
         },
-        customClass: String,
     },
     created() {
         this.init()
@@ -218,8 +221,8 @@ export default {
         init() {
             if(this.column.map) {
                 this.processMap(this.column.map);
-            } else if (this.column && this.column.content && this.column.content.dataSource) {
-                this.processDataSource(this.column.content.dataSource);
+            } else if (this.column && this.column.dataSource) {
+                this.processDataSource(this.column.dataSource);
             } else if (this.column && this.column.rows) {
                 this.column.rows.forEach(row => {
                     if (row.dataSource) {
@@ -229,8 +232,7 @@ export default {
             }
         },
         processMap(map) {
-            if(this.isColumn){
-                this.apiData = map;
+            if(this.isColumnArray){
             } else if(this.isRow){
                 this.column.rows.forEach((row, r) => {
                     if(row.dataSource.iter && row.dataSource.iter == 'column'){
@@ -245,6 +247,8 @@ export default {
                         });
                     }
                 });
+            } else {
+                this.apiData = Array.isArray(map) ? map[0] : map;
             }
         },
         mapColGrouptoMap(colGroup, map) {

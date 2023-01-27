@@ -207,9 +207,12 @@ export default {
         isColumnArray() {
             return Array.isArray(this.column.content) && this.column.content.length ? true : false;
         },
-        isRow() {
-            return this.column && this.column.rows ? true : false;
+        isRows() {
+            return this.column && this.column.rows && !this.column.dataSource ? true : false;
         },
+        isParent() {
+            return this.column.dataSource && this.column.rows ? true : false;
+        }
     },
     created() {
         this.init()
@@ -229,8 +232,10 @@ export default {
             }
         },
         processMap(map) {
+            // TODO: This could be a lot cleaner
             if(this.isColumnArray){
-                if(this.column.dataSource.iter && this.column.dataSource.iter == 'column'){
+                console.log("Column Array")
+                if(this.column.dataSource.iter && this.column.dataSource.iter){
                     let colGroup = this.column.content;
                     this.column.content = [];
                     map.forEach(m => {
@@ -241,9 +246,10 @@ export default {
                         column.map = map[c]
                     });
                 }
-            } else if(this.isRow){
+            } else if(this.isRows){
+                console.log("Rows")
                 this.column.rows.forEach((row, r) => {
-                    if(row.dataSource.iter && row.dataSource.iter == 'row'){
+                    if(row.dataSource.iter && row.dataSource.iter){
                         let colGroup = row.columns;
                         row.columns = [];
                         map.forEach(m => {
@@ -255,13 +261,35 @@ export default {
                         });
                     }
                 });
-            } else {
+            } else if (this.isParent) {
+                console.log("Parent")
+                if(this.column.dataSource.iter && this.column.dataSource.iter){
+                    let colGroup = this.column.rows;
+                    this.column.rows = [];
+                    map.forEach(m => {
+                        this.column.rows = this.column.rows.concat(this.mapColGrouptoMap(colGroup, m, true));
+                    });
+                } else {
+                    this.column.rows.forEach((row, r) => {
+                        row.columns.forEach(column => {
+                            column.map = map[r]
+                        });
+                    });
+                }
+            }
+            else {
+                console.log("Column")
                 this.apiData = Array.isArray(map) ? map[0] : map;
             }
         },
-        mapColGrouptoMap(colGroup, map) {
+        mapColGrouptoMap(colGroup, map, isRow) {
             return colGroup.map(col => {
-                return {...col, map: map};
+                if (isRow){
+                    col.columns = this.mapColGrouptoMap(col.columns, map)
+                    return {...col, map: map};
+                } else{
+                    return {...col, map: map};
+                }
             });
         },
         processDataSource(dataSource) {

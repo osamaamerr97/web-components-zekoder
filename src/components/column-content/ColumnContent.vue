@@ -24,7 +24,7 @@
             </div>
         </template>
         <template v-else-if="column && column.content && Array.isArray(column.content) && column.content.length">
-            <zek-column-content v-for="(content,i) in column.content" :key="'content'+i+key" :column="{content}"></zek-column-content>
+            <zek-column-content v-for="(content,i) in column.content" :key="'content'+i+key" :column="{content, map: content.map}"></zek-column-content>
         </template>
         <zek-button
             @click="stopPropagation($event)"
@@ -62,7 +62,7 @@
             class="card-text"
             v-bind="column.content.data"
             v-on="column.content.events"
-            :map="apiData ? apiData[column.content.map] : ''"
+            :dataField="apiData ? apiData[column.content.dataField] : ''"
         ></zek-text>
         <zek-initials
             v-else-if="column && column.content && column.content.component == 'initials'"
@@ -204,9 +204,6 @@ export default {
         }
     },
     computed: {
-        isColumn() {
-            return this.column && this.column.content ? true : false;
-        },
         isColumnArray() {
             return Array.isArray(this.column.content) && this.column.content.length ? true : false;
         },
@@ -233,9 +230,20 @@ export default {
         },
         processMap(map) {
             if(this.isColumnArray){
+                if(this.column.dataSource.iter && this.column.dataSource.iter == 'column'){
+                    let colGroup = this.column.content;
+                    this.column.content = [];
+                    map.forEach(m => {
+                        this.column.content = this.column.content.concat(this.mapColGrouptoMap(colGroup, m))
+                    });
+                } else {
+                    this.column.content.forEach((column, c) => {
+                        column.map = map[c]
+                    });
+                }
             } else if(this.isRow){
                 this.column.rows.forEach((row, r) => {
-                    if(row.dataSource.iter && row.dataSource.iter == 'column'){
+                    if(row.dataSource.iter && row.dataSource.iter == 'row'){
                         let colGroup = row.columns;
                         row.columns = [];
                         map.forEach(m => {

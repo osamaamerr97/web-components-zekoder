@@ -22,7 +22,7 @@
                 :style="col.styleObj"
                 :id="col.id||''"
             >
-                <zek-column-content v-if="col" :column="col"></zek-column-content>
+                <zek-column-content v-if="col" :column="col" :map="col.map"></zek-column-content>
             </div>
         </div>
 
@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import axios from "axios"
 export default {
     name: "ZekCard",
     props: {
@@ -47,6 +48,7 @@ export default {
             default: 0
         },
         styleObj: Object,
+        dataSource: Object
     },
     beforeCreate() {
         this.$options.components.ZekColumnContent = require("../column-content/ColumnContent.vue").default;
@@ -64,8 +66,39 @@ export default {
             "--hover-background-color": this.hoverBackgroundColor || this.backgroundColor || '',
         };
         this.cardContent = this.content;
+        if(this.dataSource){
+            this.processDataSourceForCard(this.cardContent)
+        }
     },
     methods: {
+        async processDataSource(dataSource) {
+            return await axios({
+                method: dataSource.method,
+                url: `${dataSource.url}/q`,
+                data: dataSource.requestBody,
+                headers: dataSource.headers
+            });
+        },
+        processDataSourceForCard(column) {
+            this.processDataSource(this.dataSource)
+                .then(response => {
+                    this.fixDataSourceForRows(column.rows, response, 0);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        },
+        fixDataSourceForRows(rows, response, i){
+            rows.forEach(row => {
+                row.columns.forEach(column => {
+                    if(column.rows){
+                        this.fixDataSourceForRows(column.rows, response, i)
+                    } else {
+                        column.map = response.data.data[i];
+                    }
+                })
+            });
+        },
         cardClicked(event) {
             if(!this.cardFlipped && this.flipOn == 'click' && this.flipContent && this.flipContent.rows && this.flipContent.rows.length){
                 this.cardContent = this.flipContent;

@@ -1,23 +1,24 @@
 <template>
-    <div class="column-content-wrapper" 
+    <div class="column-content-wrapper"
         v-if="column && ((column.rows && column.rows.length) || (column.content))"
+        :key="key"
         :class="{
             customClass,
             'content-container': column.content && Array.isArray(column.content),
         }"
     >
         <template v-if="column && column.rows && column.rows.length">
-            <div v-for="(row,i) in column.rows" :key="'row'+i" class="row" 
-                v-bind="row.props" 
+            <div v-for="(row,i) in column.rows" :key="'row'+i" class="row"
+                v-bind="row.props"
                 v-on="row.events"
                 :id="row.id"
                 :class="row.class"
                 @click.stop="emitClick('rowClicked', {column: column, row: row, index: i})"
             >
-                <div v-for="(col,index) in row.columns" :key="'col'+index" 
-                    :class="(col.columnWidth ? 'col-'+col.columnWidth : 'col')+' '+(col.class || '')" 
-                    :id="col.id" 
-                    v-bind="col.props" 
+                <div v-for="(col,index) in row.columns" :key="'col'+index"
+                    :class="(col.columnWidth ? 'col-'+col.columnWidth : 'col')+' '+(col.class || '')"
+                    :id="col.id"
+                    v-bind="col.props"
                     v-on="col.events"
                     @click.stop="emitClick('colClicked', {column: col, row: row, index: index})"
                 >
@@ -26,7 +27,7 @@
             </div>
         </template>
         <template v-else-if="column && column.content && Array.isArray(column.content) && column.content.length">
-            <zek-column-content v-for="(content,i) in column.content" :key="'content'+i" :column="{content}"></zek-column-content>
+            <zek-column-content v-for="(content,i) in column.content" :key="'content'+i+key" :column="{content, map: content.map}"></zek-column-content>
         </template>
         <zek-button
             @click="stopPropagation($event)"
@@ -56,13 +57,15 @@
         ></i>
         <zek-list
             v-else-if="column && column.content && column.content.component == 'list'"
-            v-bind="column.content.data" v-on="column.content.events"
+            v-bind="column.content.data"
+            v-on="column.content.events"
         ></zek-list>
         <zek-text
             v-else-if="column && column.content && column.content.component == 'text'"
             class="card-text"
             v-bind="column.content.data"
             v-on="column.content.events"
+            :dataField="apiData ? apiData[column.content.dataField] : ''"
         ></zek-text>
         <zek-initials
             v-else-if="column && column.content && column.content.component == 'initials'"
@@ -132,8 +135,8 @@
             v-bind="column.content.data"
             v-on="column.content.events"
         ></zek-slider>
-        <component 
-            v-else-if="column && column.content && column.content.type == 'custom'" 
+        <component
+            v-else-if="column && column.content && column.content.type == 'custom'"
             :is="column.content.component"
             v-bind="column.content.data"
             v-on="column.content.events"
@@ -143,7 +146,13 @@
             v-bind="column.content.data"
             v-on="column.content.events"
         >
-            <vue-recaptcha ref="recaptcha" @verify="column.content.events.onVerify" @expired="column.content.events.onExpired" :loadRecaptchaScript="true" :sitekey="column.content.data.siteKey"></vue-recaptcha>
+            <vue-recaptcha
+                ref="recaptcha"
+                @verify="column.content.events.onVerify"
+                @expired="column.content.events.onExpired"
+                :loadRecaptchaScript="true"
+                :sitekey="column.content.data.siteKey"
+            ></vue-recaptcha>
         </div>
     </div>
 </template>
@@ -164,9 +173,10 @@ import ZekTextarea from "../textarea/Textarea.vue";
 import ZekCard from "../card/Card.vue";
 import ZekCollapsibleContainer from "../collapsible-container/CollapsibleContainer.vue";
 import ZekTable from "../table/Table.vue";
-import ZekToggleButton from "../toggle-button/ToggleButton.vue"
-import VueRecaptcha from '../../../node_modules/vue-recaptcha/dist/vue-recaptcha.es';
+import ZekToggleButton from "../toggle-button/ToggleButton.vue";
+import VueRecaptcha from "../../../node_modules/vue-recaptcha/dist/vue-recaptcha.es";
 import ZekCountriesList from "../countries-list/CountriesList.vue";
+import axios from "axios";
 import ZekFileUpload from '../file-upload/FileUpload.vue';
 import ZekSlider from '../slider/Slider.vue';
 
@@ -201,16 +211,120 @@ export default {
             default: ""
         }
     },
-    created(){
+    data(){
+        return {
+            key: Math.ceil(Math.random() * 100000),
+            apiData: null
+        }
+    },
+    computed: {
+        isColumnArray() {
+            return Array.isArray(this.column.content) && this.column.content.length ? true : false;
+        },
+        isRows() {
+            return this.column && this.column.rows && !this.column.dataSource ? true : false;
+        },
+        isParent() {
+            return this.column.dataSource && this.column.rows ? true : false;
+        }
+    },
+    created() {
+        this.init()
     },
     methods: {
-        stopPropagation(event){
+        init() {
+            if(this.column.map) {
+                this.processMap(this.column.map);
+            } else if (this.column && this.column.dataSource) {
+                this.processDataSource(this.column.dataSource);
+            } else if (this.column && this.column.rows) {
+                this.column.rows.forEach(row => {
+                    if (row.dataSource) {
+                        this.processDataSource(row.dataSource);
+                    }
+                });
+            }
+        },
+        processMap(map) {
+            // TODO: This could be a lot cleaner
+            if(this.isColumnArray){
+                console.log("Column Array")
+                if(this.column.dataSource.iter && this.column.dataSource.iter){
+                    let colGroup = this.column.content;
+                    this.column.content = [];
+                    map.forEach(m => {
+                        this.column.content = this.column.content.concat(this.mapColGrouptoMap(colGroup, m))
+                    });
+                } else {
+                    this.column.content.forEach((column, c) => {
+                        column.map = map[c]
+                    });
+                }
+            } else if(this.isRows){
+                console.log("Rows")
+                this.column.rows.forEach((row, r) => {
+                    if(row.dataSource.iter && row.dataSource.iter){
+                        let colGroup = row.columns;
+                        row.columns = [];
+                        map.forEach(m => {
+                            row.columns = row.columns.concat(this.mapColGrouptoMap(colGroup, m));
+                        });
+                    } else {
+                        row.columns.forEach(column => {
+                            column.map = map[r]
+                        });
+                    }
+                });
+            } else if (this.isParent) {
+                console.log("Parent")
+                if(this.column.dataSource.iter && this.column.dataSource.iter){
+                    let colGroup = this.column.rows;
+                    this.column.rows = [];
+                    map.forEach(m => {
+                        this.column.rows = this.column.rows.concat(this.mapColGrouptoMap(colGroup, m, true));
+                    });
+                } else {
+                    this.column.rows.forEach((row, r) => {
+                        row.columns.forEach(column => {
+                            column.map = map[r]
+                        });
+                    });
+                }
+            }
+            else {
+                console.log("Column")
+                this.apiData = Array.isArray(map) ? map[0] : map;
+            }
+        },
+        mapColGrouptoMap(colGroup, map, isRow) {
+            return colGroup.map(col => {
+                if (isRow){
+                    col.columns = this.mapColGrouptoMap(col.columns, map)
+                    return {...col, map: map};
+                } else{
+                    return {...col, map: map};
+                }
+            });
+        },
+        processDataSource(dataSource) {
+            axios({
+                method: dataSource.method,
+                url: `${dataSource.url}/q`,
+                data: dataSource.requestBody,
+                headers: dataSource.headers
+            }).then(response => {
+                this.processMap(response.data.data);
+                this.key++;
+            }).catch(error => {
+                console.log(error)
+            });
+        },
+        stopPropagation(event) {
             event.stopPropagation();
         },
         emitClick(name, obj) {
             this.$emit(name, obj);
         }
     }
-
-}
+};
 </script>

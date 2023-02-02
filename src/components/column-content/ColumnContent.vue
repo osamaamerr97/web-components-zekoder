@@ -1,8 +1,11 @@
 <template>
     <div class="column-content-wrapper"
         v-if="column && ((column.rows && column.rows.length) || (column.content))"
-        :class="customClass"
         :key="key"
+        :class="{
+            customClass,
+            'content-container': column.content && Array.isArray(column.content),
+        }"
     >
         <template v-if="column && column.rows && column.rows.length">
             <div v-for="(row,i) in column.rows" :key="'row'+i" class="row"
@@ -10,16 +13,16 @@
                 v-on="row.events"
                 :id="row.id"
                 :class="row.class"
-                @click.stop="$emit('rowClicked', {column: column, row: row, index: i})"
+                @click.stop="emitClick('rowClicked', {column: column, row: row, index: i})"
             >
                 <div v-for="(col,index) in row.columns" :key="'col'+index"
                     :class="(col.columnWidth ? 'col-'+col.columnWidth : 'col')+' '+(col.class || '')"
                     :id="col.id"
                     v-bind="col.props"
                     v-on="col.events"
-                    @click.stop="$emit('colClicked', {column: col, row: row, index: index})"
+                    @click.stop="emitClick('colClicked', {column: col, row: row, index: index})"
                 >
-                    <zek-column-content :column="col"></zek-column-content>
+                    <zek-column-content :column="col" @rowClicked="emitClick('rowClicked', $event)" @colClicked="emitClick('colClicked', $event)"></zek-column-content>
                 </div>
             </div>
         </template>
@@ -127,6 +130,11 @@
             v-bind="column.content.data"
             v-on="column.content.events"
         ></zek-toggle-button>
+        <zek-slider
+            v-else-if="column && column.content && column.content.component == 'slider'"
+            v-bind="column.content.data"
+            v-on="column.content.events"
+        ></zek-slider>
         <component
             v-else-if="column && column.content && column.content.type == 'custom'"
             :is="column.content.component"
@@ -168,8 +176,10 @@ import ZekTable from "../table/Table.vue";
 import ZekToggleButton from "../toggle-button/ToggleButton.vue";
 import VueRecaptcha from "../../../node_modules/vue-recaptcha/dist/vue-recaptcha.es";
 import ZekCountriesList from "../countries-list/CountriesList.vue";
-import ZekFileUpload from "../file-upload/FileUpload.vue";
 import axios from "axios";
+import ZekFileUpload from '../file-upload/FileUpload.vue';
+import ZekSlider from '../slider/Slider.vue';
+
 export default {
     components: {
         ZekButton,
@@ -190,12 +200,16 @@ export default {
         ZekToggleButton,
         ZekCountriesList,
         VueRecaptcha,
-        ZekFileUpload
+        ZekFileUpload,
+        ZekSlider
     },
     name: "ZekColumnContent",
     props: {
         column: Object, //column can have rows or a component. Each row must have columns, columns can have more rows. Component can only be inside a column
-        customClass: String,
+        customClass: {
+            type: String,
+            default: ""
+        }
     },
     data(){
         return {
@@ -307,6 +321,9 @@ export default {
         },
         stopPropagation(event) {
             event.stopPropagation();
+        },
+        emitClick(name, obj) {
+            this.$emit(name, obj);
         }
     }
 };

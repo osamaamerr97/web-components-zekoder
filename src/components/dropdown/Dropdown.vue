@@ -1,5 +1,5 @@
 <template>
-    <div @click="$emit('onClick', $event)">
+    <div class="zek-dropdown" v-click-outside="close" :class="{'with-filters': allowFiltering }" @click="$emit('onClick', $event)">
         <span v-if="showLabel && label" :style="label.style">
             <span v-html="label.html || label.text || label"></span>
             <span class="required-asterik" v-if="required">*</span>
@@ -13,19 +13,22 @@
                 @click="onToggle()"
                 type="button"
                 :style="buttonStyle"
-                @blur="
-                    toggle = true;
-                    onToggle();
-                "
                 :disabled="disabled"
             >
                 {{ selected.length && showSelected ? selectedText : placeholder || label }}
                 <i v-if="customIcon" :class="customIcon"></i>
             </button>
+            <input 
+                v-if="allowFiltering && toggle" 
+                class="zek-dropdown-filter filter-string" 
+                type="text" 
+                :placeholder="filterBarPlaceholder"
+                @keyup="onFilterChange($event)" 
+            />
             <ul v-if="toggle" class="dropdown-menu show" style="padding: 0" :style="listStyle">
                 <li
                     class="dropdown-item"
-                    v-for="(item, i) in items"
+                    v-for="(item, i) in filteredItems"
                     :key="i"
                     :class="
                         selected.includes(item.value || item) && selectType.toLowerCase() != 'multi' ? 'active' : ''
@@ -109,6 +112,7 @@
 </template>
 
 <script>
+import ClickOutside from 'vue-click-outside';
 export default {
     name: "ZekDropdown",
     props: {
@@ -158,15 +162,28 @@ export default {
         iconStyle: {
             type: Object
         },
+        allowFiltering: {
+            type: Boolean,
+            default: false
+        },
+        filterBarPlaceholder: String,
         placeholder: String,
         showLabel: Boolean, //to be removed later
         required: Boolean,
         disabled: Boolean,
-        toggleOnSelect: Boolean
+        toggleOnSelect: {
+            type: Boolean,
+            default: true
+        }
+    },
+    directives: {
+        ClickOutside
     },
     data() {
         return {
             toggle: false,
+            filterString: '',
+            filteredItems: this.items,
             selected: [] //selected
         };
     },
@@ -194,6 +211,9 @@ export default {
     },
     methods: {
         onSelect(event, item) {
+            if (this.toggleOnSelect) {
+                this.onToggle();
+            }
             if (this.selectType.toLowerCase() == "single") {
                 this.selected = [item.value || item];
             } else {
@@ -203,20 +223,28 @@ export default {
                     this.selected.push(item);
                 }
             }
-            if (this.toggleOnSelect) {
-                this.onToggle();
-            }
             this.$emit("onSelect", this.selected);
+        },
+        onFilterChange(event) {
+            const filterString = event.target.value;
+            if ( filterString ) {
+                this.filteredItems = this.items.filter(item => item.text.toLowerCase().includes(filterString.toLowerCase()));
+            } else {
+                this.filteredItems = this.items;
+            }
         },
         onToggle() {
             if (this.toggle) {
-                setTimeout(() => {
-                    this.toggle = false;
-                }, 300);
+                this.toggle = false;
+                this.filteredItems = this.items;
             } else {
                 this.toggle = true;
             }
             this.$emit("onToggle", this.toggle);
+        },
+        close() {
+            this.filteredItems = this.items;
+            this.toggle = false;
         }
     }
 };
@@ -242,5 +270,21 @@ export default {
     opacity: 0;
     position: absolute;
     width: 1px !important;
+}
+
+.zek-dropdown {
+    &.with-filters {
+        input.filter-string {
+            background: #ffffff;
+            border: none;
+            padding: 10px;
+            box-shadow: 0 0 10px #ccc;
+            width: 100%;
+            outline: none;
+        }
+        .dropdown-menu {
+            border-radius: 0;
+        }
+    }
 }
 </style>

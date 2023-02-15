@@ -35,8 +35,8 @@ Primary.args = {
     maxDate: '2020-12-31',
     width: '300px',
     height: '300px',
-    selectedMargin: '0 0 0 10px',
-    selectedFontSize: '20px',
+    margin: '0 0 0 10px',
+    fontSize: '20px',
 };
 
 export const Secondary = Template.bind({});

@@ -1,5 +1,5 @@
 <template>
-    <div style="display:flex" :styleObject="styleObject">
+    <div style="display:flex" :style="styleObject">
         <ScrollPicker
             v-if="type.includes('date')"
             :options="years"
@@ -60,6 +60,7 @@
 </template>
 
 <script>
+import "./style.css";
 import { ScrollPicker } from "vue-scroll-picker";
 
 export default {
@@ -218,7 +219,6 @@ export default {
 </script>
 
 <style scoped>
-@import "./style.css";
 .vue-scroll-picker {
     max-height: v-bind(height);
     width: v-bind(width);

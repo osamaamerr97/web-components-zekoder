@@ -55,7 +55,7 @@
             @input="onChange"
             :class="`zek-scroll-picker ${customClass} am_pm`"
         />
-        <ScrollPicker v-if="type == 'custom'" v-bind="custom" />
+        <ScrollPicker v-if="type == 'custom'" v-bind="customPicker" v-on="customEvents" />
     </div>
 </template>
 
@@ -116,7 +116,11 @@ export default {
             type: Boolean,
             default: false
         },
-        custom: {
+        customPicker: {
+            type: Object,
+            required: false
+        },
+        customEvents: {
             type: Object,
             required: false
         },
@@ -231,7 +235,7 @@ export default {
 }
 :deep .-selected {
     color: v-bind(activeColor);
-    margin: v-bind(selectedMargin);
-    font-size: v-bind(selectedFontSize);
+    margin: v-bind(margin);
+    font-size: v-bind(fontSize);
 }
 </style>

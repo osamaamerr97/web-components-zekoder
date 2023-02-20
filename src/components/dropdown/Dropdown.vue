@@ -18,14 +18,14 @@
                 {{ selected.length && showSelected ? selectedText : placeholder || label }}
                 <i v-if="customIcon" :class="customIcon"></i>
             </button>
-            <input 
-                v-if="allowFiltering && toggle" 
-                class="zek-dropdown-filter filter-string" 
-                type="text" 
-                :placeholder="filterBarPlaceholder"
-                @keyup="onFilterChange($event)" 
-            />
-            <ul v-if="toggle" class="dropdown-menu show" style="padding: 0" :style="listStyle">
+            <ul v-if="toggle || alwaysOpen" class="dropdown-menu show" style="padding: 0" :style="listStyle">
+                <input
+                    v-if="allowFiltering && (toggle || alwaysOpen)"
+                    class="zek-dropdown-filter filter-string"
+                    type="text"
+                    :placeholder="filterBarPlaceholder"
+                    @keyup="onFilterChange($event)"
+                />
                 <li
                     class="dropdown-item"
                     v-for="(item, i) in filteredItems"
@@ -38,13 +38,13 @@
                 >
                     <input
                         v-if="selectType.toLowerCase() == 'multi'"
-                        class="form-check-input"
+                        class="form-check-input pe-none"
                         type="checkbox"
                         v-model="selected"
                         :value="item"
                         id="flexCheckDefault"
                     />
-                    <label class="form-check-label" for="flexCheckDefault">
+                    <label class="form-check-label pe-none" for="flexCheckDefault">
                         {{ item.text || item }}
                     </label>
                     <i v-if="item.icon" :class="item.icon"></i>
@@ -87,7 +87,7 @@
                     <i v-if="showIcon" class="fa fa-angle-down" :style="iconStyle"></i>
                 </span>
             </button>
-            <div :style="listStyle" v-if="toggle">
+            <div :style="listStyle" v-if="toggle  || alwaysOpen">
                 <div
                     :style="
                         selected.includes(item) && selectType.toLowerCase() == 'multi' ? selectedItemStyle : itemStyle
@@ -174,6 +174,10 @@ export default {
         toggleOnSelect: {
             type: Boolean,
             default: true
+        },
+        alwaysOpen: {
+            type: Boolean,
+            default: false
         }
     },
     directives: {
@@ -218,7 +222,7 @@ export default {
                 this.selected = [item.value || item];
             } else {
                 if (this.selected.includes(item)) {
-                    this.selected.splice(this.selected.indexOf(item), 1);
+                    this.selected = this.selected.filter(value => value != item);
                 } else {
                     this.selected.push(item);
                 }

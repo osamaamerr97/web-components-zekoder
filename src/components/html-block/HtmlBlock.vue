@@ -1,6 +1,6 @@
 <template>
 
-    <div :style="styleObj" v-html="cleanHtml"></div>
+    <div :class="cssClass" :style="styleObj" v-html="cleanHtml"></div>
 
 </template>
 
@@ -11,6 +11,7 @@
     name: 'ZekHtml',
     props: {
         content: String,
+        cssClass: String,
         styleObj: Object
     },
     data() {
@@ -19,7 +20,10 @@
         }
     },
     created() {
-        this.cleanHtml = sanitizeHtml(this.content);
+        this.cleanHtml = sanitizeHtml(this.content, {
+            allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
+            allowedAttributes: { ... sanitizeHtml.defaults.allowedAttributes, i: ['class'], a: ['href', 'name', 'target']}
+        });
     }
   }
 </script>

@@ -26,7 +26,7 @@ import ZekForm from "../form/Form.vue";
 
 export default {
     name: 'ZekRightPanel',
-    // components: { ZekForm },
+    components: { ZekForm },
     props: {
         show: Boolean,
         formProps: Object,

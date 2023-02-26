@@ -11,6 +11,10 @@
                 :current-page="currentPage"
             >
                 <template v-if="caption" #table-caption>{{ caption }}</template>
+                 <!-- Show row index -->
++                <template v-if="showRowIndex" #cell(index)="data">
++                    {{ data.index + 1 }}
++                </template>
                 <!-- Show select column with select header -->
                 <template v-if="allowSelection" #head(selected)="">
                     <b-form-checkbox @change="toggleAllRows"></b-form-checkbox>

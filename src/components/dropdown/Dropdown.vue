@@ -41,7 +41,7 @@
                         class="form-check-input pe-none"
                         type="checkbox"
                         v-model="selected"
-                        :value="item"
+                        :value="item.value ? item.value : item"
                         id="flexCheckDefault"
                     />
                     <label class="form-check-label pe-none" for="flexCheckDefault">
@@ -221,10 +221,12 @@ export default {
             if (this.selectType.toLowerCase() == "single") {
                 this.selected = [item.value || item];
             } else {
-                if (this.selected.includes(item)) {
-                    this.selected = this.selected.filter(value => value != item);
+                if (this.selected.includes(item.value || item)) {
+                    this.selected = this.selected.filter(
+                        selected => selected != (item.value || item)
+                    );
                 } else {
-                    this.selected.push(item);
+                    this.selected.push(item.value || item);
                 }
             }
             this.$emit("onSelect", this.selected);

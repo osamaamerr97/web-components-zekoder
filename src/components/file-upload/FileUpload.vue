@@ -137,7 +137,7 @@ export default {
             
             // this check will only work if files are being uploaded using zecommons
             if ( '.'+file.type.split('/')[1] === file.name ) {
-                if ( !this.multiple ) { this.$emit("onChange", null) }
+                // if ( !this.multiple ) { this.$emit("onChange", null) }
                 return;
             }
 

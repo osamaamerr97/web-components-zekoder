@@ -1,6 +1,6 @@
 <template>
 
-    <div :class="cssClass" :style="styleObj" v-html="cleanHtml"></div>
+    <div :class="cssClass" :style="styleObj" v-html="cleanHtml" @click="$emit('onClick', $event)"></div>
 
 </template>
 

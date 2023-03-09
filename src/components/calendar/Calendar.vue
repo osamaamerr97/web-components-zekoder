@@ -1,4 +1,5 @@
 <template>
+<div @click="$emit('onClick', $event)">
     <b-calendar
         v-if="theme.toLowerCase() == 'bootstrap'"
         :min="min"
@@ -27,6 +28,7 @@
         v-bind="extraProps"
         v-on="extraEvents"
     />
+</div>
 </template>
 
 <script>

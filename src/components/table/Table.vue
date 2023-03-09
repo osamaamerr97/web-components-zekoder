@@ -1,7 +1,8 @@
 <template>
-    <div :class="'row' + customClass">
+    <div :class="'row' + customClass" @click="$emit('onClick', $event)">
         <div class="col">
             <b-table
+                v-if="tableData && tableData.length > 0 && fields && fields.length > 0"
                 :items="tableData"
                 v-bind="tableProps"
                 :style="styleObj"
@@ -41,6 +42,7 @@
                     <ZekButton v-bind="deleteSettings.deleteButton" @onClick="deleteSettings.showConfirmation ? showDeleteModal(data.item) : deleteRow(data.item)" />
                 </template>
             </b-table>
+            <p v-else> Please provide valid data for the table</p>
             <!-- Pagination -->
             <div v-if="pagination" class="align-items-right ">
                 <p>Showing {{ start }} to {{ end }} of {{ tableData.length }} items</p>
@@ -121,7 +123,7 @@ export default {
         if (this.pagination && this.pagination.currentPage) {
             this.currentPage = this.pagination.currentPage;
         }
-        this.fields = this.columns.map(col => {
+        this.fields = this.columns ? this.columns.map(col => {
             return {
                 key: col.dataField,
                 label: col.label,
@@ -130,7 +132,7 @@ export default {
                 tdClass: col.class,
                 component: col.component || null
             };
-        });
+        }) : [];
         if (this.showRowIndex) {
             this.fields.unshift({
                 label: "#",

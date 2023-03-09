@@ -1,5 +1,5 @@
 <template>
-    <div :style="styleObj">
+    <div :style="styleObj" @click="$emit('onClick', $event)">
         <zek-heading v-if="heading" v-bind="headingProps"></zek-heading>
         <zek-heading v-if="subheading" v-bind="subheadingProps"></zek-heading>
         <zek-text v-if="description" v-bind="descProps"></zek-text>

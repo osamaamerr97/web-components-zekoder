@@ -1,5 +1,5 @@
 <template>
-    <div class="zek-scheduler" :style="{ height: height, width: width, ...styleObject }">
+    <div class="zek-scheduler" :style="{ height: height, width: width, ...styleObject }" @click="$emit('onClick', $event)">
         <v-toolbar v-if="showToolbar" flat :class="toolbarClass">
             <v-toolbar-title class="toolbar-title pr-4">
                 {{ title }}

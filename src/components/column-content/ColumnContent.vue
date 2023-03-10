@@ -1,6 +1,7 @@
 <template>
     <div class="column-content-wrapper"
         v-if="column && ((column.rows && column.rows.length) || (column.content))"
+        v-show="column.condition != undefined ? column.condition : true"
         :key="key"
         :class="{
             customClass,
@@ -13,6 +14,7 @@
                 v-on="row.events"
                 :id="row.id"
                 :class="row.class"
+                v-show="row.condition != undefined ? row.condition : true"
                 @click.stop="emitClick('rowClicked', {column: column, row: row, index: i})"
             >
                 <div v-for="(col,index) in row.columns" :key="'col'+index"
@@ -20,6 +22,7 @@
                     :id="col.id"
                     v-bind="col.props"
                     v-on="col.events"
+                    v-show="col.condition != undefined ? col.condition : true"
                     @click.stop="emitClick('colClicked', {column: col, row: row, index: index})"
                 >
                     <zek-column-content :column="col" @rowClicked="emitClick('rowClicked', $event)" @colClicked="emitClick('colClicked', $event)"></zek-column-content>
@@ -27,7 +30,7 @@
             </div>
         </template>
         <template v-else-if="column && column.content && Array.isArray(column.content) && column.content.length">
-            <zek-column-content v-for="(content,i) in column.content" :key="'content'+i+key" :column="{content, map: content.map}"></zek-column-content>
+            <zek-column-content v-for="(content,i) in column.content" :key="'content'+i+key" :column="{content, condition: content.condition, map: content.map}"></zek-column-content>
         </template>
         <zek-button
             @click="stopPropagation($event)"
@@ -249,7 +252,7 @@ export default {
             // TODO: This could be a lot cleaner
             if(this.isColumnArray){
                 console.log("Column Array")
-                if(this.column.dataSource.iter && this.column.dataSource.iter){
+                if(this.column.dataSource && this.column.dataSource.iter){
                     let colGroup = this.column.content;
                     this.column.content = [];
                     map.forEach(m => {
@@ -263,7 +266,7 @@ export default {
             } else if(this.isRows){
                 console.log("Rows")
                 this.column.rows.forEach((row, r) => {
-                    if(row.dataSource.iter && row.dataSource.iter){
+                    if(row.dataSource && row.dataSource.iter){
                         let colGroup = row.columns;
                         row.columns = [];
                         map.forEach(m => {
@@ -277,7 +280,7 @@ export default {
                 });
             } else if (this.isParent) {
                 console.log("Parent")
-                if(this.column.dataSource.iter && this.column.dataSource.iter){
+                if(this.column.dataSource && this.column.dataSource.iter){
                     let colGroup = this.column.rows;
                     this.column.rows = [];
                     map.forEach(m => {

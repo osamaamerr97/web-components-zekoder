@@ -76,10 +76,11 @@
 // import { BootstrapVue } from 'bootstrap-vue'
 // Vue.use(BootstrapVue)
 import ZekButton from "../action-button/ActionButton.vue";
+import ZekLoader from "../loader/Loader.vue";
 import axios from "axios";
 export default {
     name: "ZekTable",
-    components: { ZekButton },
+    components: { ZekButton, ZekLoader },
     props: {
         columns: Array, //array of object of type {Label, dataField, styleObj}
         headerType: String, //light or dark,

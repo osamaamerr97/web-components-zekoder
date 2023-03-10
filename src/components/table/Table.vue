@@ -1,5 +1,6 @@
 <template>
     <div :class="'row' + customClass" @click="$emit('onClick', $event)">
+        <ZekLoader :fullScreen="true" v-if="isLoading"/>
         <div class="col">
             <b-table
                 v-if="tableData && tableData.length > 0 && fields && fields.length > 0"
@@ -112,6 +113,7 @@ export default {
     },
     data() {
         return {
+            isLoading: false,
             fields: [],
             currentPage: 1,
             tableData: this.data || [],
@@ -229,27 +231,28 @@ export default {
         processDataSource() {
             if (this.dataSource) {
                 if (typeof this.dataSource == "string") {
-                    axios
-                        .get(this.dataSource)
-                        .then(response => {
-                            this.mapDataSource(response.data.data);
-                        })
-                        .catch(error => {
-                            console.log(error);
-                        });
+                    this.isLoading = true;
+                    axios.get(this.dataSource).then(response => {
+                        this.mapDataSource(response.data.data);
+                    }).catch(error => {
+                        console.log(error);
+                    }).finally(() => {
+                        this.isLoading = false;
+                    });
                 } else if (typeof this.dataSource == "object") {
+                    this.isLoading = true;
                     axios({
                         method: this.dataSource.method,
-                        url: `${this.dataSource.url}/q`,
+                        url: this.dataSource.url,
                         data: this.dataSource.requestBody,
                         headers: this.dataSource.headers
-                    })
-                        .then(response => {
-                            this.mapDataSource(response.data.data);
-                        })
-                        .catch(error => {
-                            console.log(error);
-                        });
+                    }).then(response => {
+                        this.mapDataSource(response.data.data);
+                    }).catch(error => {
+                        console.log(error);
+                    }).finally(() => {
+                        this.isLoading = false;
+                    });
                 }
             }
         },

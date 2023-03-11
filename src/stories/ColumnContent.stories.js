@@ -181,3 +181,96 @@ ParentRow.args = {
         ]
     }
 };
+export const Complex = Template.bind({});
+Complex.args = {
+    column: {
+        rows: [
+            {
+                columns: [
+                    {
+                        columnWidth: 12,
+                        content: {
+                            component: 'text',
+                            data: {
+                                text: '1',
+                            },
+                            dataField: 'description'
+                        }
+                    },
+                    {
+                        columnWidth: 12,
+                        content: {
+                            component: 'text',
+                            data: {
+                                text: '2'
+                            },
+                            dataField: 'id'
+                        }
+                    },
+                    {
+                        columnWidth: 12,
+                        content: {
+                            component: 'text',
+                            data: {
+                                text: '3'
+                            },
+                            dataField: 'name'
+                        }
+                    },
+                    {
+                        columnWidth: 12,
+                        rows: [
+                            {
+                                    columns: [
+                                    {
+                                        columnWidth: 12,
+                                        content: {
+                                            component: 'text',
+                                            data: {
+                                                text: '1N'
+                                            },
+                                        }
+                                    },
+                                    {
+                                        columnWidth: 12,
+                                        content: {
+                                            component: 'text',
+                                            data: {
+                                                text: '2N'
+                                            },
+                                        }
+                                    },
+                                    {
+                                        columnWidth: 12,
+                                        rows: [{
+                                            columns: [
+                                                {
+                                                    columnWidth: 12,
+                                                    content: {
+                                                        component: 'text',
+                                                        data: {
+                                                            text: '1NN'
+                                                        },
+                                                    }
+                                                },
+                                                {
+                                                    columnWidth: 12,
+                                                    content: {
+                                                        component: 'text',
+                                                        data: {
+                                                            text: '2NN'
+                                                        },
+                                                    }
+                                                },
+                                            ]
+                                        }]
+                                    },
+                                ]
+                            }
+                        ]
+                    },
+                ]
+            }
+        ]
+    }
+};

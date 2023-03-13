@@ -3,7 +3,6 @@
         <ZekLoader :fullScreen="true" v-if="isLoading"/>
         <div class="col">
             <b-table
-                v-if="tableData && tableData.length > 0 && fields && fields.length > 0"
                 :items="tableData"
                 v-bind="tableProps"
                 :style="styleObj"
@@ -43,7 +42,6 @@
                     <ZekButton v-bind="deleteSettings.deleteButton" @onClick="deleteSettings.showConfirmation ? showDeleteModal(data.item) : deleteRow(data.item)" />
                 </template>
             </b-table>
-            <p v-else> Please provide valid data for the table</p>
             <!-- Pagination -->
             <div v-if="pagination" class="align-items-right ">
                 <p>Showing {{ start }} to {{ end }} of {{ tableData.length }} items</p>

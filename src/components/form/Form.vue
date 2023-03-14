@@ -25,7 +25,7 @@
                 </div>
             </div>
             <zek-text v-if="successMessage" :text="successMessage" class="text-success"></zek-text>
-            <zek-text v-if="errorMessage || internalError" :text="errorMessage||internalError" class="text-danger login-error-message"></zek-text>
+            <zek-text v-if="errorMessage || internalError" :text="internalError||errorMessage" class="text-danger login-error-message"></zek-text>
             <div class="align-items-center justify-content-center d-flex">
                 <zek-button v-if="cancelProps.show" v-bind="cancelProps" @onClick="cancelForm()"></zek-button>
                 <zek-button v-if="submitProps.show" v-bind="submitProps"></zek-button>
@@ -150,7 +150,7 @@ export default {
                 let columns = []
                 this.inputs.forEach(input => {
                     if(input.type == 'captcha') {
-                        this.captchaVerified = false;
+                        this.containsCaptcha = true;
                     }
                     columns.push({
                         columnWidth: input.columnWidth || 12,
@@ -226,14 +226,15 @@ export default {
                     }]
                 }
             },
-            captchaVerified: true,
+            captchaVerified: false,
+            containsCaptcha: false,
             internalError: '',
             formKey: 'initial'
         };
     },
     methods: {
         submitForm() {
-            if(!this.captchaVerified) {
+            if(this.containsCaptcha && !this.captchaVerified) {
                 this.internalError = 'Please verify reCaptcha before proceeding';
                 return;
             }

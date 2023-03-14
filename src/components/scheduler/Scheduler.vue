@@ -1,64 +1,66 @@
 <template>
-    <div class="zek-scheduler" :style="{ height: height, width: width, ...styleObject }" @click="$emit('onClick', $event)">
-        <v-toolbar v-if="showToolbar" flat :class="toolbarClass">
-            <v-toolbar-title class="toolbar-title pr-4">
-                {{ title }}
-            </v-toolbar-title>
-            <v-btn outlined class="today-btn mr-4" color="grey darken-2" @click="setToday">
-                Today
-            </v-btn>
-            <v-menu bottom right>
-                <template v-slot:activator="{ on, attrs }">
-                    <v-btn outlined color="grey darken-2" v-bind="attrs" v-on="on">
-                        <span>{{ typeToLabel[type] }}</span>
-                        <v-icon right>
-                            mdi-menu-down
-                        </v-icon>
-                    </v-btn>
-                </template>
-                <v-list>
-                    <v-list-item @click="type = 'day'">
-                        <v-list-item-title>Day</v-list-item-title>
-                    </v-list-item>
-                    <v-list-item @click="type = 'week'">
-                        <v-list-item-title>Week</v-list-item-title>
-                    </v-list-item>
-                    <v-list-item @click="type = 'month'">
-                        <v-list-item-title>Month</v-list-item-title>
-                    </v-list-item>
-                    <v-list-item @click="type = '4day'">
-                        <v-list-item-title>4 days</v-list-item-title>
-                    </v-list-item>
-                </v-list>
-            </v-menu>
-            <v-btn fab text small class="left-arrow-button" color="grey darken-2" @click="$refs.calendar.prev()">
-                <v-icon small>
-                    mdi-chevron-left
-                </v-icon>
-            </v-btn>
-            <v-btn fab text small class="right-arrow-button" color="grey darken-2" @click="$refs.calendar.next()">
-                <v-icon small>
-                    mdi-chevron-right
-                </v-icon>
-            </v-btn>
-        </v-toolbar>
-        <v-calendar
-            ref="calendar"
-            :class="customClass"
-            v-model="value"
-            :weekdays="weekdays"
-            :type="type"
-            :events="events"
-            :event-overlap-mode="mode"
-            :event-more="true"
-            @click:event="showEvent"
-            @click:more="viewDay"
-            @click:date="viewDay"
-            v-bind="extraProps"
-            v-on="extraEvents"
-        />
-        <slot :name="targetContainer" :events="events"/>
-    </div>
+    <v-app>
+        <div class="zek-scheduler" :style="{ height: height, width: width, ...styleObject }" @click="$emit('onClick', $event)">
+            <v-toolbar v-if="showToolbar" flat :class="toolbarClass">
+                <v-toolbar-title class="toolbar-title pr-4">
+                    {{ title }}
+                </v-toolbar-title>
+                <v-btn outlined class="today-btn mr-4" color="grey darken-2" @click="setToday">
+                    Today
+                </v-btn>
+                <v-menu bottom right>
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-btn outlined color="grey darken-2" v-bind="attrs" v-on="on">
+                            <span>{{ typeToLabel[type] }}</span>
+                            <v-icon right>
+                                mdi-menu-down
+                            </v-icon>
+                        </v-btn>
+                    </template>
+                    <v-list>
+                        <v-list-item @click="type = 'day'">
+                            <v-list-item-title>Day</v-list-item-title>
+                        </v-list-item>
+                        <v-list-item @click="type = 'week'">
+                            <v-list-item-title>Week</v-list-item-title>
+                        </v-list-item>
+                        <v-list-item @click="type = 'month'">
+                            <v-list-item-title>Month</v-list-item-title>
+                        </v-list-item>
+                        <v-list-item @click="type = '4day'">
+                            <v-list-item-title>4 days</v-list-item-title>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
+                <v-btn fab text small class="left-arrow-button" color="grey darken-2" @click="$refs.calendar.prev()">
+                    <v-icon small>
+                        mdi-chevron-left
+                    </v-icon>
+                </v-btn>
+                <v-btn fab text small class="right-arrow-button" color="grey darken-2" @click="$refs.calendar.next()">
+                    <v-icon small>
+                        mdi-chevron-right
+                    </v-icon>
+                </v-btn>
+            </v-toolbar>
+            <v-calendar
+                ref="calendar"
+                :class="customClass"
+                v-model="value"
+                :weekdays="weekdays"
+                :type="type"
+                :events="events"
+                :event-overlap-mode="mode"
+                :event-more="true"
+                @click:event="showEvent"
+                @click:more="viewDay"
+                @click:date="viewDay"
+                v-bind="extraProps"
+                v-on="extraEvents"
+            />
+            <slot :name="targetContainer" :events="events"/>
+        </div>
+    </v-app>
 </template>
 
 <script>

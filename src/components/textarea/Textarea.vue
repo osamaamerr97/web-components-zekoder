@@ -98,23 +98,24 @@ export default {
             default: () => ({})
         }
     },
-    computed: {
-        value: {
-            get() {
-                return this.initialValue;
-            },
-            set(newVal) {}
-        }
+    data() {
+        return {
+            value: this.initialValue || ""
+        };
     },
     methods: {
+        onInput(event) {
+            this.$emit("onInput", { id: this.id, value: this.value });
+        },
         onChange(event) {
             // ! this is only for possible previous use cases should be changed
             this.$emit("onChange", event.target.value);
         }
     },
     watch: {
-        value(newValue) {
-            this.$emit("input", { id: this.id, value: newValue });
+        initialValue(newValue) {
+            this.value = newValue;
+            this.$emit("onInput", { id: this.id, value: this.value });
         }
     }
 };

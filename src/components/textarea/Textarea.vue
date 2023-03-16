@@ -1,133 +1,134 @@
 <template>
-    <div style="position: relative" :style="styleObject" :class="error ? 'zek-invalid-field' : customClass ? customClass+'-container' : 'zek-textarea-container'"  @click="$emit('onClick', $event)">
-      <span v-if="label" :style="label.style">
-            <span v-html="label.html || label.text || label" ></span>
+    <div
+        style="position: relative"
+        :style="styleObject"
+        :class="error ? 'zek-invalid-field' : customClass ? customClass + '-container' : 'zek-textarea-container'"
+        @click="$emit('onClick', $event)"
+    >
+        <span v-if="label" :style="label.style">
+            <span v-html="label.html || label.text || label"></span>
             <span class="required-asterik" v-if="required">*</span>
-      </span>
-      <textarea
-        :class="customClass"
-        :name="name"
-        :id="id"
-        :placeholder="placeholder"
-        :readonly="readonly"
-        :required="required"
-        :disabled="disabled"
-        :minlength="minMaxValue ? minMaxValue.min : null"
-        :maxlength="minMaxValue ? minMaxValue.max : null"
-        @change="onChange"
-        :form="form"
-        :value="value"
-        :style="inputStyle"
-      />
-      <span v-if="showLimitIndicator" class="limit" :style="limitIndicatorStyle">
-        {{ value.length }}/{{ minMaxValue.max }}
-      </span>
-      <div class="field-error" v-if="error">{{error}}</div>
-  </div>
-  </template>
-  
-  <script>
-  export default {
+        </span>
+        <textarea
+            :class="customClass"
+            :name="name"
+            :id="id"
+            :placeholder="placeholder"
+            :readonly="readonly"
+            :required="required"
+            :disabled="disabled"
+            :minlength="minMaxValue ? minMaxValue.min : null"
+            :maxlength="minMaxValue ? minMaxValue.max : null"
+            @change="onChange"
+            :form="form"
+            :value="value"
+            :style="inputStyle"
+        />
+        <span v-if="showLimitIndicator" class="limit" :style="limitIndicatorStyle">
+            {{ value.length }}/{{ minMaxValue.max }}
+        </span>
+        <div class="field-error" v-if="error">{{ error }}</div>
+    </div>
+</template>
+
+<script>
+export default {
     name: "ZekTextarea",
     props: {
-      inputStyle: {
-          type: Object,
-          default: () => {}
-      },
-      label: {
-        type: [Object, String],
-      },
-      customClass: {
-        type: String,
-        default: "",
-      },
-      required: {
-        type: Boolean,
-        default: false,
-      },
-      disabled: {
-        type: Boolean,
-        default: false,
-      },
-      showLimitIndicator: {
-        type: Boolean,
-        default: false,
-      },
-      initialValue: {
-        type: String,
-        default: "",
-      },
-      minMaxValue: {
-        type: Object,
-        default: () => ({
-          min: "",
-          max: "",
-        }),
-      },
-      styleObject: {
-        type: Object,
-        default: () => ({}),
-      },
-      name: {
-        type: String,
-        default: "",
-      },
-      id: {
-        type: String,
-        default: "",
-      },
-      placeholder: {
-        type: String,
-        default: "",
-      },
-      readonly: {
-        type: Boolean,
-        default: false,
-      },
-      form: {
-        type: String
-      },
-      error: String,
-      limitIndicatorStyle: {
-        type: Object,
-        default: () => ({}),
-      },
+        inputStyle: {
+            type: Object,
+            default: () => {}
+        },
+        label: {
+            type: [Object, String]
+        },
+        customClass: {
+            type: String,
+            default: ""
+        },
+        required: {
+            type: Boolean,
+            default: false
+        },
+        disabled: {
+            type: Boolean,
+            default: false
+        },
+        showLimitIndicator: {
+            type: Boolean,
+            default: false
+        },
+        initialValue: {
+            type: String,
+            default: ""
+        },
+        minMaxValue: {
+            type: Object,
+            default: () => ({
+                min: "",
+                max: ""
+            })
+        },
+        styleObject: {
+            type: Object,
+            default: () => ({})
+        },
+        name: {
+            type: String,
+            default: ""
+        },
+        id: {
+            type: String,
+            default: ""
+        },
+        placeholder: {
+            type: String,
+            default: ""
+        },
+        readonly: {
+            type: Boolean,
+            default: false
+        },
+        form: {
+            type: String
+        },
+        error: String,
+        limitIndicatorStyle: {
+            type: Object,
+            default: () => ({})
+        }
     },
     computed: {
-          value: {
-              get() {
-                  return this.initialValue;
-              },
-              set(newVal) {}
-          }
-      },
-    created() {
-      console.log(this);
+        value: {
+            get() {
+                return this.initialValue;
+            },
+            set(newVal) {}
+        }
     },
     methods: {
-      onChange(event) {
-          // ! this is only for possible previous use cases should be changed
-        this.$emit("onChange", event.target.value);
-      },
+        onChange(event) {
+            // ! this is only for possible previous use cases should be changed
+            this.$emit("onChange", event.target.value);
+        }
     },
     watch: {
-      value(newValue) {
-        this.$emit("input", { id: this.id, value: newValue })
-      }
+        value(newValue) {
+            this.$emit("input", { id: this.id, value: newValue });
+        }
     }
-  };
-  </script>
-  
-  <style scoped lang="scss">
-  .required-asterik {
-      color: red;
-  }
-  .field-error {
-        font-size: 12px;
-        color: #dc3545;
-  }
-  textarea{
+};
+</script>
+
+<style scoped lang="scss">
+.required-asterik {
+    color: red;
+}
+.field-error {
+    font-size: 12px;
+    color: #dc3545;
+}
+textarea {
     resize: none;
-  }
-  </style>
-  
+}
+</style>

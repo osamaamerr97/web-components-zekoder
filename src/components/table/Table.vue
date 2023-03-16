@@ -157,6 +157,11 @@ export default {
             });
         }
     },
+    watch:{
+        data(val){
+            this.tableData = val;
+        }
+    },
     computed: {
         tableProps() {
             let tableClass = {};

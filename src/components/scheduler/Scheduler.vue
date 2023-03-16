@@ -163,5 +163,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+:deep .v-application--wrap{
+  min-height: fit-content !important;
+}
 </style>

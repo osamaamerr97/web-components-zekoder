@@ -1,18 +1,19 @@
 <template>
-<div class="video-container" @click="$emit('onClick', $event)">
-    <video v-if="source=='local'"
-        :style="styleObj"
-        :src="url"
-        :width="width"
-        :height="height"
-        :muted="isMuted"
-        :loop="loop"
-        :controls="showControls"
-        :autoplay="autoplay">
-    </video>
-    <div v-else-if="source=='youtube'" ref="ytplayer" id="yt" :style="styleObj" ></div>
-    <iframe v-else ref="zekPlayer" id="zekPlayer" :src="videoUrl" :style="styleObj" :width="width" :height="height" allow="autoplay;" frameborder="0"></iframe>
-</div>
+    <div class="video-container" @click="$emit('onClick', $event)">
+        <video v-if="source=='local'"
+            :style="styleObj"
+            :id="playerId"
+            :src="url"
+            :width="width"
+            :height="height"
+            :muted="isMuted"
+            :loop="loop"
+            :controls="showControls"
+            :autoplay="autoplay">
+        </video>
+        <div v-else-if="source=='youtube'" ref="ytplayer" :id="playerId" :style="styleObj" ></div>
+        <iframe v-else ref="zekPlayer" :id="playerId" :src="videoUrl" :style="styleObj" :width="width" :height="height" allow="autoplay;" frameborder="0"></iframe>
+    </div>
 </template>
 
 <script>
@@ -27,6 +28,10 @@ export default {
         url: {
             type: String,
             required: true
+        },
+        playerId: {
+            type: String,
+            default: 'zek-player'
         },
         isMuted: Boolean,
         loop: Boolean,
@@ -99,7 +104,7 @@ export default {
             this.player = new YT.Player(this.$refs.ytplayer.id, {
                 height: this.height,
                 width: this.width,
-                videoId: videoId,
+                videoId,
                 playerVars: {
                     playsinline: 1,
                     mute: this.isMuted,

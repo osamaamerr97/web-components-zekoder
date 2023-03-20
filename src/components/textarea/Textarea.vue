@@ -20,6 +20,7 @@
             :minlength="minMaxValue ? minMaxValue.min : null"
             :maxlength="minMaxValue ? minMaxValue.max : null"
             @change="onChange"
+            @input="onInput"
             :form="form"
             :value="value"
             :style="inputStyle"

@@ -101,7 +101,7 @@ export default {
         },
         createPlayer() {
             let videoId = this.url.split('/').at(-1);
-            this.player = new YT.Player(this.$refs.ytplayer.id, {
+            this.player = window.YT ? new window.YT.Player(this.$refs.ytplayer.id, {
                 height: this.height,
                 width: this.width,
                 videoId,
@@ -115,14 +115,14 @@ export default {
                 },
                 events: {
                     onStateChange: (event) => {
-                        if (event.data == YT.PlayerState.PLAYING) {
+                        if (event.data == window.YT.PlayerState.PLAYING) {
                             this.videoStarted();
-                        } else if(event.data == YT.PlayerState.PAUSED || event.data == YT.PlayerState.ENDED) {
+                        } else if(event.data == window.YT.PlayerState.PAUSED || event.data == window.YT.PlayerState.ENDED) {
                             this.videoStopped();
                         }
                     }
                 }
-            });
+            }) : null;
         }
     }
 }

@@ -187,16 +187,17 @@ export default {
         return {
             toggle: false,
             filterString: '',
-            filteredItems: this.items,
-            selected: [] //selected
+            filteredItems: this.items
         };
     },
-    created() {
-        if (this.value) {
-            this.selected = typeof this.value == "object" ? this.value : [this.value];
-        }
-    },
     computed: {
+        selected: {
+            get() {
+                return typeof this.value == "object" ? this.value : [this.value]
+            },
+            set(value) {
+            }
+        },
         styleObject() {
             return {
                 ...this.styleObj

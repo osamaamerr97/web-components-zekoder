@@ -101,7 +101,7 @@ export default {
         },
         createPlayer() {
             let videoId = this.url.split('/').at(-1);
-            this.player = window.YT ? new window.YT.Player(this.$refs.ytplayer.id, {
+            this.player = window.YT ? new window.YT.Player(this.playerId, {
                 height: this.height,
                 width: this.width,
                 videoId,

@@ -7,7 +7,7 @@
             <div class="form-group">
                 <zek-column-content :column="content()" />
                 <div v-if="forgotPassword" class="forgot-link">
-                    <RouterLink  to="auth/forgotpassword">Forgot Password?</RouterLink>
+                    <RouterLink  to="/auth/forgotpassword">Forgot Password?</RouterLink>
                 </div>
                 <div v-if="rememberMe" class="remember-me">
                     <ZekInput class="remember-input" :inputType="'checkbox'" :inputStyle="{width:'18px',height:'18px'}" :label="{text:'Remember me',

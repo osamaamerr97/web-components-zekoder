@@ -229,7 +229,7 @@ export default {
             captchaVerified: false,
             containsCaptcha: false,
             internalError: '',
-            formKey: 'initial'
+            formKey: 0,
         };
     },
     methods: {
@@ -253,7 +253,7 @@ export default {
         },
         resetForm() {
             this.formData = { ...this.defaultData };
-            this.formKey = "reset";
+            this.formKey += 1;
         }
     }
 };

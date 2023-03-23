@@ -44,6 +44,7 @@
         v-on="preventSpaces ? { keypress: preventSpaceKey } : {}"
         @keyup="onKeyUp"
         @change="onInput"
+        @input="input"
       />
       <i
         v-if="showPasswordButton && showPasswordButton == 'icon'"
@@ -174,17 +175,13 @@
     data() {
       return {
         actualType: this.inputType,
+        value: this.initialValue || "",
       }
     },
-    computed: {
-        value: {
-            get() {
-                return this.initialValue;
-            },
-            set(newVal) {}
-        }
-    },
     methods: {
+      input(event) {
+        this.$emit("input", { id: this.id, value: this.value });
+      },
       onInput(event) {
         this.$emit("onInput", this.inputType === 'datepicker'? {target: {value: event}} : event);
       },
@@ -201,8 +198,8 @@
       },
     },
     watch: {
-        value(newValue) {
-            this.$emit("input", { id: this.id, value: newValue, name: this.name })
+        initialValue(val) {
+            this.value = val;
         }
     }
   }

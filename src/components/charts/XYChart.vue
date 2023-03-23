@@ -43,6 +43,7 @@ export default {
         plotOptions: {
           bar: {
             horizontal: this.type == 'horizontal-bar' ? true : null,
+            borderRadius: this.yAxis && this.yAxis.borderRadius ? this.yAxis.borderRadius : 0,
           }
         },
         noData: {

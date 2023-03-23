@@ -187,17 +187,21 @@ export default {
         return {
             toggle: false,
             filterString: '',
-            filteredItems: this.items
+            filteredItems: this.items,
+            selected: []
         };
     },
+    created() {
+        if (this.value) {
+            this.selected = typeof this.value == "object" ? this.value : [this.value];
+        }
+    },
+    watch:{
+        value(){
+            this.selected = typeof this.value == "object" ? this.value : [this.value];
+        }
+    },
     computed: {
-        selected: {
-            get() {
-                return typeof this.value == "object" ? this.value : [this.value]
-            },
-            set(value) {
-            }
-        },
         styleObject() {
             return {
                 ...this.styleObj

@@ -158,6 +158,9 @@ export default {
         }
     },
     watch:{
+        dataSource(){
+            this.processDataSource();
+        },
         data(val){
             this.tableData = val;
         }

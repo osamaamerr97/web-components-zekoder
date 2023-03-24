@@ -7,30 +7,29 @@ export default {
     // More on argTypes: https://storybook.js.org/docs/vue/api/argtypes
     argTypes: {
         showArrows: {
-            control: Boolean
+            control: 'boolean'
         },
         isInfinite: {
-            control: Boolean
+            control: 'boolean'
         },
         fadeEffect: {
-            control: Boolean
+            control: 'boolean'
         },
         autoPlay: {
-            control: Boolean
+            control: 'boolean'
         },
         speed: {
-            control: Number
+            control: 'number'
         },
         showDots: {
-            control: Boolean
+            control: 'boolean'
         },
         slides: {
-            control: Object
+            control: 'object'
         },
         styleObj: {
-            control: Object
+            control: 'object'
         }
-        
       },
   };
 
@@ -39,7 +38,7 @@ export default {
     // Components used in your story `template` are defined in the `components` object
     components: { ZekSlider },
     props: Object.keys(argTypes),
-    template: '<zek-slider v-bind="$props"></zek-slider>',
+    template: '<ZekSlider v-bind="$props"/>',
   });
 
   export const Primary = Template.bind({});
@@ -57,9 +56,9 @@ Primary.args = {
             ],
             bulletsBefore: false,
             image: {
-                url: 'http://localhost:3000/_nuxt/assets/images/why-remoto.svg',
-                position: 'right',
-                cover: 'half'
+                url: 'https://media.istockphoto.com/id/1283504873/photo/mosque-and-bosphorus-bridge.jpg?b=1&s=612x612&w=0&k=20&c=TEusjn06D_GyNThCV430JbSFAUZa2ggE588kt28K46M=',
+                position: 'center',
+                cover: 'full'
             },
             button: {
                 text: 'Click ME!',
@@ -68,7 +67,7 @@ Primary.args = {
                 url: '/startups'
             },
             style: {
-                height: '500px',
+                height: '50px',
                 padding: '40px'
             },
             textPosition: 'left',
@@ -86,7 +85,7 @@ Primary.args = {
             image: {
                 url: 'http://localhost:3000/_nuxt/assets/images/why-remoto.svg',
                 position: 'left',
-                cover: 'half'
+                cover: 'full'
             },
             button: {
                 text: 'Click ME!',
@@ -95,33 +94,122 @@ Primary.args = {
                 url: '/startups'
             },
             style: {
-                height: '500px',
+                height: '50px',
                 padding: '40px',
                 background: '#ebc8c8'
             },
             textPosition: 'right',
             textCover: 'half'
-        }
-        // {
-        //     heading: "heading 2",
-        //     subHeading: "subheading",
-        //     description: "lorem ipsum dolor sit amet",
-        //     bullets: [
-        //         "bullet point 1",
-        //         "bullet point 2",
-        //         "bullet point 3"
-        //     ]
-        // },
-        // {
-        //     heading: "heading 3",
-        //     subHeading: "subheading",
-        //     description: "lorem ipsum dolor sit amet",
-        //     bullets: [
-        //         "bullet point 1",
-        //         "bullet point 2",
-        //         "bullet point 3"
-        //     ]
-        // }
+        },
+        {
+            heading: "heading 2",
+            subHeading: "subheading",
+            description: "lorem ipsum dolor sit amet",
+            bullets: [
+                "bullet point 1",
+                "bullet point 2",
+                "bullet point 3"
+            ]
+        },
+        {
+            heading: "heading 3",
+            subHeading: "subheading",
+            description: "lorem ipsum dolor sit amet",
+            bullets: [
+                "bullet point 1",
+                "bullet point 2",
+                "bullet point 3"
+            ]
+        },
+
+        {
+            heading: "heading 3",
+            subHeading: "subheading",
+            description: "lorem ipsum dolor sit amet",
+            bullets: [
+                "bullet point 1",
+                "bullet point 2",
+                "bullet point 3"
+            ]
+        },
+
+        {
+            heading: "heading 3",
+            subHeading: "subheading",
+            description: "lorem ipsum dolor sit amet",
+            bullets: [
+                "bullet point 1",
+                "bullet point 2",
+                "bullet point 3"
+            ]
+        },
+
+        {
+            heading: "heading 3",
+            subHeading: "subheading",
+            description: "lorem ipsum dolor sit amet",
+            bullets: [
+                "bullet point 1",
+                "bullet point 2",
+                "bullet point 3"
+            ]
+        },
+
+        {
+            heading: "heading 3",
+            subHeading: "subheading",
+            description: "lorem ipsum dolor sit amet",
+            bullets: [
+                "bullet point 1",
+                "bullet point 2",
+                "bullet point 3"
+            ]
+        },
+
+        {
+            heading: "heading 3",
+            subHeading: "subheading",
+            description: "lorem ipsum dolor sit amet",
+            bullets: [
+                "bullet point 1",
+                "bullet point 2",
+                "bullet point 3"
+            ]
+        },
+
+        {
+            heading: "heading 3",
+            subHeading: "subheading",
+            description: "lorem ipsum dolor sit amet",
+            bullets: [
+                "bullet point 1",
+                "bullet point 2",
+                "bullet point 3"
+            ]
+        },
+
+        {
+            heading: "heading 3",
+            subHeading: "subheading",
+            description: "lorem ipsum dolor sit amet",
+            bullets: [
+                "bullet point 1",
+                "bullet point 2",
+                "bullet point 3"
+            ]
+        },
+
+        {
+            heading: "heading 3",
+            subHeading: "subheading",
+            description: "lorem ipsum dolor sit amet",
+            bullets: [
+                "bullet point 1",
+                "bullet point 2",
+                "bullet point 3"
+            ]
+        },
+
     ],
     styleObj: {
         "textTransform": "capitalize",

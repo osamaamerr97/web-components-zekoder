@@ -31,7 +31,7 @@
                     v-for="(item, i) in filteredItems"
                     :key="i"
                     :class="
-                        selected.includes(item.value || item) && selectType.toLowerCase() != 'multi' ? 'active' : ''
+                        selected.includes(item.value || item) ? 'active' : ''
                     "
                     :style="selected.includes(item.value || item) ? selectedItemStyle : itemStyle"
                     @click="onSelect($event, item)"
@@ -90,7 +90,7 @@
             <div :style="listStyle" v-if="toggle  || alwaysOpen">
                 <div
                     :style="
-                        selected.includes(item) && selectType.toLowerCase() == 'multi' ? selectedItemStyle : itemStyle
+                        selected.includes(item) ? selectedItemStyle : itemStyle
                     "
                     v-for="(item, i) in items"
                     :key="i"

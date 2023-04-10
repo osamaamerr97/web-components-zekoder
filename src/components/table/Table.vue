@@ -1,7 +1,7 @@
 <template>
     <div :class="'row' + customClass" @click="$emit('onClick', $event)">
         <ZekLoader :fullScreen="true" v-if="isLoading"/>
-        <div class="col">
+        <div class="col" v-if="columns && columns.length">
             <b-table
                 :items="tableData"
                 v-bind="tableProps"
@@ -13,9 +13,9 @@
             >
                 <template v-if="caption" #table-caption>{{ caption }}</template>
                  <!-- Show row index -->
-+                <template v-if="showRowIndex" #cell(index)="data">
-+                    {{ data.index + 1 }}
-+                </template>
+                <template v-if="showRowIndex" #cell(index)="data">
+                    {{ data.index + 1 }}
+                </template>
                 <!-- Show select column with select header -->
                 <template v-if="allowSelection" #head(selected)="">
                     <b-form-checkbox @change="toggleAllRows"></b-form-checkbox>
@@ -52,6 +52,13 @@
                     align="right"
                 ></b-pagination>
             </div>
+        </div>
+        <div class="col table-placeholder" v-else-if="showSkeleton">
+            <b-skeleton-table
+                :rows="5"
+                :columns="4"
+                :table-props="{ bordered: true, striped: true }"
+            ></b-skeleton-table>
         </div>
         <b-modal
             ref="delete-item"
@@ -96,6 +103,10 @@ export default {
         dataSource: {
             type: [String, Array, Object],
             required: false
+        },
+        showSkeleton: {
+            type: Boolean,
+            default: false
         },
         mapping: {
             type: Object,

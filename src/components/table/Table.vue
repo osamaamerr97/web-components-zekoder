@@ -38,8 +38,9 @@
                     <span v-else> {{ data.value }}</span>
                 </template>
                 <!-- show delete button -->
-                <template v-if="allowDelete" #cell(delete_button)="data">
-                    <ZekButton v-bind="deleteSettings.deleteButton" @onClick="deleteSettings.showConfirmation ? showDeleteModal(data.item) : deleteRow(data.item)" />
+                <template v-if="allowDelete || allowEdit" #cell(action_button)="data">
+                    <ZekButton v-if="allowDelete" v-bind="deleteSettings.deleteButton" @onClick="deleteSettings.showConfirmation ? showDeleteModal(data.item, data.index) : deleteRow(data.item, data.index)" />
+                    <ZekButton v-if="allowEdit" v-bind="editSettings.editButton" @onClick="emitEdit(data.item, data.index)" />
                 </template>
             </b-table>
             <!-- Pagination -->
@@ -120,6 +121,14 @@ export default {
             type: Object,
             required: false
         },
+        allowEdit: {
+            type: Boolean,
+            default: false
+        },
+        editSettings: {
+            type: Object,
+            required: false
+        },
     },
     data() {
         return {
@@ -160,9 +169,10 @@ export default {
                 isRowHeader: true
             });
         }
-        if (this.allowDelete) {
+        if (this.allowDelete || this.allowEdit) {
             this.fields.push({
-                key: "delete_button",
+                key: "action_button",
+                label:"Actions",
                 sortable: false,
                 isRowHeader: false,
             });
@@ -221,11 +231,13 @@ export default {
         emitTableEvent(data) {
             this.$emit("tableRowEvent", data);
         },
-        showDeleteModal(row) {
+        showDeleteModal(row, index) {
+            this.$emit("beforeDelete", {row, index});
             this.currentRow = row;
             this.$refs['delete-item'].show()
         },
-        deleteRow(item) {
+        deleteRow(item, index) {
+            this.$emit("deleteRow", {row: item, index});
             if (this.deleteSettings) {
                 item.id ?? (item = this.currentRow);
                 let deleteUrl = `${this.dataSource.url}${this.deleteSettings.url}=${item.id}`;
@@ -289,7 +301,10 @@ export default {
             } else {
                 this.tableData = data;
             }
-        }
+        },
+        emitEdit(row, index) {
+            this.$emit("editRow", {row, index});
+        },
     }
 };
 </script>

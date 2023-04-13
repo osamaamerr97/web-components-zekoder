@@ -6,7 +6,7 @@
         </span>
         <input type="text" class="hidden-field" :required="required" v-model="selectedText" />
         <!-- Bootstrap -->
-        <div v-if="theme == 'Bootstrap'" :class="'dropdown ' + cssClass" :style="styleObj">
+        <div v-if="theme == 'Bootstrap'" :class="'dropdown ' + cssClass + (error ? ' zek-invalid-field' : '') " :style="styleObj">
             <button
                 class="btn btn-secondary"
                 :class="(showIcon ? 'dropdown-toggle' : 'dropdown-toggle no-caret') + (disabled ? ' disabled' : '')"
@@ -108,6 +108,7 @@
                 </div>
             </div>
         </div>
+        <div class="field-error" v-if="error">{{error}}</div>
     </div>
 </template>
 
@@ -178,7 +179,11 @@ export default {
         alwaysOpen: {
             type: Boolean,
             default: false
-        }
+        },
+        error: {
+            type: String,
+            default: ''
+        },
     },
     directives: {
         ClickOutside
@@ -284,6 +289,8 @@ export default {
 }
 
 .zek-dropdown {
+    position: relative;
+
     &.with-filters {
         input.filter-string {
             background: #ffffff;
@@ -297,5 +304,12 @@ export default {
             border-radius: 0;
         }
     }
+}
+.field-error {
+    font-size: 12px;
+    color: #dc3545;
+}
+.zek-invalid-field > button {
+  border: solid 2px #dc354550 !important;
 }
 </style>

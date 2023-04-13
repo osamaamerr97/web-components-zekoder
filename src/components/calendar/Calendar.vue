@@ -99,6 +99,11 @@ export default {
     mounted() {
         this.processDisabledDates();
     },
+    watch: {
+        disabledDates() {
+            this.processDisabledDates();
+        }
+    },
     methods: {
         processDisabledDates() {
             const makeDate = d => new Date(d).toISOString().substr(0, 10);

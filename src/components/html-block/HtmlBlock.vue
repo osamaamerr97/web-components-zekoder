@@ -14,16 +14,13 @@
         cssClass: String,
         styleObj: Object
     },
-    data() {
-        return {
-            cleanHtml : ''
+    computed: {
+        cleanHtml() {
+            return sanitizeHtml(this.content, {
+                allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
+                allowedAttributes: { ... sanitizeHtml.defaults.allowedAttributes, i: ['class'], a: ['href', 'name', 'target']}
+            });
         }
-    },
-    created() {
-        this.cleanHtml = sanitizeHtml(this.content, {
-            allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
-            allowedAttributes: { ... sanitizeHtml.defaults.allowedAttributes, i: ['class'], a: ['href', 'name', 'target']}
-        });
     }
   }
 </script>

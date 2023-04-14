@@ -102,7 +102,7 @@ export default {
         },
         styleObj: Object,
         dataSource: {
-            type: [String, Array, Object],
+            type: [Array, String, Object],
             required: false
         },
         showSkeleton: {
@@ -119,7 +119,21 @@ export default {
         },
         deleteSettings: {
             type: Object,
-            required: false
+            required: false,
+            default: () => {
+                return {
+                    showConfirmation: true,
+                    deleteButton: {
+                        label: "",
+                        icon: "fas fa-trash",
+                        styleObj:{
+                            color: "red",
+                            background: "transparent",
+                            border: "none",
+                        }
+                    }
+                };
+            }
         },
         allowEdit: {
             type: Boolean,
@@ -127,7 +141,21 @@ export default {
         },
         editSettings: {
             type: Object,
-            required: false
+            required: false,
+            default: () => {
+                return {
+                    showConfirmation: true,
+                    editButton: {
+                        label: "",
+                        icon: "fas fa-pencil-alt",
+                        styleObj:{
+                            color: "#2B91CD",
+                            background: "transparent",
+                            border: "none",
+                        }
+                    }
+                };
+            }
         },
     },
     data() {

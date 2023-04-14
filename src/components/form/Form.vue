@@ -17,7 +17,7 @@
                 }}"></ZekInput>
                 </div>
                 <div v-if="showTerms" class="remember-me">
-                    <ZekInput class="remember-input" :inputType="'checkbox'" :inputStyle="{width:'18px',height:'18px'}" :label="{text:'Accept terms and conditions',
+                    <ZekInput class="remember-input" :inputType="'checkbox'" :required="true" :inputStyle="{width:'18px',height:'18px'}" :label="{text:'Accept terms and conditions',
                 style:{
                     fontSize:'initial',
                     paddingLeft:'5px'

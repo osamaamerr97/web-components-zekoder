@@ -9,7 +9,7 @@
                     :title="isCollapsed ? 'Collapse' : 'Expand'"
                     class="link sidebar-title-link"
                 >
-                    <RouterLink :to="title.url ? title.url : ''" v-show="title && !isCollapsed" class="sidebar-title" :style="title.style ? title.style : {cursor: 'default'}">
+                    <RouterLink @click.native="$emit('onRoute', title.url)" :to="title.url ? title.url : ''" v-show="title && !isCollapsed" class="sidebar-title" :style="title.style ? title.style : {cursor: 'default'}">
                         {{ title.label ? title.label : title }}
                     </RouterLink>
                     <i
@@ -100,6 +100,7 @@
                         :title="sec.title.tooltip"
                         class="link title"
                         @click="sec.title.isExpanded = !sec.title.isExpanded"
+                        @click.native="$emit('onRoute', sec.title.url)"
                         :style="
                             (sec.title.isActive || sec.title.isHovering) &&
                             activeColor
@@ -166,6 +167,7 @@
                                     ? { color: activeColor }
                                     : ''
                             "
+                            @click.native="$emit('onRoute', link.url)"
                         >
                             <i
                                 v-if="link.icon && link.iconType !== 'custom'"
@@ -200,6 +202,7 @@
                             ? { color: activeColor }
                             : ''
                     "
+                    @click.native="$emit('onRoute', link.url)"
                 >
                     <i
                         v-if="link.icon && link.iconType !== 'custom'"

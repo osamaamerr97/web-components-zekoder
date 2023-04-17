@@ -18,7 +18,11 @@ export default {
         ZekDropdown
     },
     props:{
-        dropdownProps: Object
+        dropdownProps: Object,
+        code: {
+            type: String,
+            default: 'alpha3'
+        }
     },
     data() {
         return {
@@ -32,7 +36,7 @@ export default {
             this.countries = json.map((country) => {
                 return {
                     text: country.name,
-                    value: country.alpha3
+                    value: country[this.code]
                 }
             });
         });

@@ -30,7 +30,14 @@ Primary.args = {
         color: '#9149CD',
         data: 40,
         dataKey: 'grapes',
-        label: 'grapes'
+        label: 'grapes',
+        gradient: {    // Like in CSS linear-gradient(242.49deg, #9149CD 49.59%, #D95C93 85.05%)
+            deg: 243,
+            color1: '#9149CD',
+            opacity: 0.5,           // Has to be a number
+            color2: '#D95C93',
+            opcaity: 0.85
+        }
     }],
     apiInfo: {
         url: 'https://api.coindesk.com/v1/bpi/currentprice.json',

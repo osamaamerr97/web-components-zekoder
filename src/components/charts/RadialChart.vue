@@ -167,7 +167,7 @@ export default {
                     } else {
                         this.options.labels.push(ser.label || ser.dataKey || undefined);
                         this.options.colors.push(ser.color || undefined);
-                        this.options.fill = this.createGradient(242.49, "#9149CD", 0.5, "#D95C93", 0.85);
+                        this.options.fill = this.createGradient(ser.gradient);
                         this.series.push(data);
                     }
                 });
@@ -178,7 +178,8 @@ export default {
             }
         },
         // Function to create Apex gradient from css gradient
-        createGradient(deg, color1, opacity1, color2, opacity2) {
+        createGradient(obj) {
+            const { color1, color2, opacity1, opacity2, deg } = obj;
             return {
                 type: "gradient",
                 gradient: {

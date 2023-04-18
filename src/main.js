@@ -27,6 +27,7 @@ import ZekRightPanel from './components/right-panel/RightPanel.vue';
 import ZekSignup from './components/signup/Signup.vue';
 import ZekGuidedForm from './components/guided-form/GuidedForm.vue';
 import ZekXYChart from './components/charts/XYChart.vue';
+import ZekRadialChart from './components/charts/RadialChart.vue';
 import ZekCountriesList from './components/countries-list/CountriesList.vue';
 import ZekFileUpload from './components/file-upload/FileUpload.vue';
 import ZekImageGallery from './components/image-gallery/ImageGallery.vue';
@@ -69,6 +70,7 @@ export {
     ZekSignup,
     ZekGuidedForm,
     ZekXYChart,
+    ZekRadialChart,
     ZekCountriesList,
     ZekFileUpload,
     ZekImageGallery,

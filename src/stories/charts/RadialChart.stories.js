@@ -22,27 +22,15 @@ export const Primary = Template.bind({});
 Primary.args = {
     height: "500px",
     width: "90%",
-    styleObj: {
-        border: "2px solid green"
-    },
     id: '0',
-    title: {
-        text: 'My Fruit Chart',
-        style: {
-            color: 'rgb(255,0,0)',
-            fontSize: '24px'
-        }
+    stroke: {
+        width: 0.5,
     },
     data: [{
-        color: '#ff0000',
-        data: 30,
+        color: '#9149CD',
+        data: 40,
         dataKey: 'grapes',
         label: 'grapes'
-    }, {
-        color: '#cccccc',
-        data: 40,
-        dataKey: 'apples',
-        label: 'apples'
     }],
     apiInfo: {
         url: 'https://api.coindesk.com/v1/bpi/currentprice.json',

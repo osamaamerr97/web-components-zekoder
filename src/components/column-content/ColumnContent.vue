@@ -102,6 +102,12 @@
             v-bind="column.content.data"
             v-on="column.content.events"
         ></zek-input>
+        <zek-form
+            @click="stopPropagation($event)"
+            v-else-if="column && column.content && column.content.component == 'form'"
+            v-bind="column.content.data"
+            v-on="column.content.events"
+        ></zek-form>
         <zek-textarea
             @click="stopPropagation($event)"
             v-else-if="column && column.content && column.content.component == 'textarea'"
@@ -172,6 +178,7 @@ import ZekVideo from "../video/Video.vue";
 import ZekRadioButton from "../radio-button/RadioButton.vue";
 import ZekDropdown from "../dropdown/Dropdown.vue";
 import ZekInput from "../input-field/InputField.vue";
+import ZekForm from "../form/Form.vue";
 import ZekTextarea from "../textarea/Textarea.vue";
 import ZekCard from "../card/Card.vue";
 import ZekCollapsibleContainer from "../collapsible-container/CollapsibleContainer.vue";
@@ -204,7 +211,8 @@ export default {
         ZekCountriesList,
         VueRecaptcha,
         ZekFileUpload,
-        ZekSlider
+        ZekSlider,
+        ZekForm
     },
     name: "ZekColumnContent",
     props: {

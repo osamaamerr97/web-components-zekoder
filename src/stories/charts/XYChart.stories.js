@@ -25,6 +25,7 @@ const Template = (args, { argTypes }) => ({
 });
 
 export const Primary = Template.bind({});
+export const Secondary = Template.bind({});
   // More on args: https://storybook.js.org/docs/vue/writing-stories/args
 Primary.args = {
     type: "area",
@@ -118,4 +119,72 @@ Primary.args = {
         }],
     },
     showLegend: true
+};
+Secondary.args = {
+    type: "bar",
+    height: "500px",
+    width: "90%",
+    id: '0',
+    data: [
+        {
+            year: '1990',
+            grapes: '30',
+            color: 'rgb(100, 3, 251)'
+        },
+        {
+            year: '1991',
+            grapes: '35',
+            color: 'rgb(46, 44, 49)'
+        },
+        {
+            year: '1992',
+            grapes: '43',
+        },
+        {
+            year: '1993',
+            grapes: '48',
+        },
+        {
+            year: '1994',
+            grapes: '33',
+        },
+        {
+            year: '1995',
+            grapes: '30',
+        },
+        {
+            year: '1996',
+            grapes: '25',
+        },
+        {
+            year: '1997',
+            grapes: '29',
+        },
+    ],
+    xAxis: {
+        dataKey: 'year',
+        tickSize: '12px',
+        type: 'category',
+        show: false
+    },
+    yAxis: {
+        tickSize: '14px',
+        tickColor: '#000000',
+        series: [{
+            color: 'rgb(100, 3, 251)',
+            // data: [30, 40, 45, 50, 49, 60, 70],
+            dataKey: 'grapes',
+            label: 'grapes',
+        }],
+        borderRadius: 30
+    },
+    gradient: {    // Like in CSS linear-gradient(242.49deg, #9149CD 49.59%, #D95C93 85.05%)
+        deg: 243,
+        color1: '#9149CD',
+        opacity: 0.5,           // Has to be a number
+        color2: '#D95C93',
+        opcaity: 0.85
+    },
+    showLegend: false,
+
 };

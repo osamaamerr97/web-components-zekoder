@@ -20,12 +20,10 @@ const Template = (args, { argTypes }) => ({
 export const Primary = Template.bind({});
 // More on args: https://storybook.js.org/docs/vue/writing-stories/args
 Primary.args = {
-    height: "500px",
-    width: "90%",
+    height: "100%",
+    width: "100%",
     id: '0',
-    stroke: {
-        width: 0.5,
-    },
+    size: "60%",
     data: [{
         color: '#9149CD',
         data: 40,
@@ -45,5 +43,10 @@ Primary.args = {
         type: 'http',
         query: ''
     },
-    showLegend: true,
+    showLegend: false,
+    styleObj: {
+        // width: '100px',
+        height: '90px'
+    },
+    fontSize: '10px',
 };

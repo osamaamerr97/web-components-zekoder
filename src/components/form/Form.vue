@@ -34,13 +34,17 @@
     </div>
 </template>
 <script>
-import ZekColumnContent from "../column-content/ColumnContent.vue"
 import ZekButton from "../action-button/ActionButton.vue";
 import ZekHeading from "../heading-block/HeadingBlock.vue";
 import ZekText from "../text-block/TextBlock.vue"
 import ZekInput from '../input-field/InputField.vue'
 export default {
-    components: { ZekColumnContent, ZekButton, ZekHeading, ZekText, ZekInput },
+    components: { 
+        ZekButton, 
+        ZekHeading, 
+        ZekText, 
+        ZekInput 
+    },
     name: "ZekForm",
     props: {
         heading: [String, Object], //for object it should be {text:String, headingLevel:Number, styleObj:Object}
@@ -59,6 +63,9 @@ export default {
         rememberMe: Boolean,
         showTerms: Boolean,
         styleObj: Object,
+    },
+    beforeCreate() {
+        this.$options.components.ZekColumnContent = require("../column-content/ColumnContent.vue").default;
     },
     computed: {
         headingProps() {

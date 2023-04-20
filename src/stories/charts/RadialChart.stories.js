@@ -49,5 +49,4 @@ Primary.args = {
         height: '90px'
     },
     fontSize: '10px',
-    fontOffset: 5,
 };

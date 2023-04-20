@@ -23,11 +23,13 @@ export default {
         styleObj: Object,
         apiInfo: Object, // {url, method:get|post, type:graphql||http, query}
         showLegend: Boolean,
-        stroke: Object,
+        stroke: Object, // https://apexcharts.com/docs/options/stroke/ (curve, lineCap, width)
         size: String,
         labels: Object,
-        hollow: Object, // https://apexcharts.com/docs/options/plotoptions/radialbar/
-        track: Object, // https://apexcharts.com/docs/options/plotoptions/radialbar/
+        hollow: Object, // https://apexcharts.com/docs/options/plotoptions/radialbar/ (size, margin, background, image, imageWidth, imageHeight, imageClipped, imageOffsetX, imageOffsetY, position, dropShadow)
+        track: Object, // https://apexcharts.com/docs/options/plotoptions/radialbar/ (background, strokeWidth, margin, dropShadow)
+        fontSize: String,
+        fontOffset: Number
     },
     data() {
         return {
@@ -61,19 +63,6 @@ export default {
                     style: this.title && this.title.style ? this.title.style : {}
                 },
                 colors: [],
-                responsive: [
-                    {
-                        breakpoint: 480,
-                        options: {
-                            chart: {
-                                width: this.width
-                            },
-                            legend: {
-                                position: "bottom"
-                            }
-                        }
-                    }
-                ],
                 legend: {
                     show: this.showLegend
                 },
@@ -101,11 +90,11 @@ export default {
                             },
                             value: {
                                 show: true,
-                                fontSize: "40px",
+                                fontSize: this.fontSize || "100%",
+                                offsetY: this.fontOffset || 5,
                                 fontFamily: undefined,
                                 fontWeight: 400,
                                 color: undefined,
-                                offsetY: 15,
                             },
                             total: {
                                 show: false,
@@ -167,7 +156,7 @@ export default {
                     } else {
                         this.options.labels.push(ser.label || ser.dataKey || undefined);
                         this.options.colors.push(ser.color || undefined);
-                        this.options.fill = this.createGradient(ser.gradient);
+                        this.options.fill = ser.gradient ? this.createGradient(ser.gradient) : {};
                         this.series.push(data);
                     }
                 });
@@ -183,14 +172,9 @@ export default {
             return {
                 type: "gradient",
                 gradient: {
-                    shade: "dark",
-                    type: "horizontal",
+                    shade: "light",
+                    type: "veritcal",
                     shadeIntensity: 1,
-                    gradientToColors: [color1, color2],
-                    inverseColors: true,
-                    opacityFrom: opacity1 || 1,
-                    opacityTo: opacity2 || 1,
-                    stops: [0, 50, 100],
                     colorStops: [
                         {
                             offset: 0,

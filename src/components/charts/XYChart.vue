@@ -48,7 +48,7 @@ export default {
                     enabled: this.showTooltip,
                     ...this.tooltip
                 },
-                fill: this.gradient ? this.createGradient(this.gradient) : null,
+                fill: this.gradient ? this.createGradient(this.gradient) : {},
                 states: {
                     active: {
                         filter: {

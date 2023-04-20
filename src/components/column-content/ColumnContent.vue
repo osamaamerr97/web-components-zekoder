@@ -7,6 +7,7 @@
             customClass,
             'content-container': column.content && Array.isArray(column.content),
         }"
+        :style="styleObj"
     >
         <template v-if="column && column.rows && column.rows.length">
             <div v-for="(row,i) in column.rows" :key="'row'+i" class="row"
@@ -220,7 +221,12 @@ export default {
         customClass: {
             type: String,
             default: ""
+        },
+        styleObj: {
+            type: Object,
+            default: () => { return {} }
         }
+
     },
     data(){
         return {

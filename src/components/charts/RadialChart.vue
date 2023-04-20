@@ -29,7 +29,9 @@ export default {
         hollow: Object, // https://apexcharts.com/docs/options/plotoptions/radialbar/ (size, margin, background, image, imageWidth, imageHeight, imageClipped, imageOffsetX, imageOffsetY, position, dropShadow)
         track: Object, // https://apexcharts.com/docs/options/plotoptions/radialbar/ (background, strokeWidth, margin, dropShadow)
         fontSize: String,
-        fontOffset: Number
+        fontStyle: Object, // https://apexcharts.com/docs/options/dataLabels/value/ (fontSize, fontFamily, fontWeight, color, offsetX, offsetY, formatter, textAnchor, dropShadow)
+        nameText: Object,
+        totalText: Object,
     },
     data() {
         return {
@@ -87,14 +89,16 @@ export default {
                                 fontWeight: 600,
                                 color: undefined,
                                 offsetY: -10,
+                                ...this.nameText
                             },
                             value: {
                                 show: true,
                                 fontSize: this.fontSize || "100%",
-                                offsetY: this.fontOffset || 5,
+                                offsetY: 5,
                                 fontFamily: undefined,
                                 fontWeight: 400,
                                 color: undefined,
+                                ...this.fontStyle
                             },
                             total: {
                                 show: false,
@@ -103,6 +107,7 @@ export default {
                                 fontSize: "16px",
                                 fontFamily: undefined,
                                 fontWeight: 600,
+                                ...this.totalText
                             },
                             ...this.labels
                         }

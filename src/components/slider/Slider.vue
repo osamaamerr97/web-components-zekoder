@@ -4,6 +4,7 @@
         <div v-for="(slide,i) in slides" :key="i">
             <div class="slide-content" :style="getSlideStyle(slide)" >
                 <img v-if="slide.pic" :class="`w-100 slide-image slide-image-${i}`" :src="slide.pic" :style="slide.picStyle" />
+                <ZekVideo v-if="slide.video" v-bind="slide.video" v-on="slide.video.events" />
                 <div class="text-section" :style="getTextStyle(slide)">
                     <h1 v-if="slide.heading">{{slide.heading}}</h1>
                     <h3 v-if="slide.subHeading">{{slide.subHeading}}</h3>
@@ -45,10 +46,11 @@
     import 'vue-slick-carousel/dist/vue-slick-carousel-theme.css'
     import ZekButton from '../action-button/ActionButton.vue'
     import ZekList from '../lists-block/ListsBlock.vue'
+    import ZekVideo from '../video/Video.vue'
 
     export default {
         name: 'ZekSlider',
-        components: {VueSlickCarousel, ZekButton, ZekList},
+        components: {VueSlickCarousel, ZekButton, ZekList, ZekVideo},
         props: {
             slidesToShow: {
                 type: Number,

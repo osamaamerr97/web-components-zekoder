@@ -2,6 +2,9 @@
     <button
         :type="buttonType"
         @click="clicked($event)"
+        @mouseover="isHovering = true"
+        @mouseleave="isHovering = false"
+        v-on="customEvents"
         :class="getClasses()"
         :disabled="disabled"
         :style="styleObj">
@@ -53,6 +56,11 @@ export default {
         buttonType: {
             type: String, //button, submit etc
             default: 'button'
+        },
+        isHovering: Boolean,
+        customEvents: {
+            type: Object,
+            default: ()=>{return{}}
         }
     },
     methods: {
@@ -71,11 +79,11 @@ export default {
             if ( this.customClass ) { classList.push(this.customClass) };
             if(this.theme == 'bootstrap') {
                 classList.push('btn');
-                
+
                 let outline = this.outlineButton? 'outline-':'';
                 let type = this.type? this.type.toLowerCase() : 'primary';
                 classList.push('btn-' + outline + type);
-                
+
                 if (this.disabled) {
                     classList.push('disabled');
                 }
@@ -96,6 +104,11 @@ export default {
                 }
             }
             return classList;
+        }
+    },
+    watch:{
+        isHovering(val) {
+            this.$emit('onHover', val);
         }
     }
   }

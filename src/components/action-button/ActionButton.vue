@@ -57,11 +57,15 @@ export default {
             type: String, //button, submit etc
             default: 'button'
         },
-        isHovering: Boolean,
         customEvents: {
             type: Object,
             default: ()=>{return{}}
         }
+    },
+    data(){
+      return {
+          isHovering: false
+      }
     },
     methods: {
         clicked(event) {

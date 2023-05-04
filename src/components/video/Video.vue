@@ -5,7 +5,7 @@
             v-if="source == 'local'"
             :style="styleObj"
             :id="playerId"
-            :src="embeddedUrl"
+            :src="videoUrl"
             :width="width"
             :height="height"
             :muted="isMuted"
@@ -18,7 +18,7 @@
             v-else
             ref="zekPlayer"
             :id="playerId"
-            :src="embeddedUrl"
+            :src="videoUrl"
             :style="styleObj"
             :width="width"
             :height="height"
@@ -82,7 +82,7 @@ export default {
             }
         },
         videoUrl() {
-            let url = this.url + "?";
+            let url = this.embeddedUrl + "?";
             if (this.isMuted) {
                 url += this.source == "vimeo" ? "muted=1&" : "mute=1&";
             }

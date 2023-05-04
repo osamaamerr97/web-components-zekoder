@@ -32,7 +32,9 @@ export default {
         tooltip: Object, // https://apexcharts.com/docs/options/tooltip/
         dataLabels: Object, // https://apexcharts.com/docs/options/datalabels/
         states: Object, // https://apexcharts.com/docs/options/states/
-        gradient: Object
+        gradient: Object,
+        plotOptions: Object, // https://apexcharts.com/docs/options/plotoptions/
+        extraOptions: Object
     },
     data() {
         return {
@@ -78,8 +80,10 @@ export default {
                 plotOptions: {
                     bar: {
                         horizontal: this.type == "horizontal-bar" ? true : null,
-                        borderRadius: this.yAxis && this.yAxis.borderRadius ? this.yAxis.borderRadius : 0
-                    }
+                        borderRadius: this.yAxis && this.yAxis.borderRadius ? this.yAxis.borderRadius : 0,
+                        borderRadiusApplication: "end"
+                    },
+                    ...this.plotOptions
                 },
                 noData: {
                     text: "Loading...",
@@ -133,7 +137,8 @@ export default {
                 dataLabels: {
                     enabled: false,
                     ...this.dataLabels
-                }
+                },
+                ...this.extraOptions
             }
         };
     },

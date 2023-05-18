@@ -9,6 +9,7 @@
         :class="customClass"
         :style="styleObj"
         :height="height"
+        :key="key"
     ></iframe>
     <VueDocPreview
         v-else
@@ -21,6 +22,7 @@
         v-on="extraEvents"
         :height="height"
         :style="styleObj"
+        :key="key"
     />
 </template>
 
@@ -64,16 +66,33 @@ export default {
             type: Number,
             default: 150
         },
+        toolbar: {
+            type: Boolean,
+            default: true
+        }
     },
     data() {
         return {
-            docValue: this.value ?? ""
+            key: 0
         };
     },
     watch: {
-        value(val) {
-            this.docValue = val;
+        toolbar(val) {
+            this.key++;
         }
     },
+    computed: {
+        docValue() {
+            if (this.docType == "pdf") {
+                const toolbarParam = this.toolbar ? this.value + "#toolbar=1" : this.value + "#toolbar=0";
+                return toolbarParam;
+            } else if (this.docType == "office") {
+                const toolbarParam = this.toolbar ? "" : "&ui=hide";
+                return `${encodeURIComponent(this.value)}${toolbarParam}`;
+            } else {
+                return this.value
+            }
+        }
+    }
 };
 </script>

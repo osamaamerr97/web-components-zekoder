@@ -16,19 +16,23 @@ export default {
     template: '<zek-doc-viewer v-bind="$props"></zek-doc-viewer>',
   });
 
-  export const Primary = Template.bind({});
-  export const Secondary = Template.bind({});
+  export const PDF = Template.bind({});
+  export const DOC = Template.bind({});
 // More on args: https://storybook.js.org/docs/vue/writing-stories/args
 
-Primary.args = {
+PDF.args = {
     styleObj: {
-        "background-color": "red",
-    }
+        "width": "600px"
+    },
+    value: "https://www.orimi.com/pdf-test.pdf",
+    docType: "pdf",
+    height: 255,
+    toolbar: true
 
 };
-Secondary.args = {
-    styleObj: {
-        "background-color": "red",
-    }
+DOC.args = {
+    value: "https://homepages.inf.ed.ac.uk/neilb/TestWordDoc.doc",
+    docType: "office",
+    height: 100
 }
 

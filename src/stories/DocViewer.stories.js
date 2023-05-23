@@ -27,7 +27,7 @@ PDF.args = {
     value: "https://www.orimi.com/pdf-test.pdf",
     docType: "pdf",
     height: 255,
-    toolbar: true
+    showToolbar: true
 
 };
 DOC.args = {

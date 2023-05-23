@@ -66,7 +66,7 @@ export default {
             type: Number,
             default: 150
         },
-        toolbar: {
+        showToolbar: {
             type: Boolean,
             default: true
         }
@@ -77,17 +77,17 @@ export default {
         };
     },
     watch: {
-        toolbar(val) {
+        showToolbar(val) {
             this.key++;
         }
     },
     computed: {
         docValue() {
             if (this.docType == "pdf") {
-                const toolbarParam = this.toolbar ? this.value + "#toolbar=1" : this.value + "#toolbar=0";
+                const toolbarParam = this.showToolbar ? this.value + "#toolbar=1" : this.value + "#toolbar=0";
                 return toolbarParam;
             } else if (this.docType == "office") {
-                const toolbarParam = this.toolbar ? "" : "&ui=hide";
+                const toolbarParam = this.showToolbar ? "" : "&ui=hide";
                 return `${encodeURIComponent(this.value)}${toolbarParam}`;
             } else {
                 return this.value

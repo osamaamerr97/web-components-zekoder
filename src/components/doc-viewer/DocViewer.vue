@@ -1,6 +1,6 @@
 <template>
     <iframe
-        v-if="docType == 'pdf'"
+        v-if="type == 'pdf'"
         class="zek-doc-viewer"
         :src="docValue"
         frameborder="0"
@@ -16,7 +16,7 @@
         class="zek-doc-viewer"
         ref="docViewer"
         :value="docValue"
-        :type="docType"
+        :type="type"
         v-bind="extraProps"
         :class="customClass"
         v-on="extraEvents"
@@ -58,7 +58,7 @@ export default {
             type: String,
             default: ""
         },
-        docType: {
+        type: {
             type: String,
             default: "markdown"
         },
@@ -83,16 +83,29 @@ export default {
     },
     computed: {
         docValue() {
-            if (this.docType == "pdf") {
+            if (this.type == "pdf") {
                 const toolbarParam = this.showToolbar ? this.value + "#toolbar=1" : this.value + "#toolbar=0";
                 return toolbarParam;
-            } else if (this.docType == "office") {
-                const toolbarParam = this.showToolbar ? "" : "&ui=hide";
+            } else if (this.type == "office") {
+                const toolbarParam = this.showToolbar ? "" : "&wdHideToolbar=true";
                 return `${encodeURIComponent(this.value)}${toolbarParam}`;
             } else {
-                return this.value
+                return this.value;
             }
         }
-    }
+    },
+    mounted() {
+        this.updateOfficeViewer();
+    },
+    methods: {
+        updateOfficeViewer() {
+            if (this.type == "office") {
+                const iframe = this.$refs.docViewer.$el.querySelector("iframe");
+                if (iframe) {
+                    iframe.src = iframe.src.replace("view.aspx", "embed.aspx");
+                }
+            }
+        }
+    },
 };
 </script>

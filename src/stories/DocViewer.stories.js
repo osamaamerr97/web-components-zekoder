@@ -25,14 +25,14 @@ PDF.args = {
         "width": "600px"
     },
     value: "https://www.orimi.com/pdf-test.pdf",
-    docType: "pdf",
+    type: "pdf",
     height: 255,
     showToolbar: true
 
 };
 DOC.args = {
     value: "https://homepages.inf.ed.ac.uk/neilb/TestWordDoc.doc",
-    docType: "office",
+    type: "office",
     height: 100
 }
 

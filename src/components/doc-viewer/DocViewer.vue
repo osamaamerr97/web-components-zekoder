@@ -97,6 +97,12 @@ export default {
     mounted() {
         this.updateOfficeViewer();
     },
+    updated() {
+        // NOTE: This is a hack to force the iframe to reload when the value changes
+        if (!this.showToolbar) {
+            this.updateOfficeViewer();
+        }
+    },
     methods: {
         updateOfficeViewer() {
             if (this.type == "office") {
@@ -106,6 +112,6 @@ export default {
                 }
             }
         }
-    },
+    }
 };
 </script>

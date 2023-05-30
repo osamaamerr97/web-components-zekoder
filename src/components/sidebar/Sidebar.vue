@@ -4,12 +4,13 @@
             <li
                 v-if="allowExpandCollapse"
                 class="link-container sidebar-title"
+                :class="{titlePresent: title}"
             >
                 <a
                     :title="isCollapsed ? 'Collapse' : 'Expand'"
                     class="link sidebar-title-link"
                 >
-                    <RouterLink @click.native="$emit('onRoute', title.url)" :to="title.url ? title.url : ''" v-show="title && !isCollapsed" class="sidebar-title" :style="title.style ? title.style : {cursor: 'default'}">
+                    <RouterLink @click.native="$emit('onRoute', title.url)" :to="title.url ? title.url : ''" v-if="title && !isCollapsed" class="sidebar-title" :style="title.style ? title.style : {cursor: 'default'}">
                         {{ title.label ? title.label : title }}
                     </RouterLink>
                     <i
@@ -190,7 +191,7 @@
             </div>
         </div>
         <div v-if="footer" class="sidebar-footer" :style="footer.style">
-            <div v-if="!isCollapsed" class="footer-links-container">
+            <div v-if="!isCollapsed || showFooterOnCollapse" class="footer-links-container">
                 <RouterLink
                     v-for="(link, i) in footer.links"
                     :key="i"
@@ -321,6 +322,9 @@ export default {
         },
         logo: {
             type: Object //provide all the props that need to be bound to the img tag
+        },
+        showFooterOnCollapse: {
+            type: Boolean
         }
     },
     data() {
@@ -396,6 +400,7 @@ export default {
     flex-direction: column;
     justify-content: space-between;
     -webkit-transition: width 0.3s;
+    transition: 0.3s;
     overflow-x: hidden;
     &.collapsed {
         .link-container {
@@ -429,10 +434,12 @@ export default {
     padding: 5px 10px;
     &.sidebar-title {
         text-decoration: none;
-        border-bottom: solid 1px #eee;
         border-radius: inherit;
         padding: 20px 10px;
         min-height: 50px;
+        &.titlePresent {
+            border-bottom: solid 1px #eee;
+        }
         .icon {
             object-fit: contain;
             margin-left: auto;

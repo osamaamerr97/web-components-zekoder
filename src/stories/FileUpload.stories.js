@@ -55,5 +55,7 @@ Primary.args = {
             "margin": "10px",
             height: "30px",
         },
-    }
+    },
+    acceptedFileTypes: ["application/pdf"],
+    allowImagePreview: false
 };

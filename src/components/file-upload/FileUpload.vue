@@ -8,7 +8,7 @@
         <file-pond
             name="file-upload"
             ref="pond"
-            accepted-file-types="image/jpeg, image/png, image/jpg"
+            :accepted-file-types="acceptedFileTypes"
             :label-idle="placeholder"
             :allowMultiple="multiple"
             :files="preloadedFiles"
@@ -19,6 +19,7 @@
             :stylePanelLayout="stylePanelLayout"
             :style="{ width, height, ...inputStyle }"
             v-bind="extraProps"
+            :allowImagePreview="allowImagePreview"
             @addfile="uploadFiles"
             @removefile="deleteFile"
         />
@@ -118,6 +119,14 @@ export default {
         existingIds: {
             type: Array,
             default: () => []
+        },
+        acceptedFileTypes: {
+            type: Array,
+            default: () => ["image/jpeg, image/png, image/jpg"]
+        },
+        allowImagePreview: {
+            type: Boolean,
+            default: () => false
         }
     },
     data() {
@@ -134,7 +143,7 @@ export default {
             }
 
             const file = fileObject.file;
-            
+
             // this check will only work if files are being uploaded using zecommons
             if ( '.'+file.type.split('/')[1] === file.name ) {
                 // if ( !this.multiple ) { this.$emit("onChange", null) }
@@ -168,7 +177,7 @@ export default {
         },
         deleteFile(error, file) {
             if ( error ) { return; }
-            
+
             if ( this.multiple ) {
                 const fileId = (file.source.split('=')[1]).split('&')[0];
                 this.fileIds.splice(this.fileIds.indexOf(fileId), 1);
@@ -177,7 +186,7 @@ export default {
                 this.$emit('onChange', null)
             }
 
-        },  
+        },
         removeFile(item) {
             if ( this.multiple ) {
                 this.fileIds = this.fileIds.filter(id => id !== item.serverId)

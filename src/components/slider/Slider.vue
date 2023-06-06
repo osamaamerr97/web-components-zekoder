@@ -1,6 +1,6 @@
 <template>
 <div class="slider-content" :style="styleObj" @click="$emit('onClick', $event)">
-    <VueSlickCarousel :slidesToShow="slidesToShow" :arrows="showArrows" :infinite="isInfinite" :fade="fadeEffect" :autoplay="autoPlay" :autoplaySpeed="speed" :dots="showDots" :speed="300" v-bind="settings" v-on="events">
+    <VueSlickCarousel ref="slider" :initialSlide="currentSlide" :slidesToShow="slidesToShow" :arrows="showArrows" :infinite="isInfinite" :fade="fadeEffect" :autoplay="autoPlay" :autoplaySpeed="speed" :dots="showDots" :speed="300" v-bind="settings" v-on="events">
         <div v-for="(slide,i) in slides" :key="i">
             <div class="slide-content" :style="getSlideStyle(slide)" >
                 <img v-if="slide.pic" :class="`w-100 slide-image slide-image-${i}`" :src="slide.pic" :style="slide.picStyle" />
@@ -86,7 +86,11 @@
             nextArrow: Object,
             customDot: Object,
             settings: Object,
-            events: Object
+            events: Object,
+            currentSlide: {
+                type: Number,
+                default: 0
+            }
         },
         data() {
             return {
@@ -118,7 +122,13 @@
                 }
 
             }
-        }
+        },
+        watch:
+            {
+                currentSlide: function (val) {
+                    this.$refs.slider.goTo(val)
+                }
+            },
     }
 </script>
 

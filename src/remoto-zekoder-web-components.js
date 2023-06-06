@@ -37,7 +37,8 @@ import ZekScrollPicker from './components/scroll-picker/ScrollPicker.vue';
 import ZekPopup from './components/popup/Popup.vue';
 import ZekCalendar from './components/calendar/Calendar.vue';
 import ZekLoader from './components/loader/Loader.vue';
-import ZekDocViewer from './components/doc-viewer/DocViewer.vue'
+import ZekDocViewer from './components/doc-viewer/DocViewer.vue';
+import ZekCodeEditor from './components/code-editor/CodeEditor.vue';
 
 export {
     ZekButton,
@@ -78,5 +79,6 @@ export {
     ZekPopup,
     ZekCalendar,
     ZekLoader,
-    ZekDocViewer
+    ZekDocViewer,
+    ZekCodeEditor
 }

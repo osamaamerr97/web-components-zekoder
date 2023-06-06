@@ -57,6 +57,7 @@
     "vue-router": "^3.5.3",
     "vue-scroll-picker": "^0.8.2",
     "vue-slick-carousel": "^1.0.6",
+    "vue2-ace-editor": "^0.0.15",
     "vue2-editor": "^2.10.3"
   },
   "devDependencies": {

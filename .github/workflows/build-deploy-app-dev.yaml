@@ -1,0 +1,68 @@
+name: CI/CD
+on:
+  push:
+    branches:
+      - dev
+env:
+      BUCKET: dev.zestudio-webcomponents-mfe-zekoder
+      AWS_REGION: eu-central-1
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/dev'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup node env
+        uses: actions/setup-node@v2.1.2
+        with:
+          node-version: 16
+
+      - name: Build
+        run: chmod +x ./build.sh && ./build.sh
+
+      - name: Setup node env
+        uses: actions/setup-node@v2.1.2
+        with:
+          node-version: 18
+      
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+      
+      - name: Deploy static site to S3 bucket
+        run: |
+          if aws s3api head-bucket --bucket "$BUCKET" 2>/dev/null; then
+            echo "Bucket $BUCKET already exists."
+            aws s3 sync ./dist/ s3://$BUCKET --delete
+          else
+            echo "Creating bucket $BUCKET..."
+            aws s3api create-bucket --region $AWS_REGION --bucket "$BUCKET" --create-bucket-configuration LocationConstraint=$AWS_REGION > /dev/null # 1
+            aws s3api put-public-access-block --region $AWS_REGION --bucket "$BUCKET" --public-access-block-configuration "BlockPublicPolicy=false" # 2        
+            aws s3api put-bucket-policy --bucket "$BUCKET" --policy '{
+                "Version": "2012-10-17",
+                "Statement": [
+                    {
+                        "Sid": "PublicReadGetObject",
+                        "Effect": "Allow",
+                        "Principal": "*",
+                        "Action": "s3:GetObject",
+                        "Resource": "arn:aws:s3:::'$BUCKET'/*"
+                    }
+                ]
+            }'
+            
+            aws s3api put-bucket-website --region $AWS_REGION --bucket "$BUCKET" --website-configuration '{
+              "IndexDocument": {"Suffix": "index.html"},
+              "ErrorDocument": {"Key": "error.html"}
+            }'
+            
+            aws s3 sync ./dist/ s3://$BUCKET --delete
+          fi
+          

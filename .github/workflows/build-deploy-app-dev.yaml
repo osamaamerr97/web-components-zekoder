@@ -5,7 +5,7 @@ on:
       - dev
 env:
       BUCKET: dev.zestudio.zekoder.net
-      FOLDER: web-components
+      FOLDER: web-components/wc
       AWS_REGION: eu-central-1
 
 jobs:

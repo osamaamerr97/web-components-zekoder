@@ -4,7 +4,8 @@ on:
     branches:
       - dev
 env:
-      BUCKET: dev.zestudio-webcomponents-mfe-zekoder
+      BUCKET: dev.zestudio.zekoder.net
+      FOLDER: web-components
       AWS_REGION: eu-central-1
 
 jobs:
@@ -40,11 +41,13 @@ jobs:
         run: |
           if aws s3api head-bucket --bucket "$BUCKET" 2>/dev/null; then
             echo "Bucket $BUCKET already exists."
-            aws s3 sync ./dist/ s3://$BUCKET --delete
+            aws s3 sync ./dist/ s3://$BUCKET/$FOLDER --delete
           else
             echo "Creating bucket $BUCKET..."
+            
             aws s3api create-bucket --region $AWS_REGION --bucket "$BUCKET" --create-bucket-configuration LocationConstraint=$AWS_REGION > /dev/null # 1
-            aws s3api put-public-access-block --region $AWS_REGION --bucket "$BUCKET" --public-access-block-configuration "BlockPublicPolicy=false" # 2        
+            aws s3api put-public-access-block --region $AWS_REGION --bucket "$BUCKET" --public-access-block-configuration "BlockPublicPolicy=false" # 2          
+            
             aws s3api put-bucket-policy --bucket "$BUCKET" --policy '{
                 "Version": "2012-10-17",
                 "Statement": [
@@ -58,11 +61,10 @@ jobs:
                 ]
             }'
             
-            aws s3api put-bucket-website --region $AWS_REGION --bucket "$BUCKET" --website-configuration '{
+            aws s3api put-bucket-website --bucket "$BUCKET" --website-configuration '{
               "IndexDocument": {"Suffix": "index.html"},
               "ErrorDocument": {"Key": "error.html"}
             }'
             
-            aws s3 sync ./dist/ s3://$BUCKET --delete
+            aws s3 sync ./dist/ s3://$BUCKET/$FOLDER --delete
           fi
-          

@@ -40,6 +40,7 @@ const ZekCalendar = () => import(/* webpackChunkName: "zek-calendar" */ './compo
 const ZekLoader = () => import(/* webpackChunkName: "zek-loader" */ './components/loader/Loader.vue');
 const ZekDocViewer = () => import(/* webpackChunkName: "zek-doc-viewer" */ './components/doc-viewer/DocViewer.vue');
 const ZekCodeEditor = () => import(/* webpackChunkName: "zek-code-editor" */ './components/code-editor/CodeEditor.vue');
+const ZekGanttChart = () => import(/* webpackChunkName: "zek-gantt-chart" */ './components/charts/GanttChart.vue');
 
 export {
     ZekButton,
@@ -83,5 +84,6 @@ export {
     ZekCalendar,
     ZekLoader,
     ZekDocViewer,
-    ZekCodeEditor
+    ZekCodeEditor,
+    ZekGanttChart
 }

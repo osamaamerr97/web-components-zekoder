@@ -58,7 +58,7 @@
     "vue-scroll-picker": "^0.8.2",
     "vue-slick-carousel": "^1.0.6",
     "vue2-ace-editor": "^0.0.15",
-    "vue2-editor": "^2.10.3"
+    "yimo-vue-editor": "^1.1.7"
   },
   "devDependencies": {
     "@babel/core": "^7.17.2",

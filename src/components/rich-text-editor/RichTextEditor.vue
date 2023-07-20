@@ -24,10 +24,6 @@ export default {
       type: String,
       required: false
     },
-    placeholder: {
-      type: String,
-      required: false
-    },
     disabled: {
       type: Boolean,
       required: false

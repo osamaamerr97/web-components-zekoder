@@ -1,9 +1,11 @@
 <template>
-  <yimo-vue-editor :class="`zek-rich-editor` + customClass" v-model="value" :config="config" @input="textChange"></yimo-vue-editor>
+  <div :class="`zek-rich-editor-container ${customClass}  ${!disabled || 'disabled'}`" :style="styleObj">
+    <yimo-vue-editor class="zek-rich-editor" v-model="value" :config="config" @input="textChange" />
+  </div>
 </template>
 
 <script>
-import YimoVueEditor, {E} from "yimo-vue-editor";
+import YimoVueEditor, { E } from "yimo-vue-editor";
 export default {
   name: "ZekRichTextEditor",
   components: {
@@ -12,6 +14,10 @@ export default {
   props: {
     customClass: {
       type: String,
+      required: false
+    },
+    styleObj: {
+      type: Object,
       required: false
     },
     initialValue: {
@@ -42,31 +48,25 @@ export default {
       value: this.initialValue ?? "",
       config: {
         printLog: false, // disabled console.log
-        lang: E.langs.en,// lang config
+        lang: E.langs.en, // lang config
         menus: this.toolbar,
-        ...this.options, // node_modules/yimo-vue-editor/src/assets/js/wangEditor.js 
+        ...this.options // node_modules/yimo-vue-editor/src/assets/js/wangEditor.js
       }
     };
   },
-  created() {
-    E.placeholder = this.placeholder ?? "";
-    if (this.disabled) {
-      this.config.menus = [];
-      // remove pointer events from zek-rich-editor class
-      this.customClass = this.customClass + " disabled";
-    }
-  },
   methods: {
     textChange(e) {
-      // if disabled don't change value
       this.$emit("onChange", e);
-    },
+    }
   }
 };
 </script>
 
 <style scoped lang="scss">
 .disabled {
-  pointer-events: none;
+  pointer-events: none !important;
+  * {
+    pointer-events: none !important;
+  }
 }
 </style>

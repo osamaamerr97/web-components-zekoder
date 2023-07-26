@@ -35,6 +35,12 @@ Primary.args = {
         display: 'flex'
     },
     multiple: false,
+    inputStyle: {
+        color: 'red'
+    },
+    styleObj: {
+        opacity: .5
+    },
 };
 
 export const Secondary = Template.bind({});

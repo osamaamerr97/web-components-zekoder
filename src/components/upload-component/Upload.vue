@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :style="styleObj"  :class="customClass + '-container'">
     <div v-if="showPreview && type == 'image'" :style="previewSettings">
       <img
         v-for="(item, i) in uploaded"
@@ -16,6 +16,8 @@
       :type="type"
       :id="id"
       :name="name"
+      :style="inputStyle"
+      :class="customClass"
       :accept="fileTypes"
       :multiple="multiple"
       @change="onFileChange"
@@ -54,6 +56,17 @@ export default {
       type: String,
       default: "",
     },
+    customClass: {
+        type: String,
+        default: "zek-upload",
+    },
+    styleObj: {
+        type: Object,
+        default: () => ({}),
+    },
+      inputStyle: {
+        type: Object
+      },
   },
   computed: {
     fileTypes() {

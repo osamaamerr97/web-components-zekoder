@@ -1,6 +1,6 @@
 <template>
   <div :class="customClass" :style="styleObj">
-    <chart type="pie" :options="options" :series="series" :width="width" :height="height"></chart>
+    <chart :type="type" :options="options" :series="series" :width="width" :height="height"></chart>
   </div>
 </template>
 
@@ -23,6 +23,18 @@ export default {
     styleObj: Object,
     apiInfo: Object, // {url, method:get|post, type:graphql||http, query}
     showLegend: Boolean,
+    showValues: {
+        type: Boolean,
+        default: true
+    },
+    showTooltip: {
+        type: Boolean,
+        default: true
+    },
+    type: { // 'pie', 'donut'
+        type: String,
+        default: 'pie'
+    }
   },
   data() {
     return {
@@ -37,6 +49,12 @@ export default {
               this.$emit("dataPointSelection", config);
             }
           }
+        },
+        dataLabels: {
+          enabled: this.showValues
+        },
+        tooltip: {
+            enabled: this.showTooltip
         },
         noData: {
           text: "Loading...",

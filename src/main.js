@@ -27,6 +27,7 @@ const ZekRightPanel = () => import(/* webpackChunkName: "zek-right-panel" */ './
 const ZekSignup = () => import(/* webpackChunkName: "zek-signup" */ './components/signup/Signup.vue');
 const ZekGuidedForm = () => import(/* webpackChunkName: "zek-guided-form" */ './components/guided-form/GuidedForm.vue');
 const ZekXYChart = () => import(/* webpackChunkName: "zek-xy-chart" */ './components/charts/XYChart.vue');
+const ZekPieChart = () => import(/* webpackChunkName: "zek-pie-chart" */ './components/charts/PieChart.vue');
 const ZekRadialChart = () => import(/* webpackChunkName: "zek-radial-chart" */ './components/charts/RadialChart.vue');
 const ZekCountriesList = () => import(/* webpackChunkName: "zek-countries-list" */ './components/countries-list/CountriesList.vue');
 const ZekFileUpload = () => import(/* webpackChunkName: "zek-file-upload" */ './components/file-upload/FileUpload.vue');
@@ -72,6 +73,7 @@ export {
     ZekSignup,
     ZekGuidedForm,
     ZekXYChart,
+    ZekPieChart,
     ZekRadialChart,
     ZekCountriesList,
     ZekFileUpload,

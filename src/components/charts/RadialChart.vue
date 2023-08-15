@@ -32,6 +32,10 @@ export default {
         fontStyle: Object, // https://apexcharts.com/docs/options/dataLabels/value/ (fontSize, fontFamily, fontWeight, color, offsetX, offsetY, formatter, textAnchor, dropShadow)
         nameText: Object,
         totalText: Object,
+        chartOptions: { // object to overwrite any of the chart option, or to add a new option.
+            type: Object,
+            default: () => { return {} }
+        }
     },
     data() {
         return {
@@ -112,7 +116,8 @@ export default {
                             ...this.labels
                         }
                     }
-                }
+                },
+                ...this.chartOptions
             }
         };
     },

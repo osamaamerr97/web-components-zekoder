@@ -24,6 +24,10 @@ export default {
         xAxis: Object, //{label,dataKey,tickSize,tickColor,type:category|datetime} 
         yAxis: Object, //{label,tickSize,tickColor,series} // series: [{label, color, data[], dataKeys}]
         showLegend: Boolean,
+        chartOptions: { // object to overwrite any of the chart option, or to add a new option.
+            type: Object,
+            default: () => { return {} }
+        }
     },
     data() {
         return {
@@ -77,7 +81,8 @@ export default {
                     text: this.title? (this.title.text || this.title) : undefined,
                     style: this.title&&this.title.style? this.title.style : {}
 
-                }
+                },
+                ...this.chartOptions
             },
         }
     },

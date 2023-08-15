@@ -34,6 +34,10 @@ export default {
     type: { // 'pie', 'donut'
         type: String,
         default: 'pie'
+    },
+    chartOptions: { // object to overwrite any of the chart option, or to add a new option.
+        type: Object,
+        default: () => { return {} }
     }
   },
   data() {
@@ -84,6 +88,7 @@ export default {
         legend: {
           show: this.showLegend,
         },
+        ...this.chartOptions
       },
     };
   },

@@ -4,7 +4,7 @@
             :class="'right-panel p-4 ' + (customClass || '')"
             :style="{ ...styleObj, width, right: show ? '0' : `-${width}` }"
         >
-            <transition name="fade">
+            <transition name="slide" >
                 <template v-if="showForm">
                     <ZekForm
                         v-if="formProps"
@@ -66,8 +66,8 @@ export default {
         top: 0;
         bottom: 0;
         background-color: white;
-        -webkit-transition: right 0.7s;
         transition: right 0.7s;
+        -webkit-transition: right 0.7s;
         overflow: auto;
     }
     .right-panel-background {
@@ -80,13 +80,7 @@ export default {
         background-color: #00000050;
     }
 }
-.fade-enter-active,
-.fade-leave-active {
-    transition: opacity 0.5s;
-}
-
-.fade-enter,
-.fade-leave-to {
-    opacity: 0;
+.slide-leave-active {
+    transition: all .7s ease;
 }
 </style>

@@ -1,23 +1,23 @@
 <template>
-    <div class='right-panel-container'>
-        <div :class="'right-panel p-4 '  + (customClass||'')" :style="{...styleObj, width, right: show? '0':`-${width}`}">
-            <template v-if="showForm">
-                <ZekForm
-                    v-if="formProps"
-                    v-bind="formProps"
-                    @submit="$emit('submit', $event)"
-                    @cancel="$emit('cancel', $event)"
-                />
-                <component
-                    v-else
-                    :is="content.component"
-                    v-bind="content.props"
-                    v-on="content.events"
-                ></component>
-                <!-- <slot v-else></slot> -->
-            </template>
+    <div class="right-panel-container">
+        <div
+            :class="'right-panel p-4 ' + (customClass || '')"
+            :style="{ ...styleObj, width, right: show ? '0' : `-${width}` }"
+        >
+            <transition name="slide" >
+                <template v-if="showForm">
+                    <ZekForm
+                        v-if="formProps"
+                        v-bind="formProps"
+                        @submit="$emit('submit', $event)"
+                        @cancel="$emit('cancel', $event)"
+                    />
+                    <component v-else :is="content.component" v-bind="content.props" v-on="content.events"></component>
+                    <!-- <slot v-else></slot> -->
+                </template>
+            </transition>
         </div>
-        <div v-if="show" class="right-panel-background" @click="$emit('cancel');"></div>
+        <div v-if="show" class="right-panel-background" @click="$emit('cancel')"></div>
     </div>
 </template>
 
@@ -25,7 +25,7 @@
 import ZekForm from "../form/Form.vue";
 
 export default {
-    name: 'ZekRightPanel',
+    name: "ZekRightPanel",
     components: { ZekForm },
     props: {
         show: Boolean,
@@ -33,30 +33,28 @@ export default {
         customClass: String,
         width: {
             type: String,
-            default: '500px'
+            default: "500px"
         },
         styleObj: Object,
         content: Object
     },
     data() {
         return {
-            showForm: false
-        }
+            showForm: this.show
+        };
     },
     watch: {
         show: function(newVal) {
-            if(newVal) {
+            if (newVal) {
                 this.showForm = true;
-                document.body.classList.add('right-panel-open');
+                document.body.classList.add("right-panel-open");
             } else {
-                setTimeout(() => {
-                    document.body.classList.remove('right-panel-open');
-                    this.showForm = false;
-                }, 700);
+                document.body.classList.remove("right-panel-open");
+                this.showForm = false;
             }
         }
     }
-}
+};
 </script>
 
 <style lang="scss">
@@ -68,8 +66,8 @@ export default {
         top: 0;
         bottom: 0;
         background-color: white;
-        -webkit-transition: right 0.7s;
         transition: right 0.7s;
+        -webkit-transition: right 0.7s;
         overflow: auto;
     }
     .right-panel-background {
@@ -81,5 +79,8 @@ export default {
         left: 0;
         background-color: #00000050;
     }
+}
+.slide-leave-active {
+    transition: all .7s ease;
 }
 </style>

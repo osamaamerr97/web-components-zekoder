@@ -423,6 +423,11 @@ export default {
     min-width: v-bind(collapsedWidth);
     text-align: center;
     justify-content: v-bind(justifyContent);
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+        width: 0px;
+        background-color: transparent;
+    }
 }
 .link-container {
     cursor: pointer;

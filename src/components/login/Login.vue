@@ -33,8 +33,9 @@
                     :submitButton="submitButton"
                     :cancelButton="{show:false}"
                     :errorMessage="error"
-                    :forgotPassword="showForgotLink"
-                    :rememberMe="showRememberMe"
+                    :forgotPassword="( showForgotLink || forgotPassword ) && (forgotPassword || {})"
+                    :rememberMe="( showRememberMe || rememberMe ) && (rememberMe || {})"
+                    @rememberMeUpdated="onRememberMeUpdated($event)"
                     @submit="login($event)"
                     @cancel="cancel()"
                 ></zek-form>
@@ -58,12 +59,14 @@
         password: Object,
         showForgotLink: Boolean,
         showRememberMe: Boolean,
+        rememberMe: Object,
+        forgotPassword: Object,
         loginButton: [String, Object],
         socialIcons: Array, // [{icon: '', image:'', label:''}]
         image: Object,
         webAuthConfig: Object,
         firebaseConfig: Object,
-        url: String,
+        url: String, //login endpoint url
         orText: String,
         styleObj: Object
     },
@@ -91,7 +94,8 @@
                 }
             ],
             webAuth: null,
-            fireBase: null
+            fireBase: null,
+            rememberUser: this.rememberMe?.checked || false
         }
         if ( this.email ) {
             data.inputs[0] = this.email;
@@ -182,6 +186,8 @@
             .then((res) => {
                 localStorage.setItem('userInfo', JSON.stringify(res.data.user));
                 localStorage.setItem('accessToken', res.data.accessToken);
+                localStorage.setItem('refreshToken', res.data.refreshToken);
+                localStorage.setItem('expirationTime', res.data.expirationTime);
                 this.error = '';
                 this.$emit('onLoginSuccess', res.data);
             })
@@ -198,7 +204,11 @@
                 location.replace(socialIcon.url);
             }
             this.$emit('socialIconClicked', socialIcon.label)
-        }
+        },
+        onRememberMeUpdated(checked) {
+            this.rememberUser = checked;
+            localStorage.setItem('rememberUser', checked);
+        },
     }
   }
 </script>

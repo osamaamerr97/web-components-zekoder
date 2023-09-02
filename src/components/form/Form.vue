@@ -6,18 +6,20 @@
         <form @submit.prevent="submitForm" @reset="cancelForm" action="/" method :key="formKey">
             <div class="form-group">
                 <zek-column-content :column="content()" />
-                <div v-if="forgotPassword" class="forgot-link">
-                    <RouterLink  to="/auth/forgotpassword">Forgot Password?</RouterLink>
+                <div v-if="forgotPassword" class="forgot-link" :class="forgotPassword.class">
+                    <RouterLink  :to="forgotPassword.url || '/auth/forgotpassword'"> <span v-html="forgotPassword.label || 'Forgot Password?'" ></span> </RouterLink>
                 </div>
-                <div v-if="rememberMe" class="remember-me">
-                    <ZekInput class="remember-input" :inputType="'checkbox'" :inputStyle="{width:'18px',height:'18px'}" :label="{text:'Remember me',
-                style:{
-                    fontSize:'initial',
-                    paddingLeft:'5px'
-                }}"></ZekInput>
+                <div v-if="rememberMe" class="remember-me" :class="rememberMe.class">
+                    <ZekInput class="remember-input" :inputType="'checkbox'" :checked="rememberMe.checked" :inputStyle="rememberMe.inputStyle || {width:'18px',height:'18px'}" :label="rememberMe.label || {text:'Remember me',
+                    style:{
+                        fontSize:'initial',
+                        paddingLeft:'5px'
+                    }}"
+                    @onInput="$emit('rememberMeUpdated', $event.target.checked)"
+                    ></ZekInput>
                 </div>
-                <div v-if="showTerms" class="remember-me">
-                    <ZekInput class="remember-input" :inputType="'checkbox'" :required="true" :inputStyle="{width:'18px',height:'18px'}" :label="{text:'Accept terms and conditions',
+                <div v-if="showTerms" class="terms-conditions">
+                    <ZekInput class="terms-input" :inputType="'checkbox'" :required="true" :inputStyle="{width:'18px',height:'18px'}" :label="{text:'Accept terms and conditions',
                 style:{
                     fontSize:'initial',
                     paddingLeft:'5px'
@@ -59,8 +61,8 @@ export default {
         theme: String,
         successMessage: String,
         errorMessage: String,
-        forgotPassword: Boolean,
-        rememberMe: Boolean,
+        forgotPassword: [Boolean, Object],
+        rememberMe: [Boolean, Object],
         showTerms: Boolean,
         styleObj: Object,
     },
@@ -289,11 +291,11 @@ export default {
     margin-top: 15px;
     font-size: 0.7vw;
 }
-.remember-me{
+.remember-me, .terms-conditions{
     display: flex;
     font-size: 1vw;
 }
-.remember-input{
+.remember-input, .terms-input{
     display: flex;
     flex-direction: row-reverse;
     align-items: center;

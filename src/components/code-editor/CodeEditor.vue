@@ -65,6 +65,10 @@ export default {
             type: Boolean,
             default: true
         },
+        errors: { // ? Array of objects with {row, column, text and type} properties
+            type: Array,
+            default: () => []
+        },
         options: {
             type: Object,
             default: () => ({})
@@ -76,7 +80,7 @@ export default {
         };
     },
     methods: {
-        editorInit() {
+        editorInit(editor) {
             try{
                 require("brace/ext/language_tools"); //language extension prerequsite...
                 require("brace/ext/error_marker");
@@ -86,9 +90,25 @@ export default {
             } catch (e) {
                 console.error(`Error Initiating ZekCodeEditor: ${e}`);
             }
+            // Prevent scrolling of the page when scrolling within the editor
+            editor.container.addEventListener("mousewheel", function(event) {
+                event.preventDefault();
+                event.stopPropagation();
+            });
+
+            // Prevent scrolling of the page when using arrow keys within the editor
+            editor.container.addEventListener("keydown", function(event) {
+                if (event.key === "ArrowUp" || event.key === "ArrowDown") {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+            });
         },
     },
     watch: {
+        errors(val) {
+            this.$refs.codeEditor.editor.getSession().setAnnotations(val);
+        },
         content(val) {
             this.$emit("onInput", val);
         },
@@ -107,7 +127,10 @@ export default {
 :deep {
     // webkit-scrollbar
     ::-webkit-scrollbar {
-        width: 5px;
+        width: 5px !important;
+        &:horizontal {
+            height: 5px !important;
+        }
     }
     ::-webkit-scrollbar-track {
         background-color: inherit;
@@ -119,11 +142,6 @@ export default {
 }
 :deep .ace_editor {
     border-radius: 7.5px;
-    .ace_gutter {
-        padding: 10px 0;
-    }
-    .ace_scroller {
-        padding: 10px 0;
-    }
 }
 </style>
+

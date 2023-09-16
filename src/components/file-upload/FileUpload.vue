@@ -144,6 +144,14 @@ export default {
 
             const file = fileObject.file;
 
+            // if file is the same as the one already uploaded, do nothing
+            const files = fileObject.fileItems.map(item => item.file);
+            files.forEach(file => {
+                if ( this.preloadedFiles.includes(file) ) {
+                    return;
+                }
+            })
+
             // this check will only work if files are being uploaded using zecommons
             if ( '.'+file.type.split('/')[1] === file.name ) {
                 // if ( !this.multiple ) { this.$emit("onChange", null) }

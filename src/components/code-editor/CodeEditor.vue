@@ -107,7 +107,8 @@ export default {
     },
     watch: {
         errors(val) {
-            this.$refs.codeEditor.editor.getSession().setAnnotations(val);
+            // ? Setting Annotations is a bit laggy in the component so timeout is needed
+            setTimeout( () => this.$refs.codeEditor.editor.getSession().setAnnotations(val), 100);
         },
         content(val) {
             this.$emit("onInput", val);

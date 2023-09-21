@@ -8,6 +8,9 @@ export default {
         showSeleceted: {
             control: { type: 'boolean' },
         },
+        showCheckBox: {
+            control: { type: 'boolean' },
+        },
         label: {
             control: { type: 'text' },
         },
@@ -16,7 +19,7 @@ export default {
         },
         selectType: {
             control: { type: 'select' },
-            options: ['Single', 'Multi'],
+            options: ['Single', 'Multi', 'action'],
         },
         theme: {
             control: { type: 'select' },
@@ -56,6 +59,7 @@ const Template = (args, { argTypes }) => ({
 export const Primary = Template.bind({});
 Primary.args = {
     showSelected: true,
+    showCheckBox: true,
     label: 'Dropdown',
     items: [
         {
@@ -72,7 +76,7 @@ Primary.args = {
         },
     ],
     selectType: 'Single',
-    theme: 'Custom',
+    theme: 'Bootstrap',
     showIcon: true,
     styleObj: {
         height: 'fit-content',
@@ -85,12 +89,12 @@ Primary.args = {
         border: 'none',
         width: '100%',
     },
-    itemStyle: {
-        backgroundColor: '#ffff',
-    },
-    selectedItemStyle: {
-        backgroundColor: '#f5f5f5',
-    },
+    // itemStyle: {
+    //     backgroundColor: '#ffff',
+    // },
+    // selectedItemStyle: {
+    //     backgroundColor: '#f5f5f5',
+    // },
     iconStyle: {
     },
     toggleOnSelect: true,

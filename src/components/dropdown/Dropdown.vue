@@ -31,13 +31,13 @@
                     v-for="(item, i) in filteredItems"
                     :key="i"
                     :class="
-                        selected.includes(item.value || item) ? 'active' : ''
+                        selected.includes(item.value || item) ? selectType.toLowerCase() == 'action'? '' : 'active' : ''
                     "
                     :style="selected.includes(item.value || item) ? selectedItemStyle : itemStyle"
                     @click="onSelect($event, item)"
                 >
                     <input
-                        v-if="selectType.toLowerCase() == 'multi'"
+                        v-if="selectType.toLowerCase() == 'multi' && showCheckBox"
                         class="form-check-input pe-none"
                         type="checkbox"
                         v-model="selected"
@@ -98,7 +98,7 @@
                     @click="onSelect($event, item)"
                 >
                     <input
-                        v-if="selectType.toLowerCase() == 'multi'"
+                        v-if="selectType.toLowerCase() == 'multi' && showCheckBox"
                         type="checkbox"
                         :id="i"
                         v-model="selected"
@@ -184,6 +184,10 @@ export default {
             type: String,
             default: ''
         },
+        showCheckBox: {
+            type: Boolean,
+            default: true
+        },
     },
     directives: {
         ClickOutside
@@ -228,7 +232,7 @@ export default {
             if (this.toggleOnSelect) {
                 this.onToggle();
             }
-            if (this.selectType.toLowerCase() == "single") {
+            if (this.selectType.toLowerCase() == "single" || this.selectType.toLowerCase() == "action") {
                 this.selected = [item.value || item];
             } else {
                 if (this.selected.includes(item.value || item)) {

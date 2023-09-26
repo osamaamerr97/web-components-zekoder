@@ -15,7 +15,7 @@
                 :style="buttonStyle"
                 :disabled="disabled"
             >
-                {{ selected.length && showSelected ? selectedText : placeholder || label }}
+                {{ selected.length && showSelected && selectedText ? selectedText : placeholder || label }}
                 <i v-if="customIcon" :class="customIcon"></i>
             </button>
             <ul v-if="toggle || alwaysOpen" class="dropdown-menu show" style="padding: 0" :style="listStyle">
@@ -208,6 +208,9 @@ export default {
     watch:{
         value(){
             this.selected = typeof this.value == "object" ? this.value : [this.value];
+        },
+        items(){
+            this.filteredItems = this.items;
         }
     },
     computed: {

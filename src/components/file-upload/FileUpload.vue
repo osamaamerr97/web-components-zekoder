@@ -142,6 +142,14 @@ export default {
                 return;
             }
 
+            // if same file as preloaded file, do nothing (only for single file upload)
+            if ( !this.multiple && this.preloadedFiles && this.preloadedFiles.length ) {
+                const preloadedFile = this.preloadedFiles.find(file => file === fileObject.file.name || file === fileObject.source);
+                if ( preloadedFile ) {
+                    return;
+                }
+            }
+
             const file = fileObject.file;
 
             // this check will only work if files are being uploaded using zecommons

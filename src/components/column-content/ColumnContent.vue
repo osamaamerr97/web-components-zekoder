@@ -1,37 +1,52 @@
 <template>
-    <div class="column-content-wrapper"
-        v-if="column && ((column.rows && column.rows.length) || (column.content))"
+    <div
+        ref="zekColumnContent"
+        class="column-content-wrapper"
+        v-if="column && ((column.rows && column.rows.length) || column.content)"
         v-show="column.condition != undefined ? column.condition : true"
         :key="key"
         :class="{
             customClass,
-            'content-container': column.content && Array.isArray(column.content),
+            'content-container': column.content && Array.isArray(column.content)
         }"
         :style="styleObj"
     >
         <template v-if="column && column.rows && column.rows.length">
-            <div v-for="(row,i) in column.rows" :key="'row'+i" class="row"
+            <div
+                v-for="(row, i) in column.rows"
+                :key="'row' + i"
+                class="row"
                 v-bind="row.props"
                 v-on="row.events"
                 :id="row.id"
                 :class="row.class"
                 v-show="row.condition != undefined ? row.condition : true"
-                @click.stop="emitClick('rowClicked', {column: column, row: row, index: i})"
+                @click.stop="emitClick('rowClicked', { column: column, row: row, index: i })"
             >
-                <div v-for="(col,index) in row.columns" :key="'col'+index"
-                    :class="(col.columnWidth ? 'col-'+col.columnWidth : 'col')+' '+(col.class || '')"
+                <div
+                    v-for="(col, index) in row.columns"
+                    :key="'col' + index"
+                    :class="(col.columnWidth ? 'col-' + col.columnWidth : 'col') + ' ' + (col.class || '')"
                     :id="col.id"
                     v-bind="col.props"
                     v-on="col.events"
                     v-show="col.condition != undefined ? col.condition : true"
-                    @click.stop="emitClick('colClicked', {column: col, row: row, index: index})"
+                    @click.stop="emitClick('colClicked', { column: col, row: row, index: index })"
                 >
-                    <zek-column-content :column="col" @rowClicked="emitClick('rowClicked', $event)" @colClicked="emitClick('colClicked', $event)"></zek-column-content>
+                    <zek-column-content
+                        :column="col"
+                        @rowClicked="emitClick('rowClicked', $event)"
+                        @colClicked="emitClick('colClicked', $event)"
+                    ></zek-column-content>
                 </div>
             </div>
         </template>
         <template v-else-if="column && column.content && Array.isArray(column.content) && column.content.length">
-            <zek-column-content v-for="(content,i) in column.content" :key="'content'+i+key" :column="{content, condition: content.condition, map: content.map}"></zek-column-content>
+            <zek-column-content
+                v-for="(content, i) in column.content"
+                :key="'content' + i + key"
+                :column="{ content, condition: content.condition, map: content.map }"
+            ></zek-column-content>
         </template>
         <zek-button
             @click="stopPropagation($event)"
@@ -188,8 +203,8 @@ import ZekToggleButton from "../toggle-button/ToggleButton.vue";
 import VueRecaptcha from "../../../node_modules/vue-recaptcha/dist/vue-recaptcha.es";
 import ZekCountriesList from "../countries-list/CountriesList.vue";
 import axios from "axios";
-import ZekFileUpload from '../file-upload/FileUpload.vue';
-import ZekSlider from '../slider/Slider.vue';
+import ZekFileUpload from "../file-upload/FileUpload.vue";
+import ZekSlider from "../slider/Slider.vue";
 
 export default {
     components: {
@@ -217,22 +232,31 @@ export default {
     },
     name: "ZekColumnContent",
     props: {
-        column: Object, //column can have rows or a component. Each row must have columns, columns can have more rows. Component can only be inside a column
+        column: {
+            //column can have rows or a component. Each row must have columns, columns can have more rows. Component can only be inside a column
+            type: Object,
+            default: () => ({})
+        },
         customClass: {
             type: String,
             default: ""
         },
         styleObj: {
             type: Object,
-            default: () => { return {} }
+            default: () => {
+                return {};
+            }
+        },
+        id: {
+            type: [String, Number],
+            default: ""
         }
-
     },
-    data(){
+    data() {
         return {
             key: Math.ceil(Math.random() * 100000),
             apiData: null
-        }
+        };
     },
     computed: {
         isColumnArray() {
@@ -246,11 +270,11 @@ export default {
         }
     },
     created() {
-        this.init()
+        this.init();
     },
     methods: {
         init() {
-            if(this.column.map) {
+            if (this.column.map) {
                 this.processMap(this.column.map);
             } else if (this.column && this.column.dataSource) {
                 this.processDataSource(this.column.dataSource);
@@ -264,23 +288,23 @@ export default {
         },
         processMap(map) {
             // TODO: This could be a lot cleaner
-            if(this.isColumnArray){
-                console.log("Column Array")
-                if(this.column.dataSource && this.column.dataSource.iter){
+            if (this.isColumnArray) {
+                console.log("Column Array");
+                if (this.column.dataSource && this.column.dataSource.iter) {
                     let colGroup = this.column.content;
                     this.column.content = [];
                     map.forEach(m => {
-                        this.column.content = this.column.content.concat(this.mapColGrouptoMap(colGroup, m))
+                        this.column.content = this.column.content.concat(this.mapColGrouptoMap(colGroup, m));
                     });
                 } else {
                     this.column.content.forEach((column, c) => {
-                        column.map = map[c]
+                        column.map = map[c];
                     });
                 }
-            } else if(this.isRows){
-                console.log("Rows")
+            } else if (this.isRows) {
+                console.log("Rows");
                 this.column.rows.forEach((row, r) => {
-                    if(row.dataSource && row.dataSource.iter){
+                    if (row.dataSource && row.dataSource.iter) {
                         let colGroup = row.columns;
                         row.columns = [];
                         map.forEach(m => {
@@ -288,13 +312,13 @@ export default {
                         });
                     } else {
                         row.columns.forEach(column => {
-                            column.map = map[r]
+                            column.map = map[r];
                         });
                     }
                 });
             } else if (this.isParent) {
-                console.log("Parent")
-                if(this.column.dataSource && this.column.dataSource.iter){
+                console.log("Parent");
+                if (this.column.dataSource && this.column.dataSource.iter) {
                     let colGroup = this.column.rows;
                     this.column.rows = [];
                     map.forEach(m => {
@@ -303,23 +327,22 @@ export default {
                 } else {
                     this.column.rows.forEach((row, r) => {
                         row.columns.forEach(column => {
-                            column.map = map[r]
+                            column.map = map[r];
                         });
                     });
                 }
-            }
-            else {
-                console.log("Column")
+            } else {
+                console.log("Column");
                 this.apiData = Array.isArray(map) ? map[0] : map;
             }
         },
         mapColGrouptoMap(colGroup, map, isRow) {
             return colGroup.map(col => {
-                if (isRow){
-                    col.columns = this.mapColGrouptoMap(col.columns, map)
-                    return {...col, map: map};
-                } else{
-                    return {...col, map: map};
+                if (isRow) {
+                    col.columns = this.mapColGrouptoMap(col.columns, map);
+                    return { ...col, map: map };
+                } else {
+                    return { ...col, map: map };
                 }
             });
         },
@@ -329,12 +352,14 @@ export default {
                 url: `${dataSource.url}/q`,
                 data: dataSource.requestBody,
                 headers: dataSource.headers
-            }).then(response => {
-                this.processMap(response.data.data);
-                this.key++;
-            }).catch(error => {
-                console.log(error)
-            });
+            })
+                .then(response => {
+                    this.processMap(response.data.data);
+                    this.key++;
+                })
+                .catch(error => {
+                    console.log(error);
+                });
         },
         stopPropagation(event) {
             event.stopPropagation();

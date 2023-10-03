@@ -1,5 +1,5 @@
 <template>
-    <div class="zek-code-editor">
+    <div class="zek-code-editor" :style="styleObj">
         <editor
             ref="codeEditor"
             v-model="content"
@@ -17,6 +17,8 @@
                 placeholder: 'Enter your code here...',
                 ...options
             }"
+            v-on="extraEvents"
+            v-bind="extraProps"
         ></editor>
     </div>
 </template>
@@ -72,7 +74,23 @@ export default {
         options: {
             type: Object,
             default: () => ({})
-        }
+        },
+        styleObj: {
+            type: Object,
+            default: () => ({})
+        },
+        extraProps: {
+            type: Object,
+            default: () => ({})
+        },
+        extraEvents: {
+            type: Object,
+            default: () => ({})
+        },
+        id: {
+            type: [String, Number],
+            default: ""
+        },
     },
     data() {
         return {

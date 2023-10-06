@@ -15,7 +15,7 @@
                 :style="buttonStyle"
                 :disabled="disabled"
             >
-                {{ selected.length && showSelected && selectedText ? selectedText : placeholder || label }}
+                <span :class="!selectedText ? ' dropdown-placeholder' : ''">{{ selected.length && showSelected && selectedText ? selectedText : placeholder || label }}</span>
                 <i v-if="customIcon" :class="customIcon"></i>
             </button>
             <ul v-if="toggle || alwaysOpen" class="dropdown-menu show" style="padding: 0" :style="listStyle">

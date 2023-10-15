@@ -18,10 +18,12 @@
             :className="'zek-pond' + customClass"
             :stylePanelLayout="stylePanelLayout"
             :style="{ width, height, ...inputStyle }"
-            v-bind="extraProps"
             :allowImagePreview="allowImagePreview"
+            :allowRemove="!readonly"
+            v-bind="extraProps"
             @addfile="uploadFiles"
             @removefile="deleteFile"
+            @activatefile="onClick"
         />
         <ZekButton
             v-if="deleteButton"
@@ -102,7 +104,10 @@ export default {
             type: String,
             default: "",
         },
-        readonly: Boolean,
+        readonly: {
+            type: Boolean,
+            default: false,
+        },
         stylePanelLayout: {
             //https://pqina.nl/filepond/docs/api/instance/properties/#styles
             type: String,
@@ -137,6 +142,9 @@ export default {
         }
     },
     methods: {
+        onClick($event) {
+            this.$emit('onClick', $event);
+        },
         uploadFiles(error, fileObject) {
             if ( error ) {
                 return;
@@ -185,6 +193,9 @@ export default {
         },
         deleteFile(error, file) {
             if ( error ) { return; }
+
+            // Special event for removal
+            this.$emit('onRemove', file);
 
             if ( this.multiple ) {
                 const fileId = (file.source.split('=')[1]).split('&')[0];

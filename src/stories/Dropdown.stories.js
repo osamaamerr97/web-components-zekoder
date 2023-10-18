@@ -64,15 +64,18 @@ Primary.args = {
     items: [
         {
         text: '1',
-        value: "1d"
+        value: "1d",
+        icon: 'far fa-thumbs-up iconColor'
         },
         {
         text: '2',
-        value: "2d"
+        value: "2d",
+        icon: 'far fa-thumbs-up iconColor'
         },
         {
         text: '3',
-        value: "3d"
+        value: "3d",
+        icon: 'far fa-thumbs-up iconColor'
         },
     ],
     selectType: 'Single',

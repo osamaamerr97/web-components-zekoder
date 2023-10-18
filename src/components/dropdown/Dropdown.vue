@@ -1,12 +1,21 @@
 <template>
-    <div class="zek-dropdown" v-click-outside="close" :class="{'with-filters': allowFiltering }" @click="$emit('onClick', $event)">
+    <div
+        class="zek-dropdown"
+        v-click-outside="close"
+        :class="{ 'with-filters': allowFiltering }"
+        @click="$emit('onClick', $event)"
+    >
         <span v-if="showLabel && label" :style="label.style">
             <span v-html="label.html || label.text || label"></span>
             <span class="required-asterik" v-if="required">*</span>
         </span>
         <input type="text" class="hidden-field" :required="required" v-model="selectedText" />
         <!-- Bootstrap -->
-        <div v-if="theme == 'Bootstrap'" :class="'dropdown ' + cssClass + (error ? ' zek-invalid-field' : '') " :style="styleObj">
+        <div
+            v-if="theme == 'Bootstrap'"
+            :class="'dropdown ' + cssClass + (error ? ' zek-invalid-field' : '')"
+            :style="styleObj"
+        >
             <button
                 class="btn btn-secondary"
                 :class="(showIcon ? 'dropdown-toggle' : 'dropdown-toggle no-caret') + (disabled ? ' disabled' : '')"
@@ -15,23 +24,37 @@
                 :style="buttonStyle"
                 :disabled="disabled"
             >
-                <span :class="!selectedText ? ' dropdown-placeholder' : ''">{{ selected.length && showSelected && selectedText ? selectedText : placeholder || label }}</span>
+                <span :class="!selectedText ? ' dropdown-placeholder' : ''">{{
+                    selected.length && showSelected && selectedText ? selectedText : placeholder || label
+                }}</span>
                 <i v-if="customIcon" :class="customIcon"></i>
             </button>
             <ul v-if="toggle || alwaysOpen" class="dropdown-menu show" style="padding: 0" :style="listStyle">
-                <input
+                <ZekInput
                     v-if="allowFiltering && (toggle || alwaysOpen)"
-                    class="zek-dropdown-filter filter-string"
+                    customClass="zek-dropdown-filter filter-string"
                     type="text"
                     :placeholder="filterBarPlaceholder"
-                    @keyup="onFilterChange($event)"
+                    @onKeyUp="onFilterChange($event)"
+                    :icon="showAddIcon ? 'fas fa-plus-circle' : ''"
+                    :iconSettings="{
+                        position: 'right',
+                        clickable: true,
+                        style: { position: 'absolute', right: '5px', top: '15px' }
+                    }"
+                    @iconClicked="addItem"
+                    id="filter-input"
                 />
                 <li
                     class="dropdown-item"
                     v-for="(item, i) in filteredItems"
                     :key="i"
                     :class="
-                        selected.includes(item.value || item) ? selectType.toLowerCase() == 'action'? '' : 'active' : ''
+                        selected.includes(item.value || item)
+                            ? selectType.toLowerCase() == 'action'
+                                ? ''
+                                : 'active'
+                            : ''
                     "
                     :style="selected.includes(item.value || item) ? selectedItemStyle : itemStyle"
                     @click="onSelect($event, item)"
@@ -87,12 +110,25 @@
                     <i v-if="showIcon" class="fa fa-angle-down" :style="iconStyle"></i>
                 </span>
             </button>
-            <div :style="listStyle" v-if="toggle  || alwaysOpen">
+            <div :style="listStyle" v-if="toggle || alwaysOpen">
+                <ZekInput
+                    v-if="allowFiltering && (toggle || alwaysOpen)"
+                    customClass="zek-dropdown-filter filter-string"
+                    type="text"
+                    :placeholder="filterBarPlaceholder"
+                    @onKeyUp="onFilterChange($event)"
+                    :icon="showAddIcon ? 'fas fa-plus-circle' : ''"
+                    :iconSettings="{
+                        position: 'right',
+                        clickable: true,
+                        style: { position: 'absolute', right: '5px', top: '15px' }
+                    }"
+                    @iconClicked="addItem"
+                    id="filter-input"
+                />
                 <div
-                    :style="
-                        selected.includes(item) ? selectedItemStyle : itemStyle
-                    "
-                    v-for="(item, i) in items"
+                    :style="selected.includes(item) ? selectedItemStyle : itemStyle"
+                    v-for="(item, i) in filteredItems"
                     :key="i"
                     href="#"
                     @click="onSelect($event, item)"
@@ -104,17 +140,24 @@
                         v-model="selected"
                         :value="item.value ? item.value : item"
                     />
-                    {{ item.text || item }}
+                     <label class="form-check-label pe-none" for="flexCheckDefault">
+                        {{ item.text || item }}
+                    </label>
+                    <i v-if="item.icon" :class="item.icon"></i>
                 </div>
             </div>
         </div>
-        <div class="field-error" v-if="error">{{error}}</div>
+        <div class="field-error" v-if="error">{{ error }}</div>
     </div>
 </template>
 
 <script>
-import ClickOutside from 'vue-click-outside';
+import ClickOutside from "vue-click-outside";
+import ZekInput from "../input-field/InputField.vue";
 export default {
+    components: {
+        ZekInput
+    },
     name: "ZekDropdown",
     props: {
         customIcon: String,
@@ -182,12 +225,12 @@ export default {
         },
         error: {
             type: String,
-            default: ''
+            default: ""
         },
         showCheckBox: {
             type: Boolean,
             default: true
-        },
+        }
     },
     directives: {
         ClickOutside
@@ -195,9 +238,10 @@ export default {
     data() {
         return {
             toggle: false,
-            filterString: '',
             filteredItems: this.items,
-            selected: []
+            selected: [],
+            showAddIcon: false,
+            itemToAdd: "",
         };
     },
     created() {
@@ -205,11 +249,11 @@ export default {
             this.selected = typeof this.value == "object" ? this.value : [this.value];
         }
     },
-    watch:{
-        value(){
+    watch: {
+        value() {
             this.selected = typeof this.value == "object" ? this.value : [this.value];
         },
-        items(){
+        items() {
             this.filteredItems = this.items;
         }
     },
@@ -239,9 +283,7 @@ export default {
                 this.selected = [item.value || item];
             } else {
                 if (this.selected.includes(item.value || item)) {
-                    this.selected = this.selected.filter(
-                        selected => selected != (item.value || item)
-                    );
+                    this.selected = this.selected.filter(selected => selected != (item.value || item));
                 } else {
                     this.selected.push(item.value || item);
                 }
@@ -249,11 +291,23 @@ export default {
             this.$emit("onSelect", this.selected);
         },
         onFilterChange(event) {
-            const filterString = event.target.value;
-            if ( filterString ) {
-                this.filteredItems = this.items.filter(item => item.text.toLowerCase().includes(filterString.toLowerCase()));
+            const filterString = event.target.value.toLowerCase();
+
+            // Check if the filterString matches any existing items
+            const foundItem = this.items.find(item => item.text.toLowerCase() === filterString);
+
+            if (filterString && !foundItem) {
+                // If filterString doesn't match any existing items, add it as a new option
+                this.showAddIcon = true;
+                this.itemToAdd = filterString;
+            } else if (filterString) {
+                // If filterString matches an existing item, filter the items based on the filterString
+                this.filteredItems = this.items.filter(item => item.text.toLowerCase().includes(filterString));
+                this.showAddIcon = false;
             } else {
+                // If filterString is empty, show all items
                 this.filteredItems = this.items;
+                this.showAddIcon = false;
             }
         },
         onToggle() {
@@ -268,6 +322,21 @@ export default {
         close() {
             this.filteredItems = this.items;
             this.toggle = false;
+        },
+        addItem() {
+            const itemExists = this.items.some(item => item.text.toLowerCase() === this.itemToAdd.toLowerCase());
+            if (!itemExists) {
+                const capitalized = this.itemToAdd.charAt(0).toUpperCase() + this.itemToAdd.slice(1)
+                this.items.push({ text: capitalized, value: this.itemToAdd });
+                this.itemToAdd = "";
+                this.showAddIcon = false;
+                setTimeout(function() {
+                    // Clear the input value after the delay
+                    document.getElementById("filter-input").value = "";
+                }, 1);
+            } else {
+                console.log('item exist')
+            }
         }
     }
 };
@@ -299,7 +368,7 @@ export default {
     position: relative;
 
     &.with-filters {
-        input.filter-string {
+        ::v-deep input.filter-string {
             background: #ffffff;
             border: none;
             padding: 10px;
@@ -317,6 +386,9 @@ export default {
     color: #dc3545;
 }
 .zek-invalid-field > button {
-  border: solid 2px #dc354550 !important;
+    border: solid 2px #dc354550 !important;
+}
+.iconColor {
+    color: blue;
 }
 </style>

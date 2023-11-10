@@ -3,6 +3,13 @@
         <span v-if="showLabel && label" :style="label.style">
             <span v-html="label.html || label.text || label"></span>
             <span class="required-asterik" v-if="required">*</span>
+            <i
+                class="input-hint-icon far fa-circle-question"
+                v-if="hint"
+                v-b-tooltip.hover.top
+                :title="hint"
+                @click="$emit('hintClicked', $event)"
+            />
         </span>
         <input type="text" class="hidden-field" :required="required" v-model="selectedText" />
         <!-- Bootstrap -->
@@ -15,7 +22,7 @@
                 :style="buttonStyle"
                 :disabled="disabled"
             >
-                {{ selected.length && showSelected ? selectedText : placeholder || label }}
+                <span :class="!selectedText ? ' dropdown-placeholder' : ''">{{ selected.length && showSelected && selectedText ? selectedText : placeholder || label }}</span>
                 <i v-if="customIcon" :class="customIcon"></i>
             </button>
             <ul v-if="toggle || alwaysOpen" class="dropdown-menu show" style="padding: 0" :style="listStyle">
@@ -31,13 +38,13 @@
                     v-for="(item, i) in filteredItems"
                     :key="i"
                     :class="
-                        selected.includes(item.value || item) ? 'active' : ''
+                        selected.includes(item.value || item) ? selectType.toLowerCase() == 'action'? '' : 'active' : ''
                     "
                     :style="selected.includes(item.value || item) ? selectedItemStyle : itemStyle"
                     @click="onSelect($event, item)"
                 >
                     <input
-                        v-if="selectType.toLowerCase() == 'multi'"
+                        v-if="selectType.toLowerCase() == 'multi' && showCheckBox"
                         class="form-check-input pe-none"
                         type="checkbox"
                         v-model="selected"
@@ -98,7 +105,7 @@
                     @click="onSelect($event, item)"
                 >
                     <input
-                        v-if="selectType.toLowerCase() == 'multi'"
+                        v-if="selectType.toLowerCase() == 'multi' && showCheckBox"
                         type="checkbox"
                         :id="i"
                         v-model="selected"
@@ -117,6 +124,7 @@ import ClickOutside from 'vue-click-outside';
 export default {
     name: "ZekDropdown",
     props: {
+        hint: String,
         customIcon: String,
         showSelected: {
             type: Boolean,
@@ -184,6 +192,10 @@ export default {
             type: String,
             default: ''
         },
+        showCheckBox: {
+            type: Boolean,
+            default: true
+        },
     },
     directives: {
         ClickOutside
@@ -204,6 +216,9 @@ export default {
     watch:{
         value(){
             this.selected = typeof this.value == "object" ? this.value : [this.value];
+        },
+        items(){
+            this.filteredItems = this.items;
         }
     },
     computed: {
@@ -228,7 +243,7 @@ export default {
             if (this.toggleOnSelect) {
                 this.onToggle();
             }
-            if (this.selectType.toLowerCase() == "single") {
+            if (this.selectType.toLowerCase() == "single" || this.selectType.toLowerCase() == "action") {
                 this.selected = [item.value || item];
             } else {
                 if (this.selected.includes(item.value || item)) {
@@ -311,5 +326,10 @@ export default {
 }
 .zek-invalid-field > button {
   border: solid 2px #dc354550 !important;
+}
+.input-hint-icon {
+  color: #999;
+  cursor: pointer;
+  height: 100%;
 }
 </style>

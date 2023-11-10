@@ -9,6 +9,7 @@
                 :fields="fields"
                 ref="bTable"
                 @row-selected="rowSelected"
+                @row-clicked="rowClick"
                 :current-page="currentPage"
             >
                 <template v-if="caption" #table-caption>{{ caption }}</template>
@@ -248,6 +249,9 @@ export default {
     methods: {
         rowSelected(rows) {
             this.$emit("rowsSelected", rows);
+        },
+        rowClick(row, index, event) {
+            this.$emit("rowClick", {row, index, event});
         },
         toggleAllRows(selected) {
             if (selected) {

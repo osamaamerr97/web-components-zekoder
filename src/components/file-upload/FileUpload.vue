@@ -18,10 +18,12 @@
             :className="'zek-pond' + customClass"
             :stylePanelLayout="stylePanelLayout"
             :style="{ width, height, ...inputStyle }"
-            v-bind="extraProps"
             :allowImagePreview="allowImagePreview"
+            :allowRemove="!readonly"
+            v-bind="extraProps"
             @addfile="uploadFiles"
             @removefile="deleteFile"
+            @activatefile="onClick"
         />
         <ZekButton
             v-if="deleteButton"
@@ -102,7 +104,10 @@ export default {
             type: String,
             default: "",
         },
-        readonly: Boolean,
+        readonly: {
+            type: Boolean,
+            default: false,
+        },
         stylePanelLayout: {
             //https://pqina.nl/filepond/docs/api/instance/properties/#styles
             type: String,
@@ -137,20 +142,23 @@ export default {
         }
     },
     methods: {
+        onClick($event) {
+            this.$emit('onClick', $event);
+        },
         uploadFiles(error, fileObject) {
             if ( error ) {
                 return;
             }
 
-            const file = fileObject.file;
-
-            // if file is the same as the one already uploaded, do nothing
-            const files = fileObject.fileItems.map(item => item.file);
-            files.forEach(file => {
-                if ( this.preloadedFiles.includes(file) ) {
+            // if same file as preloaded file, do nothing (only for single file upload)
+            if ( !this.multiple && this.preloadedFiles && this.preloadedFiles.length ) {
+                const preloadedFile = this.preloadedFiles.find(file => file === fileObject.file.name || file === fileObject.source);
+                if ( preloadedFile ) {
                     return;
                 }
-            })
+            }
+
+            const file = fileObject.file;
 
             // this check will only work if files are being uploaded using zecommons
             if ( '.'+file.type.split('/')[1] === file.name ) {
@@ -185,6 +193,9 @@ export default {
         },
         deleteFile(error, file) {
             if ( error ) { return; }
+
+            // Special event for removal
+            this.$emit('onRemove', file);
 
             if ( this.multiple ) {
                 const fileId = (file.source.split('=')[1]).split('&')[0];

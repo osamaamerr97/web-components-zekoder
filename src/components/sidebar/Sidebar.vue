@@ -39,7 +39,7 @@
                     class="sidebar-logo"
                 />
             </div>
-            <div v-for="(sec, i) in sections" :key="i">
+            <div v-for="(sec, i) in sections" :key="i + refreshKey"  @click="refreshKey++">
                 <li
                     v-if="sec.title"
                     class="link-container"
@@ -332,7 +332,8 @@ export default {
             isCollapsed: this.collapsed,
             justifyContent:
                 this.alignItems === "center" ? "center" : "flex-start",
-            styleObject: {}
+            styleObject: {},
+            refreshKey: 0
         };
     },
     created() {

@@ -61,7 +61,7 @@ Primary.args = {
         inputType: 'text'
     },
     {
-
+        name: "line",
         type: 'line',
         content: `<hr>`,
         styleObj: {
@@ -70,7 +70,7 @@ Primary.args = {
 
     },
     {
-
+        name: "label",
         type: 'label',
         text: "blabla"
 

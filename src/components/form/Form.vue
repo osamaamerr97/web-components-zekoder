@@ -126,7 +126,9 @@ export default {
                 let obj = {};
                 this.inputs.forEach(
                     (input) => {
-                        obj[input.name] = input.initialValue || input.value || (input.inputType == 'checkbox' ? false : '');
+                        if (input.type !== 'line' && input.type !== 'label') {
+                            obj[input.name] = input.initialValue || input.value || (input.inputType === 'checkbox' ? false : '');
+                        }
                     }
                 )
                 return {...obj}
@@ -138,7 +140,9 @@ export default {
             let obj = {};
             this.inputs.forEach(
                 (input) => {
-                    obj[input.name] = input.initialValue || input.value || (input.inputType == 'checkbox' ? false : '');
+                    if (input.type !== 'line' && input.type !== 'label') {
+                        obj[input.name] = input.initialValue || input.value || (input.inputType === 'checkbox' ? false : '');
+                    }
                 }
             )
             return {...obj}
@@ -263,6 +267,8 @@ export default {
     },
     methods: {
         submitForm() {
+
+            console.log(this.formData)
             if(this.containsCaptcha && !this.captchaVerified) {
                 this.internalError = 'Please verify reCaptcha before proceeding';
                 return;

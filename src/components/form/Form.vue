@@ -172,7 +172,7 @@ export default {
                             columnWidth: input.columnWidth || 12,
                             content: {
                                 component: 'text',
-                                data: input || {type: 'label', text: "label"},
+                                data: input || {text: "label"},
                             }
                         })
                     }
@@ -181,7 +181,7 @@ export default {
                             columnWidth: input.columnWidth || 12,
                             content: {
                                 component: 'html',
-                                data: input ||  { type: 'line', content: `<hr>`, styleObj: { color: "#000000"}},
+                                data: input ||  {content: `<hr>`, styleObj: { color: "#000000"}},
                             }
                         })
                     }
@@ -267,8 +267,6 @@ export default {
     },
     methods: {
         submitForm() {
-
-            console.log(this.formData)
             if(this.containsCaptcha && !this.captchaVerified) {
                 this.internalError = 'Please verify reCaptcha before proceeding';
                 return;

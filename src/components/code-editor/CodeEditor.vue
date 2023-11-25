@@ -109,12 +109,8 @@ export default {
             // Filter annotations with type 'error'
             const errorAnnotations = annotations.filter(annotation => annotation.type === "error");
 
-            if (errorAnnotations.length > 0) {
-                // Emit 'onerror' event with the array of error annotations
-                this.$emit("onError", errorAnnotations);
-            } else {
-                this.$emit("onError", []);
-            }
+            // Emit 'onError' event with the array of error annotations
+            this.$emit("onError", errorAnnotations);
         }
     },
     watch: {

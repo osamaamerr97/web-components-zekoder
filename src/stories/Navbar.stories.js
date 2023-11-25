@@ -18,10 +18,7 @@ Primary.args = {
     styleObj: {
      backgroundColor: "white"
     },
-    nestedStyleObj: {
-     backgroundColor: "white",
 
-    },
     tabStyle: {
       fontSize: "1em",
       fontWeight: "bold",
@@ -29,14 +26,7 @@ Primary.args = {
       textDecoration: "none",
       color: "black"
     },
-    nestedTabStyle: {
-        fontSize: "1em",
-        fontWeight: "bold",
-        backgroundColor: "white",
-        textDecoration: "none",
-        color: "blue",
-        marginTop: "10px"
-    },
+
   tabs: [{
     label: "Home",
     url: "#",

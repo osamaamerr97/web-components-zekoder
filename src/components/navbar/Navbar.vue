@@ -6,8 +6,8 @@
                     :label="tab.label"
                     :url="tab.url"
                     theme= "bootstrap"
-                    customClass="nav-tab"
-                    :styleObj="tabStyle"
+                    :customClass="'nav-tab' + tab.class"
+                    :styleObj="{...tabStyle, ...tab.style}"
                     :disabled="tab.disabled"
                     :icon="tab.icon"
                     :active="tab.active"
@@ -16,9 +16,8 @@
 
                 <ZekNavbar
                     v-if="tab.tabs && tab.showNested"
-                    :tabs="tab.tabs"
-                    :styleObj="nestedStyleObj"
-                    :tabStyle="nestedTabStyle"
+                    v-bind="tab"
+                    v-on="$listeners"
                     class="position-absolute mt-3"
                 />
             </li>
@@ -50,14 +49,6 @@ export default {
             type: Object,
             default: () => ({})
         },
-        nestedTabStyle: {
-            type: Object,
-            default: () => ({})
-        },
-        nestedStyleObj: {
-            type: Object,
-            default: () => ({})
-        },
     },
     data() {
         return {};
@@ -68,6 +59,7 @@ export default {
                 this.$set(tab, "showNested", i === index );
                 this.$set(tab, "active", i === index );
             });
+            this.$emit("tab-clicked", this.tabs[index]);
         }
     }
 };

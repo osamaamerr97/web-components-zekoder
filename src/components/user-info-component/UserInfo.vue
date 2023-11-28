@@ -1,16 +1,15 @@
 <template>
-  <div class="user-info-container" v-click-outside="close" :style="styleObject">
+  <div class="user-info-container" @click="toggle = !toggle" v-click-outside="close" :style="styleObject">
     <div v-if="showName && namePosition != 'right'" class="user-info-details">
       <span class="user-info-username">{{ firstName }} {{ lastName }}</span>
       <span v-if="status" class="user-info-status"> {{ status }} </span>
     </div>
     <a :title="`${firstName} ${lastName}`">
-      <img v-if="avatar" @click="toggle = !toggle" class="user-info-avatar" :src="avatar" alt="User Avatar" />
+      <img v-if="avatar" class="user-info-avatar" :src="avatar" alt="User Avatar" />
       <div
         v-else
         class="user-info-avatar"
         alt="avatar"
-        @click="toggle = !toggle"
         :style="{
           backgroundColor: backgroundColor,
         }"
@@ -24,7 +23,6 @@
     </div>
     <i
       v-if="showAvatarArrow && dropdownLinks.length > 0"
-      @click="toggle = !toggle"
       :class="toggle ? 'fa fa-angle-up' : 'fa fa-angle-down'"
       style="cursor: pointer"
     />
@@ -114,6 +112,7 @@ export default {
   padding: 0 20px;
   height: 40px;
   position: relative;
+  cursor: pointer;
 }
 .user-info-container a .user-info-avatar {
   user-select: none;

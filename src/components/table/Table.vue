@@ -22,7 +22,7 @@
                     <b-form-checkbox @change="toggleAllRows"></b-form-checkbox>
                 </template>
                 <template v-if="allowSelection" #cell(selected)="data">
-                    <b-form-checkbox v-model="data.rowSelected" @change="rowSelected(data)"></b-form-checkbox>
+                    <b-form-checkbox v-model="data.rowSelected" class="pe-none"></b-form-checkbox>
                     <!-- Delete Item Slot, TODO: What will this bind to in the generator? -->
                     <slot name="delete" @onClick="deleteData(data.item.id)"></slot>
                         <!-- Update Item -->

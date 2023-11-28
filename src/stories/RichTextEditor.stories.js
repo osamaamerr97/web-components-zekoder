@@ -15,7 +15,7 @@ const Template = (args, { argTypes }) => ({
 
 export const Primary = Template.bind({});
 Primary.args = {
-  toolbar: "code fullscreen h1 h2 h3 styles image page-break font print bold italic underline strike blockquote | code-block",
+//   toolbar: "",
   initialValue: `
     <!DOCTYPE html>
     <html lang="" xml:lang="" xmlns="http://www.w3.org/1999/xhtml">

@@ -45,11 +45,13 @@ export default {
         },
         disabled: {
             type: Boolean,
-            required: false
+            required: false,
+            default: false
         },
         toolbar: {
             type: String,
-            required: false
+            required: false,
+            default: "fontselect fontsizeselect | undo redo | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | fullscreen | link image media | code"
             // Available toolbars: https://www.tiny.cloud/docs/advanced/available-toolbar-buttons/
         },
         options: {
@@ -76,7 +78,7 @@ export default {
     },
     data() {
         return {
-            value: this.initialValue ?? "",
+            value: this.initialValue || "",
             config: {
                 menubar: false,
                 toolbar: this.toolbar,

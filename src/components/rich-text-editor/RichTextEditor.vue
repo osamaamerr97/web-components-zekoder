@@ -93,7 +93,7 @@ export default {
             this.$emit("onInit", e);
         },
         textChange(e) {
-            this.$emit("onChange", e);
+            this.$emit("onChange", this.value);
         }
     },
     watch: {

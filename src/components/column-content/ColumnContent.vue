@@ -79,9 +79,6 @@ export default {
             }
         }
     },
-    created() {
-        console.log("column", this.components);
-    },
     data() {
         return {
             key: Math.ceil(Math.random() * 100000),

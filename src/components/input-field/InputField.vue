@@ -37,6 +37,7 @@
       <input
           v-else
           v-model="value"
+          :value="assignedValue || undefined"
           :class="customClass"
           :type="actualType"
           :name="name"
@@ -94,6 +95,9 @@ export default {
       type: {
           type: String,
           default: "short-text"
+      },
+      assignedValue: {
+        type: String,
       },
       inputType: {
           type: String,

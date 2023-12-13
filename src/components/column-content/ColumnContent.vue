@@ -84,14 +84,15 @@ export default {
             key: Math.ceil(Math.random() * 100000),
             components: {
                 button: require("../action-button/ActionButton.vue").default,
-                initials: require("../initials/Initials.vue").default,
                 heading: require("../heading-block/HeadingBlock.vue").default,
                 html: require("../html-block/HtmlBlock.vue").default,
                 image: require("../image/Image.vue").default,
                 list: require("../lists-block/ListsBlock.vue").default,
                 text: require("../text-block/TextBlock.vue").default,
+                initials: require("../initials/Initials.vue").default,
                 video: require("../video/Video.vue").default,
                 "radio-button": require("../radio-button/RadioButton.vue").default,
+                "countries-list": require("../countries-list/CountriesList.vue").default,
                 dropdown: require("../dropdown/Dropdown.vue").default,
                 input: require("../input-field/InputField.vue").default,
                 form: require("../form/Form.vue").default,
@@ -99,8 +100,8 @@ export default {
                 card: require("../card/Card.vue").default,
                 "collapsible container": require("../collapsible-container/CollapsibleContainer.vue").default,
                 table: require("../table/Table.vue").default,
-                "toggle-button": require("../toggle-button/ToggleButton.vue").default,
                 "file-upload": require("../file-upload/FileUpload.vue").default,
+                "toggle-button": require("../toggle-button/ToggleButton.vue").default,
                 slider: require("../slider/Slider.vue").default,
                 captcha: require("../re-captcha/ReCaptcha.vue").default
             }

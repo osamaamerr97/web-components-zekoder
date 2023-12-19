@@ -42,7 +42,11 @@ Primary.args = {
         {
             label: "About",
             tabs: [
-                { label: "Company", url: "#", icon: "fa fa-building", styleObj: { marginRight: "5px" } },
+                { label: "Company", url: "#", icon: "fa fa-building", tabs: [
+                    { label: "Team", url: "#", icon: "fa fa-users", styleObj: { marginRight: "5px" } },
+                    { label: "Team", url: "#", icon: "fa fa-users", styleObj: { marginRight: "5px" } }
+
+                ], styleObj: { marginRight: "5px" } },
                 { label: "Team", url: "#", icon: "fa fa-users", styleObj: { marginRight: "5px" } }
             ],
             icon: "fa fa-info-circle",

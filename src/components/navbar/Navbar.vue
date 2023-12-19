@@ -1,12 +1,12 @@
 <template>
     <nav id="zek-navbar" :class="customClass" :style="styleObj">
         <ul class="zek-navbar-menu" v-if="tabs && tabs.length">
-            <li class="zek-navbar-menu-item" v-for="(tab, index) in tabs" :key="index" :class="{'active-tab': tab.active}">
+            <li class="zek-navbar-menu-item" v-for="(tab, index) in tabs" :key="index" :class="`${tab.active ? activeClass : 'zek-active-tab'}`">
                 <ZekButton
                     :label="tab.label"
                     :url="tab.url"
                     theme= "bootstrap"
-                    :customClass="'nav-tab' + tab.class"
+                    :customClass="'nav-tab ' + tab.class"
                     :styleObj="{...tabStyle, ...tab.style}"
                     :disabled="tab.disabled"
                     :icon="tab.icon"
@@ -47,6 +47,10 @@ export default {
             type: String,
             default: "zek-navbar-wrapper"
         },
+        activeClass: {
+            type: String,
+            default: "active-tab"
+        },
         tabStyle: {
             type: Object,
             default: () => ({})
@@ -54,7 +58,8 @@ export default {
     },
     created() {
         this.tabs.forEach((tab, i) => {
-            this.$set(tab, "active", i === 0);
+            this.$set(tab, "active", i === 0 && !tab.disabled);
+            this.$set(tab, "disabled", tab.disabled || false)
         });
     },
     methods: {

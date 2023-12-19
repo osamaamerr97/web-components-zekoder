@@ -1,7 +1,7 @@
 <template>
     <nav id="zek-navbar" :class="customClass" :style="styleObj">
         <ul class="zek-navbar-menu" v-if="tabs && tabs.length">
-            <li class="zek-navbar-menu-item" v-for="(tab, index) in tabs" :key="index">
+            <li class="zek-navbar-menu-item" v-for="(tab, index) in tabs" :key="index" :class="{'active-tab': tab.active}">
                 <ZekButton
                     :label="tab.label"
                     :url="tab.url"
@@ -13,15 +13,13 @@
                     :active="tab.active"
                     @onClick="handleTabClick(index)"
                 ></ZekButton>
-
-                <ZekNavbar
-                    v-if="tab.tabs && tab.showNested"
-                    v-bind="tab"
-                    v-on="$listeners"
-                    class="position-absolute mt-3"
-                />
             </li>
         </ul>
+        <ZekNavbar
+            v-if="selectedTab && selectedTab.tabs?.length"
+            v-bind="selectedTab"
+            v-on="$listeners"
+        />
     </nav>
 </template>
 <script>
@@ -33,6 +31,10 @@ export default {
         ZekButton
     },
     props: {
+        activeTab: {
+            type: String,
+            default: ""
+        },
         tabs: {
             type: Array,
             required: true
@@ -50,16 +52,29 @@ export default {
             default: () => ({})
         },
     },
-    data() {
-        return {};
+    created() {
+        this.tabs.forEach((tab, i) => {
+            this.$set(tab, "active", i === 0);
+        });
     },
     methods: {
         handleTabClick(index) {
             this.tabs.forEach((tab, i) => {
-                this.$set(tab, "showNested", i === index );
-                this.$set(tab, "active", i === index );
+                tab.active = i === index;
             });
-            this.$emit("tab-clicked", this.tabs[index]);
+            this.$emit("onTabClick", this.tabs[index]);
+        }
+    },
+    computed: {
+        selectedTab() {
+            return this.tabs?.find(tab => tab.active);
+        }
+    },
+    watch: {
+        activeTab(val) {
+            this.tabs.forEach((tab, i) => {
+                tab.active = !tab.disabled && (tab.url === val || tab.label?.toLowerCase() === val);
+            });
         }
     }
 };

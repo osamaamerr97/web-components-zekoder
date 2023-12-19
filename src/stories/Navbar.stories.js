@@ -1,77 +1,70 @@
-import ZekNavbar from '../components/navbar/Navbar.vue';
+import ZekNavbar from "../components/navbar/Navbar.vue";
+import { action } from "@storybook/addon-actions";
 
 export default {
-    title: 'Zekoder/navbar',
+    title: "Zekoder/navbar",
     component: ZekNavbar,
-    argTypes: {
-
-    }
-  };
+    argTypes: {}
+};
 const Template = (args, { argTypes }) => ({
-  components: { ZekNavbar },
-  props: Object.keys(argTypes),
-  template: '<zek-navbar v-bind="$props"/>',
+    components: { ZekNavbar },
+    props: Object.keys(argTypes),
+    methods: { action },
+    template: '<zek-navbar @onTabClick="action(`onTabClicked`)($event)" v-bind="$props"/>'
 });
 
 export const Primary = Template.bind({});
 Primary.args = {
     styleObj: {
-     backgroundColor: "white"
+        backgroundColor: "white"
     },
 
     tabStyle: {
-      fontSize: "1em",
-      fontWeight: "bold",
-      backgroundColor: "white",
-      textDecoration: "none",
-      color: "black"
+        fontSize: "1em",
+        fontWeight: "bold",
+        backgroundColor: "white",
+        textDecoration: "none",
+        color: "black"
     },
 
-  tabs: [{
-    label: "Home",
-    url: "#",
-    icon: "fas fa-envelope",
-    styleObj: {marginRight: "10px"},
-    disabled: true,
-    showNested: false,
-
     tabs: [
-        { label: 'blabla', url: '#', icon: 'fa fa-building', styleObj: { marginRight: '5px' } },
-        { label: 'lol', url: '#', icon: 'fa fa-users', styleObj: { marginRight: '5px' } }
-      ],
-  }, {
-    label: 'About',
-    tabs: [
-      { label: 'Company', url: '#', icon: 'fa fa-building', styleObj: { marginRight: '5px' } },
-      { label: 'Team', url: '#', icon: 'fa fa-users', styleObj: { marginRight: '5px' } }
-    ],
-    icon: 'fa fa-info-circle',
-    url: '#',
-    showNested: false,
-    active: true,
-    styleObj: { marginRight: '5px' }
-  }, {
-    label: "Home",
-    url: "#",
-    icon: "fas fa-envelope",
-    styleObj: {marginRight: "5px"},
-    showNested: false,
-    active: false,
-    tabs: [
-        { label: 'balbal2', url: '#', icon: 'fa fa-building', styleObj: { marginRight: '5px' } },
-        { label: 'lol2', url: '#', icon: 'fa fa-users', styleObj: { marginRight: '5px' } }
-      ],
-  }, {
-    label: "Home",
-    url: "#",
-    icon: "fas fa-envelope",
-    styleObj: {marginRight: "5px"},
-    showNested: false,
-    active: false,
-    tabs: [
-        { label: 'blabla3', url: '#', icon: 'fa fa-building', styleObj: { marginRight: '5px' } },
-        { label: 'lol3', url: '#', icon: 'fa fa-users', styleObj: { marginRight: '5px' } }
-      ],
-  }],
+        {
+            label: "Home",
+            url: "/home",
+            icon: "fas fa-envelope",
+            styleObj: { marginRight: "10px" },
+            disabled: true,
+            tabs: [
+                { label: "blabla", url: "#", icon: "fa fa-building", styleObj: { marginRight: "5px" } },
+                { label: "lol", url: "#", icon: "fa fa-users", styleObj: { marginRight: "5px" } }
+            ]
+        },
+        {
+            label: "About",
+            tabs: [
+                { label: "Company", url: "#", icon: "fa fa-building", styleObj: { marginRight: "5px" } },
+                { label: "Team", url: "#", icon: "fa fa-users", styleObj: { marginRight: "5px" } }
+            ],
+            icon: "fa fa-info-circle",
+            url: "/about",
+            styleObj: { marginRight: "5px" }
+        },
+        {
+            label: "New",
+            url: "#",
+            icon: "fas fa-envelope",
+            styleObj: { marginRight: "5px" },
+            tabs: [
+                { label: "balbal2", url: "#", icon: "fa fa-building", styleObj: { marginRight: "5px" } },
+                { label: "lol2", url: "#", icon: "fa fa-users", styleObj: { marginRight: "5px" } }
+            ]
+        },
+        {
+            label: "Home",
+            url: "#",
+            icon: "fas fa-envelope",
+            styleObj: { marginRight: "5px" },
+            tabs: []
+        }
+    ]
 };
-

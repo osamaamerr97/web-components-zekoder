@@ -43,7 +43,7 @@
                         style: { position: 'absolute', right: '5px', top: '15px' }
                     }"
                     @iconClicked="addItem"
-                    id="filter-input"
+                    ref="filterInputRef"
                 />
                 <li
                     class="dropdown-item"
@@ -124,7 +124,7 @@
                         style: { position: 'absolute', right: '5px', top: '15px' }
                     }"
                     @iconClicked="addItem"
-                    id="filter-input"
+                    ref="filterInputRef"
                 />
                 <div
                     :style="selected.includes(item) ? selectedItemStyle : itemStyle"
@@ -291,21 +291,26 @@ export default {
             this.$emit("onSelect", this.selected);
         },
         onFilterChange(event) {
-            const filterString = event.target.value.toLowerCase();
+            this.itemToAdd = event.target.value.toLowerCase();
 
-            // Check if the filterString matches any existing items
-            const foundItem = this.items.find(item => item.text.toLowerCase() === filterString);
+            const isStringArray = typeof this.items[0] === 'string';
 
-            if (filterString && !foundItem) {
-                // If filterString doesn't match any existing items, add it as a new option
-                this.showAddIcon = true;
-                this.itemToAdd = filterString;
-            } else if (filterString) {
-                // If filterString matches an existing item, filter the items based on the filterString
-                this.filteredItems = this.items.filter(item => item.text.toLowerCase().includes(filterString));
-                this.showAddIcon = false;
+            // Check if the itemToAdd matches any existing items
+            const foundItem = this.items.find(item => (
+                (isStringArray && item.toLowerCase() === this.itemToAdd) ||
+                (!isStringArray && item.text.toLowerCase() === this.itemToAdd)
+            ));
+
+            if (this.itemToAdd) {
+                // If itemToAdd doesn't match any existing items, add it as a new option
+                this.showAddIcon = !foundItem;
+                // If itemToAdd matches an existing item, filter the items based on the itemToAdd
+                this.filteredItems = this.items.filter(item => (
+                    (isStringArray && item.toLowerCase().includes(this.itemToAdd)) ||
+                    (!isStringArray && item.text.toLowerCase().includes(this.itemToAdd))
+                ));
             } else {
-                // If filterString is empty, show all items
+                // If itemToAdd is empty, show all items
                 this.filteredItems = this.items;
                 this.showAddIcon = false;
             }
@@ -322,21 +327,21 @@ export default {
         close() {
             this.filteredItems = this.items;
             this.toggle = false;
+            this.itemToAdd = "";
+            this.showAddIcon = false;
         },
         addItem() {
-            const itemExists = this.items.some(item => item.text.toLowerCase() === this.itemToAdd.toLowerCase());
-            if (!itemExists) {
-                const capitalized = this.itemToAdd.charAt(0).toUpperCase() + this.itemToAdd.slice(1)
-                this.items.push({ text: capitalized, value: this.itemToAdd });
-                this.itemToAdd = "";
-                this.showAddIcon = false;
-                setTimeout(function() {
-                    // Clear the input value after the delay
-                    document.getElementById("filter-input").value = "";
-                }, 1);
-            } else {
-                console.log('item exist')
-            }
+            const newItem = typeof this.items[0] === 'string'
+            ? this.itemToAdd  // Array of Strings
+            : { text: this.itemToAdd, value: this.itemToAdd.toLowerCase() };  // Array of Objects with 'text', 'value' properties
+            this.items.push(newItem);
+            this.itemToAdd = "";
+            this.showAddIcon = false;
+            this.$nextTick(() => {
+                this.$refs.filterInputRef.value = "";
+            });
+            this.$emit("onAddItem", newItem);
+
         }
     }
 };

@@ -15,17 +15,7 @@ const Template = (args, { argTypes }) => ({
 
 export const Primary = Template.bind({});
 Primary.args = {
-  placeholder: "Enter text here",
-  toolbar: [
-    // node_modules/yimo-vue-editor/src/assets/js/wangEditor.js line 3278
-    "source",
-    "bold",
-    "italic",
-    "underline",
-    "strike",
-    "blockquote",
-    "code-block"
-  ],
+//   toolbar: "",
   initialValue: `
     <!DOCTYPE html>
     <html lang="" xml:lang="" xmlns="http://www.w3.org/1999/xhtml">

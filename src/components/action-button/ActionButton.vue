@@ -113,7 +113,7 @@ export default {
             this.$emit('onClick', event);
             if( this.url ) {
                 if ( this.url[0] == '/' ) {
-                    this.$router.push(this.url);
+                    this.$router?.push(this.url);
                 } else {
                     window.location.assign(this.url);
                 }

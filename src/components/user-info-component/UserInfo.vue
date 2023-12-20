@@ -1,52 +1,38 @@
 <template>
-    <div
-        ref="zekUserInfo"
-        class="user-info-container"
-        v-click-outside="close"
-        :style="styleObject"
-        :class="customClass"
-    >
-        <div v-if="showName && namePosition != 'right'" class="user-info-details">
-            <span class="user-info-username">{{ firstName }} {{ lastName }}</span>
-            <span v-if="status" class="user-info-status"> {{ status }} </span>
-        </div>
-        <a :title="`${firstName} ${lastName}`">
-            <img v-if="avatar" @click="toggle = !toggle" class="user-info-avatar" :src="avatar" alt="User Avatar" />
-            <div
-                v-else
-                class="user-info-avatar"
-                alt="avatar"
-                @click="toggle = !toggle"
-                :style="{
-                    backgroundColor: backgroundColor
-                }"
-            >
-                <span>{{ firstName[0] }} {{ lastName[0] }}</span>
-            </div>
-        </a>
-        <div v-if="showName && namePosition == 'right'" class="user-info-details">
-            <span class="user-info-username">{{ firstName }} {{ lastName }}</span>
-            <span v-if="status" class="user-info-status"> {{ status }} </span>
-        </div>
-        <i
-            v-if="showAvatarArrow && dropdownLinks.length > 0"
-            @click="toggle = !toggle"
-            :class="toggle ? 'fa fa-angle-up' : 'fa fa-angle-down'"
-            style="cursor: pointer"
-        />
-        <div v-if="toggle" class="user-info-dropdown" :style="dropdownStyleObj">
-            <a
-                v-for="(link, i) in dropdownLinks"
-                :key="i"
-                :href="link.url"
-                :style="dropdownLinkStyle"
-                @click="$emit('linkClicked', link)"
-            >
-                <i v-if="link.icon" :class="link.icon" style="color: inherit" />
-                {{ link.label }}
-            </a>
-        </div>
+  <div class="user-info-container" @click="toggle = !toggle" v-click-outside="close" :style="styleObject">
+    <div v-if="showName && namePosition != 'right'" class="user-info-details">
+      <span class="user-info-username">{{ firstName }} {{ lastName }}</span>
+      <span v-if="status" class="user-info-status"> {{ status }} </span>
     </div>
+    <a :title="`${firstName} ${lastName}`">
+      <img v-if="avatar" class="user-info-avatar" :src="avatar" alt="User Avatar" />
+      <div
+        v-else
+        class="user-info-avatar"
+        alt="avatar"
+        :style="{
+          backgroundColor: backgroundColor,
+        }"
+      >
+        <span>{{ firstName[0] }} {{ lastName[0] }}</span>
+      </div>
+    </a>
+    <div v-if="showName && namePosition == 'right'" class="user-info-details">
+      <span class="user-info-username">{{ firstName }} {{ lastName }}</span>
+      <span v-if="status" class="user-info-status"> {{ status }} </span>
+    </div>
+    <i
+      v-if="showAvatarArrow && dropdownLinks.length > 0"
+      :class="toggle ? 'fa fa-angle-up' : 'fa fa-angle-down'"
+      style="cursor: pointer"
+    />
+    <div v-if="toggle" class="user-info-dropdown" :style="dropdownStyleObj">
+      <a v-for="(link, i) in dropdownLinks" :key="i" :href="link.url" :style="dropdownLinkStyle" @click="$emit('linkClicked',link)" >
+        <i v-if="link.icon" :class="link.icon" style="color: inherit"/>
+        {{link.label}}
+        </a>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -136,12 +122,13 @@ export default {
 
 <style scoped lang="scss">
 .user-info-container {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    padding: 0 20px;
-    height: 40px;
-    position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 20px;
+  height: 40px;
+  position: relative;
+  cursor: pointer;
 }
 .user-info-container a .user-info-avatar {
     user-select: none;

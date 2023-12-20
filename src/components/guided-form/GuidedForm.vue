@@ -60,8 +60,9 @@
 </template>
 
 <script>
-import { ZekButton, ZekColumnContent, ZekText } from "../../main";
-
+import ZekButton  from "../action-button/ActionButton.vue";
+import ZekColumnContent from "../column-content/ColumnContent.vue";
+import ZekText from "../text-block/TextBlock.vue";
 export default {
     name: "ZekGuidedForm",
     components: {ZekButton, ZekColumnContent, ZekText },

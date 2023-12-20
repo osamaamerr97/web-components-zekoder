@@ -61,6 +61,21 @@ Primary.args = {
         inputType: 'text'
     },
     {
+        name: "line",
+        type: 'line',
+        content: `<hr>`,
+        styleObj: {
+            color: "blue"
+        }
+
+    },
+    {
+        name: "label",
+        type: 'label',
+        text: "blabla"
+
+    },
+    {
         name: 'lname',
         type: 'long-text',
         value: '',
@@ -136,7 +151,7 @@ Primary.args = {
                 textPosition: "left"
             },
         ]
-        
+
     }
   ],
   submitButton: 'Proceed', //for string it is button label, for object it should be {show:true, label:'Submit', styleObj: {}}

@@ -3,6 +3,13 @@
         <span v-if="showLabel && label" :style="label.style">
             <span v-html="label.html || label.text || label"></span>
             <span class="required-asterik" v-if="required">*</span>
+            <i
+                class="input-hint-icon far fa-circle-question"
+                v-if="hint"
+                v-b-tooltip.hover.top
+                :title="hint"
+                @click="$emit('hintClicked', $event)"
+            />
         </span>
         <input type="text" class="hidden-field" :required="required" v-model="selectedText" />
         <!-- Bootstrap -->
@@ -15,7 +22,7 @@
                 :style="buttonStyle"
                 :disabled="disabled"
             >
-                {{ selected.length && showSelected && selectedText ? selectedText : placeholder || label }}
+                <span :class="!selectedText ? ' dropdown-placeholder' : ''">{{ selected.length && showSelected && selectedText ? selectedText : placeholder || label }}</span>
                 <i v-if="customIcon" :class="customIcon"></i>
             </button>
             <ul v-if="toggle || alwaysOpen" class="dropdown-menu show" style="padding: 0" :style="listStyle">
@@ -117,10 +124,8 @@ import ClickOutside from 'vue-click-outside';
 export default {
     name: "ZekDropdown",
     props: {
-        customIcon: {
-            type: String,
-            default: ""
-        },
+        hint: String,
+        customIcon: String,
         showSelected: {
             type: Boolean,
             default: true
@@ -348,5 +353,10 @@ export default {
 }
 .zek-invalid-field > button {
   border: solid 2px #dc354550 !important;
+}
+.input-hint-icon {
+  color: #999;
+  cursor: pointer;
+  height: 100%;
 }
 </style>

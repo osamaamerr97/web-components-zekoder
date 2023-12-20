@@ -9,6 +9,13 @@
         <span v-if="label" :style="label.style">
             <span v-html="label.html || label.text || label"></span>
             <span class="required-asterik" v-if="required">*</span>
+            <i
+                class="input-hint-icon far fa-circle-question"
+                v-if="hint"
+                v-b-tooltip.hover.top
+                :title="hint"
+                @click="hintClicked"
+            />
         </span>
         <textarea
             :class="customClass"
@@ -37,6 +44,7 @@
 export default {
     name: "ZekTextarea",
     props: {
+        hint: String,
         inputStyle: {
             type: Object,
             default: () => {}
@@ -138,5 +146,10 @@ export default {
 }
 textarea {
     resize: none;
+}
+.input-hint-icon {
+  color: #999;
+  cursor: pointer;
+  height: 100%;
 }
 </style>

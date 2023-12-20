@@ -94,7 +94,8 @@ export default {
     },
     data() {
         return {
-            content: this.value || undefined
+            content: this.value || undefined,
+            annotations: []
         };
     },
     methods: {
@@ -122,6 +123,13 @@ export default {
                 }
             });
         },
+        handleError(annotations) {
+            // Filter annotations with type 'error'
+            const errorAnnotations = annotations.filter(annotation => annotation.type === "error");
+
+            // Emit 'onError' event with the array of error annotations
+            this.$emit("onError", errorAnnotations);
+        }
     },
     watch: {
         errors(val) {
@@ -130,9 +138,13 @@ export default {
         },
         content(val) {
             this.$emit("onInput", val);
+            setTimeout(() => (this.annotations = this.$refs.codeEditor.editor.getSession().getAnnotations()), 500);
         },
         value(val) {
             this.content = val;
+        },
+        annotations(val) {
+            this.handleError(val);
         }
     }
 };

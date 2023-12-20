@@ -9,6 +9,7 @@
                 :fields="fields"
                 ref="bTable"
                 @row-selected="rowSelected"
+                @row-clicked="rowClick"
                 :current-page="currentPage"
             >
                 <template v-if="caption" #table-caption>{{ caption }}</template>
@@ -21,7 +22,7 @@
                     <b-form-checkbox @change="toggleAllRows"></b-form-checkbox>
                 </template>
                 <template v-if="allowSelection" #cell(selected)="data">
-                    <b-form-checkbox v-model="data.rowSelected"></b-form-checkbox>
+                    <b-form-checkbox v-model="data.rowSelected" class="pe-none"></b-form-checkbox>
                     <!-- Delete Item Slot, TODO: What will this bind to in the generator? -->
                     <slot name="delete" @onClick="deleteData(data.item.id)"></slot>
                     <!-- Update Item -->
@@ -297,6 +298,9 @@ export default {
     methods: {
         rowSelected(rows) {
             this.$emit("rowsSelected", rows);
+        },
+        rowClick(row, index, event) {
+            this.$emit("rowClick", {row, index, event});
         },
         toggleAllRows(selected) {
             if (selected) {

@@ -157,7 +157,7 @@ export default {
                 minutes: new Date().getMinutes()
             },
             minutes: new Array(60).fill(0).map((_, i) => {
-                return { name: i + 1 < 10 ? `0${i + 1}` : `${i + 1}`, value: i + 1 < 10 ? `0${i + 1}` : `${i + 1}` };
+                return { name: i  < 10 ? `0${i}` : `${i}`, value: i < 10 ? `0${i}` : `${i}` };
             }),
         };
     },

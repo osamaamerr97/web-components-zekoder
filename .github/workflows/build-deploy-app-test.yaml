@@ -1,0 +1,48 @@
+name: CI/CD
+on:
+  push:
+    branches:
+      - test
+env:
+  REGION: us-central1-c
+  PROJECT: zekoder-dev-349809
+  REGISTRY: us.gcr.io
+  PROVIDER: zekoder
+  APP: zestudio/components # ? This is the name of the app in the GCP console
+
+jobs:
+  test-env-build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: 'Google auth'
+        id: 'auth'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          credentials_json: '${{ secrets.ZEAGENT_DEV_SA }}'
+
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v1'
+
+      - name: Setup GCP project
+        run: gcloud config set project $PROJECT
+
+      - name: Setup node env
+        uses: actions/setup-node@v2.1.2
+        with:
+          node-version: 16
+
+      - name: Build and Generate dist folder
+        run: chmod +x ./build.sh && ./build.sh
+
+      - name: Push Docker Image to GCP
+        run: |
+          export IMAGE_NAME=${{ env.REGISTRY }}/${{ env.PROJECT }}/${{ env.PROVIDER }}/${{ env.APP }}
+          gcloud auth configure-docker ${{ env.REGISTRY }} --quiet
+          gcloud builds submit . --tag $IMAGE_NAME:$GITHUB_REF_NAME
+          echo ******
+          echo -e "\033[32m Image pushed to $IMAGE_NAME:$GITHUB_REF_NAME \033[0m"
+          echo ******

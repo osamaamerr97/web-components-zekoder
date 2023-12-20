@@ -1,26 +1,26 @@
 <template>
-    <div
-        ref="zekRichTextEditor"
-        :class="`zek-rich-editor-container ${customClass}  ${!disabled || 'disabled'}`"
-        :style="styleObj"
-    >
-        <yimo-vue-editor
+    <div :class="`zek-rich-editor-container ${customClass}`" :style="styleObj">
+        <vue2-tinymce-editor
             class="zek-rich-editor"
             v-model="value"
-            :config="config"
-            @input="textChange"
-            v-on="extraEvents"
-            v-bind="extraProps"
+            :options="config"
+            :height="height"
+            :width="width"
+            ref="tiny"
+            @editorInit="editorInit"
+            @editorChange="textChange"
+            v-bind="{...extraProps}"
+            v-on="{...extraEvents}"
         />
     </div>
 </template>
 
 <script>
-import YimoVueEditor, { E } from "yimo-vue-editor";
+import { Vue2TinymceEditor } from "vue2-tinymce-editor";  // https://www.npmjs.com/package/vue2-tinymce-editor
 export default {
     name: "ZekRichTextEditor",
     components: {
-        YimoVueEditor
+        Vue2TinymceEditor
     },
     props: {
         customClass: {
@@ -31,61 +31,92 @@ export default {
             type: Object,
             required: false
         },
+        width: {
+            type: Number,
+            required: false
+        },
+        height: {
+            type: Number,
+            required: false
+        },
         initialValue: {
             type: String,
             required: false
         },
         disabled: {
             type: Boolean,
-            required: false
+            required: false,
+            default: false
         },
         toolbar: {
-            // Option can be found here: https://github.com/davidroyer/vue2-editor/blob/master/src/helpers/fullToolbar.js
-            type: Array,
-            required: false
+            type: String,
+            required: false,
+            default: "fontselect fontsizeselect | undo redo | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | fullscreen | link image media | code"
+            // Available toolbars: https://www.tiny.cloud/docs/advanced/available-toolbar-buttons/
         },
         options: {
             type: Object,
             required: false,
             default: () => ({})
+            // https://www.tiny.cloud/docs/quick-start/
+            // Available plugins
+            // 'advlist autolink charmap code codesample directionality emoticons ' +
+            // 'fullscreen help hr image imagetools insertdatetime link lists ' +
+            // 'media nonbreaking pagebreak paste preview print save searchreplace ' +
+            // 'table template textpattern toc visualblocks visualchars wordcount',
         },
         extraProps: {
             type: Object,
+            required: false,
             default: () => ({})
         },
         extraEvents: {
             type: Object,
+            required: false,
             default: () => ({})
-        },
-        id: {
-            type: [String, Number],
-            default: ""
         }
     },
     data() {
         return {
-            value: this.initialValue ?? "",
+            value: this.initialValue || "",
             config: {
-                printLog: false, // disabled console.log
-                lang: E.langs.en, // lang config
-                menus: this.toolbar,
-                ...this.options // node_modules/yimo-vue-editor/src/assets/js/wangEditor.js
+                menubar: false,
+                toolbar: this.toolbar,
+                readonly: this.disabled,
+                resize: false,
+                ...this.options
             }
         };
     },
     methods: {
+        editorInit(e) {
+            this.$emit("onInit", e);
+        },
         textChange(e) {
-            this.$emit("onChange", e);
+            this.$emit("onChange", this.value);
+        }
+    },
+    watch: {
+        initialValue: {
+            handler: function(val) {
+                this.value = val;
+            },
+            immediate: true
+        },
+        disabled: {
+            handler: function(val) {
+                this.$refs.tiny?.editor?.setMode(val ? "readonly" : "design");
+            },
+            immediate: true
         }
     }
 };
 </script>
 
-<style scoped lang="scss">
-.disabled {
-    pointer-events: none !important;
-    * {
-        pointer-events: none !important;
-    }
+<style scoped>
+.zek-rich-editor-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
 }
 </style>

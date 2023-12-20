@@ -125,7 +125,10 @@ export default {
     name: "ZekDropdown",
     props: {
         hint: String,
-        customIcon: String,
+        customIcon: {
+            type: String,
+            default: ""
+        },
         showSelected: {
             type: Boolean,
             default: true

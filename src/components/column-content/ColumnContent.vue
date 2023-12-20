@@ -1,6 +1,7 @@
 <template>
     <div
         class="column-content-wrapper"
+        ref="zekColumnContent"
         v-if="column && ((column.rows && column.rows.length) || column.content)"
         v-show="column.condition != undefined ? column.condition : true"
         :key="key"
@@ -81,6 +82,10 @@ export default {
             default: () => {
                 return {};
             }
+        },
+        id: {
+            type: [String, Number],
+            default: ""
         }
     },
     data() {

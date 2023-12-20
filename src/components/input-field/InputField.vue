@@ -3,6 +3,7 @@
       @click="$emit('onClick', $event)"
       :class="error ? 'zek-invalid-field' : customClass ? customClass + '-container' : 'input-field-container'"
       :style="styleObject"
+      ref="zekInput"
   >
       <i
           v-if="icon && iconSettings.position == 'left'"
@@ -28,6 +29,7 @@
           v-if="inputType === 'datepicker'"
           v-model="value"
           v-bind="$props"
+          v-on="extraEvents"
           :min="minMaxValue.min"
           :max="minMaxValue.max"
           :class="customClass"
@@ -55,6 +57,7 @@
           :title="title"
           :style="inputStyle"
           v-on="preventSpaces ? { keypress: preventSpaceKey } : {}"
+          v-bind="extraProps"
           @keyup="onKeyUp"
           @change="onInput"
           @input="input"
@@ -196,7 +199,15 @@ export default {
         preventSpaces: {
             type: Boolean,
             default: false
-        }
+        },
+        assignedValue: {
+            type: String,
+            default: ""
+        },
+        hint: {
+            type: String,
+            default: ""
+        },
     },
     data() {
         return {
@@ -221,6 +232,9 @@ export default {
         },
         iconClicked(event) {
             this.iconSettings.clickable ? this.$emit("iconClicked", event) : "";
+        },
+        hintClicked(event) {
+        this.$emit("hintClicked", event);
         }
     },
     watch: {

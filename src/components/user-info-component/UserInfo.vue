@@ -1,5 +1,5 @@
 <template>
-  <div class="user-info-container" @click="toggle = !toggle" v-click-outside="close" :style="styleObject">
+  <div ref="zekUserInfo" class="user-info-container" @click="toggle = !toggle" v-click-outside="close" :style="styleObject" :class="customClass">
     <div v-if="showName && namePosition != 'right'" class="user-info-details">
       <span class="user-info-username">{{ firstName }} {{ lastName }}</span>
       <span v-if="status" class="user-info-status"> {{ status }} </span>

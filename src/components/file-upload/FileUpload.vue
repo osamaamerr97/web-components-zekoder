@@ -21,6 +21,7 @@
             :allowImagePreview="allowImagePreview"
             :allowRemove="!readonly"
             v-bind="extraProps"
+            v-on="extraEvents"
             @addfile="uploadFiles"
             @removefile="deleteFile"
             @activatefile="onClick"

@@ -36,12 +36,12 @@
 import ZekTextarea from "../textarea/Textarea.vue";
 import ClickOutside from 'vue-click-outside';
 export default {
-    name: "ChatPrompt",
+    name: "ZekChatPrompt",
     components: {
         ZekTextarea
     },
     directives: {
-        ClickOutside
+        ClickOutside,
     },
     props: {
         id: {
@@ -79,7 +79,7 @@ export default {
         footNote: {
             type: String,
             default: ""
-        },
+        }
     },
     data() {
         return {
@@ -106,14 +106,14 @@ export default {
                     username: this.username
                 };
                 this.messages.unshift(newMessage);
-                this.$emit("messageSent", newMessage);
+                this.$emit("onSend", newMessage);
             }
             this.inputMessage = "";
         },
         close() {
             this.$emit("close");
         },
-    },
+    }
 };
 </script>
 
@@ -124,8 +124,8 @@ export default {
 
 .chat-prompt {
     position: relative;
+    margin: 8px;
     width: 100%;
-    height: 100%;
     display: flex;
     flex-direction: column;
     max-height: 200px;

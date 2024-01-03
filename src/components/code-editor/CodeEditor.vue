@@ -1,5 +1,5 @@
 <template>
-    <div class="zek-code-editor">
+    <div v-ze-chat="prompt" class="zek-code-editor">
         <editor
             ref="codeEditor"
             v-model="content"
@@ -23,10 +23,14 @@
 
 <script>
 import editor from "vue2-ace-editor";
+import ZeChat from "../chat-prompt/ChatPromptDirective";
 export default {
     name: "ZekCodeEditor",
     components: {
         editor
+    },
+    directives: {
+        ZeChat
     },
     props: {
         width: {
@@ -45,11 +49,13 @@ export default {
             type: String,
             default: ""
         },
-        language: { // ? Can be any language from https://github.com/thlorenz/brace/tree/master/mode
+        language: {
+            // ? Can be any language from https://github.com/thlorenz/brace/tree/master/mode
             type: String,
             default: "python"
         },
-        theme: {  // ? Can be any theme from https://github.com/thlorenz/brace/tree/master/theme
+        theme: {
+            // ? Can be any theme from https://github.com/thlorenz/brace/tree/master/theme
             type: String,
             default: "monokai"
         },
@@ -65,13 +71,37 @@ export default {
             type: Boolean,
             default: true
         },
-        errors: { // ? Array of objects with {row, column, text and type} properties
+        errors: {
+            // ? Array of objects with {row, column, text and type} properties
             type: Array,
             default: () => []
         },
         options: {
             type: Object,
             default: () => ({})
+        },
+        prompt: {
+            type: Object,
+            default: () => ({
+                props: {
+                    show: true,
+                    loading: false,
+                    isPopup: false,
+                    initialMessage: "",
+                    username: "",
+                    placeholder: "a a message...",
+                    textarea: {},
+                    footNote: ""
+                },
+                events: {
+                    onSend: (e) => {
+                        console.log("onSend",e)
+                    },
+                    onError: () => {},
+                    onSend: () => {},
+                    onOpenZeChat: () => {}
+                }
+            })
         }
     },
     data() {
@@ -80,9 +110,16 @@ export default {
             annotations: []
         };
     },
+    mounted() {
+        this.$emit("openZeChat", this.content);
+    },
     methods: {
+        send(message) {
+            console.log(message);
+            this.$emit("send", message);
+        },
         editorInit(editor) {
-            try{
+            try {
                 require("brace/ext/language_tools"); //language extension prerequsite...
                 require("brace/ext/error_marker");
                 require(`brace/mode/${this.language}`);
@@ -116,7 +153,7 @@ export default {
     watch: {
         errors(val) {
             // ? Setting Annotations is a bit laggy in the component so timeout is needed
-            setTimeout( () => this.$refs.codeEditor.editor.getSession().setAnnotations(val), 100);
+            setTimeout(() => this.$refs.codeEditor.editor.getSession().setAnnotations(val), 100);
         },
         content(val) {
             this.$emit("onInput", val);
@@ -157,4 +194,3 @@ export default {
     border-radius: 7.5px;
 }
 </style>
-

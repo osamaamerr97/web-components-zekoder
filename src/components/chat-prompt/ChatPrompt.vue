@@ -1,5 +1,5 @@
 <template>
-    <div v-if="isShown" v-click-outside="close" class="chat-prompt" :class="{ popup: isPopup, inline: !isPopup }">
+    <div v-if="isShown" v-click-outside="close" class="chat-prompt" :class="{ popup: isPopup, inline: !isPopup, [customClass]: customClass }">
         <div class="chat-prompt-header" v-if="isPopup">
             <div class="chat-prompt-title">Chat Prompt</div>
             <div class="chat-prompt-actions">
@@ -22,6 +22,7 @@
                 :required="false"
                 :disabled="false"
                 :autoResize="true"
+                :rows="1"
                 v-bind="textarea"
                 @onInput="inputMessage = $event.value"
                 @onEnter="sendMessage"
@@ -79,7 +80,11 @@ export default {
         footNote: {
             type: String,
             default: ""
-        }
+        },
+        customClass: {
+            type: String,
+            default: ""
+        },
     },
     data() {
         return {
@@ -113,6 +118,14 @@ export default {
         close() {
             this.$emit("close");
         },
+    },
+    watch: {
+        show: {
+            handler: function (val) {
+                this.isShown = val;
+            },
+            immediate: true
+        }
     }
 };
 </script>
@@ -147,7 +160,6 @@ export default {
     &.inline {
         border: 1px solid #ccc;
         border-radius: 4px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         background-color: #fff;
     }
 
@@ -208,11 +220,11 @@ export default {
             flex-grow: 1;
             :deep textarea {
                 width: 100%;
-                height: fit-content;
                 padding: 8px;
                 border: 1px solid #ccc;
                 border-radius: 4px;
                 resize: none;
+                white-space: pre-line;
             }
             &.loading {
                 :deep textarea {

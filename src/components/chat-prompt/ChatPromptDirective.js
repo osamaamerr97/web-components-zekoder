@@ -16,26 +16,27 @@ export default {
         const props = binding.value.props || {};
         const events = binding.value.events || {};
 
-        console.log('props', props);
-        console.log('events', events);
 
         const ChatPromptComponent = Vue.extend(ChatPrompt);
         chatPrompt = new ChatPromptComponent({ propsData: props });
+        el.appendChild(chatPrompt.$mount().$el);
 
         Object.keys(events).forEach(event => {
             chatPrompt.$on(event, events[event]);
         });
-
-        vnode.context.$on('openZeChat', () => {
-            // mount the chat prompt component
-            el.appendChild(chatPrompt.$mount().$el);
-        });
-    },
-    inserted(el, binding, vnode) {
-        // listen to close event from the chat prompt component
+        
         chatPrompt.$on('close', () => {
             // unmount the chat prompt component
             removeChatPrompt();
+        });
+        // listen to open event from the parent component
+        vnode.context.$on('openZeChat', () => {
+            chatPrompt.show = true;
+        });
+
+        // listen to close event from the parent component
+        vnode.context.$on('closeZeChat', () => {
+            chatPrompt.show = false;
         });
     },
     unbind(el, binding, vnode) {

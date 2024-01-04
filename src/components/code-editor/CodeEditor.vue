@@ -1,5 +1,5 @@
 <template>
-    <div v-ze-chat="prompt" class="zek-code-editor">
+    <div class="zek-code-editor">
         <editor
             ref="codeEditor"
             v-model="content"
@@ -18,24 +18,23 @@
                 ...options
             }"
         ></editor>
+        <ZekChatPrompt :show="showPrompt" :loading="promptLoading" :customClass="'zek-code-editor-prompt'" v-bind="prompt" @onSend="sendPrompt"></ZekChatPrompt>
     </div>
 </template>
 
 <script>
 import editor from "vue2-ace-editor";
-import ZeChat from "../chat-prompt/ChatPromptDirective";
+import ZekChatPrompt from "../chat-prompt/ChatPrompt.vue";
 export default {
     name: "ZekCodeEditor",
     components: {
-        editor
-    },
-    directives: {
-        ZeChat
+        editor,
+        ZekChatPrompt
     },
     props: {
         width: {
             type: String,
-            default: "500px"
+            default: "100%"
         },
         height: {
             type: String,
@@ -80,27 +79,21 @@ export default {
             type: Object,
             default: () => ({})
         },
+        showPrompt: {
+            type: Boolean,
+            default: true
+        },
         prompt: {
             type: Object,
             default: () => ({
-                props: {
-                    show: true,
-                    loading: false,
-                    isPopup: false,
-                    initialMessage: "",
-                    username: "",
-                    placeholder: "a a message...",
-                    textarea: {},
-                    footNote: ""
-                },
-                events: {
-                    onSend: (e) => {
-                        console.log("onSend",e)
-                    },
-                    onError: () => {},
-                    onSend: () => {},
-                    onOpenZeChat: () => {}
-                }
+                show: false,
+                loading: false,
+                isPopup: false,
+                initialMessage: "",
+                username: "",
+                placeholder: "Type a message...",
+                textarea: {},
+                footNote: ""
             })
         }
     },
@@ -111,12 +104,11 @@ export default {
         };
     },
     mounted() {
-        this.$emit("openZeChat", this.content);
+        this.$emit("openZeChat", this.prompt);
     },
     methods: {
-        send(message) {
-            console.log(message);
-            this.$emit("send", message);
+        sendPrompt(message) {
+            this.$emit("onSendPrompt", message);
         },
         editorInit(editor) {
             try {
@@ -173,6 +165,7 @@ export default {
 .zek-code-editor {
     width: 100%;
     height: 100%;
+    padding: 0.5rem;
 }
 :deep {
     // webkit-scrollbar
@@ -192,5 +185,13 @@ export default {
 }
 :deep .ace_editor {
     border-radius: 7.5px;
+    z-index: 1;
+}
+.zek-code-editor-prompt{
+    margin: 0;
+    padding-top: 5px;
+    top: -7.5px;
+    z-index: 0;
+    box-shadow: none;
 }
 </style>

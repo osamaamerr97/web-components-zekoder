@@ -20,14 +20,17 @@
             :class="customClass"
             :name="name"
             :id="id"
+            ref="textarea"
             :placeholder="placeholder"
             :readonly="readonly"
             :required="required"
             :disabled="disabled"
             :minlength="minMaxValue ? minMaxValue.min : null"
             :maxlength="minMaxValue ? minMaxValue.max : null"
+            :rows="rows"
             @change="onChange"
             @input="onInput"
+            @keydown.enter.exact.prevent="onEnter"
             :form="form"
             :value="value"
             :style="inputStyle"
@@ -43,6 +46,18 @@
 export default {
     name: "ZekTextarea",
     props: {
+        autoResize: {
+            type: Boolean,
+            default: false
+        },
+        maxHeight: {
+            type: String,
+            default: "100px"
+        },
+        rows: {
+            type: Number,
+            default: 3
+        },
         hint: String,
         inputStyle: {
             type: Object,
@@ -114,11 +129,22 @@ export default {
     },
     methods: {
         onInput(event) {
+            if (this.autoResize) {
+                this.$refs.textarea.style.overflow = "auto";
+                this.$refs.textarea.style.height = "auto";
+                this.$refs.textarea.style.maxHeight = this.maxHeight;
+                this.$refs.textarea.style.height = this.$refs.textarea.scrollHeight + 2 + "px";
+            }
+            this.value = event.target.value;
             this.$emit("onInput", { id: this.id, value: this.value });
         },
         onChange(event) {
             // ! this is only for possible previous use cases should be changed
             this.$emit("onChange", event.target.value);
+        },
+        onEnter(event) {
+            // ! this is only for possible previous use cases should be changed
+            this.$emit("onEnter", event.target.value);
         }
     },
     watch: {
@@ -142,8 +168,8 @@ textarea {
     resize: none;
 }
 .input-hint-icon {
-  color: #999;
-  cursor: pointer;
-  height: 100%;
+    color: #999;
+    cursor: pointer;
+    height: 100%;
 }
 </style>

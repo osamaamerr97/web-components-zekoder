@@ -18,7 +18,7 @@
                 ...options
             }"
         ></editor>
-        <ZekChatPrompt :show="showPrompt" :loading="promptLoading" :customClass="'zek-code-editor-prompt'" v-bind="prompt" @onSend="sendPrompt"></ZekChatPrompt>
+        <ZekChatPrompt :show="showPrompt" :loading="loading" :customClass="'zek-code-editor-prompt'" v-bind="prompt" @onSend="sendPrompt"></ZekChatPrompt>
     </div>
 </template>
 
@@ -32,6 +32,10 @@ export default {
         ZekChatPrompt
     },
     props: {
+        loading: {
+            type: Boolean,
+            default: false
+        },
         width: {
             type: String,
             default: "100%"

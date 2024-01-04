@@ -20,20 +20,27 @@
             v-on="extraEvents"
             v-bind="extraProps"
         ></editor>
+        <ZekChatPrompt :show="showPrompt" :loading="loading" :customClass="'zek-code-editor-prompt'" v-bind="prompt" @onSend="sendPrompt"></ZekChatPrompt>
     </div>
 </template>
 
 <script>
 import editor from "vue2-ace-editor";
+import ZekChatPrompt from "../chat-prompt/ChatPrompt.vue";
 export default {
     name: "ZekCodeEditor",
     components: {
-        editor
+        editor,
+        ZekChatPrompt
     },
     props: {
+        loading: {
+            type: Boolean,
+            default: false
+        },
         width: {
             type: String,
-            default: "500px"
+            default: "100%"
         },
         height: {
             type: String,
@@ -47,11 +54,13 @@ export default {
             type: String,
             default: ""
         },
-        language: { // ? Can be any language from https://github.com/thlorenz/brace/tree/master/mode
+        language: {
+            // ? Can be any language from https://github.com/thlorenz/brace/tree/master/mode
             type: String,
             default: "python"
         },
-        theme: {  // ? Can be any theme from https://github.com/thlorenz/brace/tree/master/theme
+        theme: {
+            // ? Can be any theme from https://github.com/thlorenz/brace/tree/master/theme
             type: String,
             default: "monokai"
         },
@@ -67,7 +76,8 @@ export default {
             type: Boolean,
             default: true
         },
-        errors: { // ? Array of objects with {row, column, text and type} properties
+        errors: {
+            // ? Array of objects with {row, column, text and type} properties
             type: Array,
             default: () => []
         },
@@ -91,6 +101,23 @@ export default {
             type: [String, Number],
             default: ""
         },
+        showPrompt: {
+            type: Boolean,
+            default: true
+        },
+        prompt: {
+            type: Object,
+            default: () => ({
+                show: false,
+                loading: false,
+                isPopup: false,
+                initialMessage: "",
+                username: "",
+                placeholder: "Type a message...",
+                textarea: {},
+                footNote: ""
+            })
+        }
     },
     data() {
         return {
@@ -98,9 +125,15 @@ export default {
             annotations: []
         };
     },
+    mounted() {
+        this.$emit("openZeChat", this.prompt);
+    },
     methods: {
+        sendPrompt(message) {
+            this.$emit("onSendPrompt", message);
+        },
         editorInit(editor) {
-            try{
+            try {
                 require("brace/ext/language_tools"); //language extension prerequsite...
                 require("brace/ext/error_marker");
                 require(`brace/mode/${this.language}`);
@@ -134,7 +167,7 @@ export default {
     watch: {
         errors(val) {
             // ? Setting Annotations is a bit laggy in the component so timeout is needed
-            setTimeout( () => this.$refs.codeEditor.editor.getSession().setAnnotations(val), 100);
+            setTimeout(() => this.$refs.codeEditor.editor.getSession().setAnnotations(val), 100);
         },
         content(val) {
             this.$emit("onInput", val);
@@ -154,6 +187,7 @@ export default {
 .zek-code-editor {
     width: 100%;
     height: 100%;
+    padding: 0.5rem;
 }
 :deep {
     // webkit-scrollbar
@@ -173,6 +207,13 @@ export default {
 }
 :deep .ace_editor {
     border-radius: 7.5px;
+    z-index: 1;
+}
+.zek-code-editor-prompt{
+    margin: 0;
+    padding-top: 5px;
+    top: -7.5px;
+    z-index: 0;
+    box-shadow: none;
 }
 </style>
-

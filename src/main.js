@@ -1,3 +1,4 @@
+import './set-public-path';
 // SECTION: Low-level components
 const ZekButton = () => import(/* webpackChunkName: "zek-button" */ './components/action-button/ActionButton.vue');
 const ZekCard = () => import(/* webpackChunkName: "zek-card" */ './components/card/Card.vue');

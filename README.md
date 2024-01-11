@@ -1,4 +1,4 @@
-# zekoder-web-components
+# Zekoder Web Components
 
 ## Project setup
 ```

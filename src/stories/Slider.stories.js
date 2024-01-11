@@ -83,7 +83,7 @@ Primary.args = {
             ],
             bulletsBefore: false,
             image: {
-                url: 'http://localhost:3000/_nuxt/assets/images/why-remoto.svg',
+                url: '',
                 position: 'left',
                 cover: 'full'
             },

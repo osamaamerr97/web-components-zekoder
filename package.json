@@ -3,6 +3,10 @@
   "version": "0.0.1",
   "private": false,
   "description": "Zekoder web components",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cyberneticlabs/web-components-zekoder.git"
+  },
   "license": "Proprietary",
   "author": "Cybernetic Labs",
   "main": "dist/zekoder-web-components.umd.js",
@@ -17,7 +21,6 @@
     "build": "vue-cli-service build --target lib --name zekoder-web-components src/main.js",
     "build-app": "vue-cli-service build",
     "build-storybook": "build-storybook",
-    "buildBasic": "vue-cli-service build --target lib --dest dist/basic --name basic-components src/basic-components/main.js",
     "lint": "vue-cli-service lint",
     "prepublishOnly": "npm run build",
     "serve": "vue-cli-service serve",

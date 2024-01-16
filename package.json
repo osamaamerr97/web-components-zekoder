@@ -1,6 +1,6 @@
 {
-  "name": "@zekoder/zekoder-web-components",
-  "version": "0.0.1",
+  "name": "@abdash/zekoder-web-components",
+  "version": "0.0.1-alpha",
   "private": false,
   "description": "Zekoder web components",
   "repository": {
@@ -9,20 +9,17 @@
   },
   "license": "Proprietary",
   "author": "Cybernetic Labs",
-  "main": "dist/zekoder-web-components.umd.js",
-  "unpkg": "dist/zekoder-web-components.min.js",
-  "module": "dist/zekoder-web-components.esm.js",
   "files": [
     "dist/*",
     "src/components/*",
     "*.json"
   ],
   "scripts": {
-    "build": "vue-cli-service build --target lib --name zekoder-web-components src/main.js",
-    "build-app": "vue-cli-service build",
+    "build": "vue-cli-service build",
+    "build-library": "vue-cli-service build --target lib --name zekoder-web-components src/main.js",
     "build-storybook": "build-storybook",
     "lint": "vue-cli-service lint",
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "npm run build-library",
     "serve": "vue-cli-service serve",
     "storybook": "start-storybook -p 6006"
   },
@@ -46,12 +43,13 @@
     "graphql-tag": "^2.12.6",
     "js-yaml": "^4.1.0",
     "sanitize-html": "^2.6.1",
-    "vue": "^2.6.10",
+    "vue": "^2.7.10",
     "vue-apexcharts": "^1.6.2",
     "vue-click-outside": "^1.1.0",
     "vue-doc-preview": "^0.3.2",
     "vue-filepond": "^6.0.3",
     "vue-geo-heat-maps": "^0.2.13",
+    "vue-loader": "^15.9.8",
     "vue-recaptcha": "1.3.0",
     "vue-router": "^3.5.3",
     "vue-scroll-picker": "^0.8.2",
@@ -86,12 +84,14 @@
     "sass-loader": "^10",
     "systemjs-webpack-interop": "^2.3.7",
     "vue-cli-plugin-vuetify": "~2.4.6",
-    "vue-loader": "^15.9.8",
     "vue-style-loader": "^4.1.3",
     "vue-template-compiler": "^2.6.10",
     "webpack-cli": "^5.1.4",
     "webpack-config-single-spa": "^5.1.0",
     "webpack-dev-server": "^4.0.0",
     "webpack-merge": "^5.8.0"
+  },
+  "overrides": {
+    "webpack": "^5.1.4"
   }
 }
